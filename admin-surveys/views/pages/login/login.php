@@ -8,7 +8,7 @@
                 <img src="<?php echo TemplateController::srcImg() ?>views/img/logos/logo_fundaescol.jpg" style="ml-10" width="55%" alt="User Image">
             </div>
             <br>
-            <p class="login-box-msg"><strong>PROGRAMA DE ATENCION INTEGRAL DEL ADULTO MAYOR</strong></p>
+            <p class="login-box-msg"><strong>SISTEMA DE GESTION DE ENCUESTAS</strong></p>
             <div class="card-body">
                 <p class="login-box-msg">Inicio de Sesión</p>
 

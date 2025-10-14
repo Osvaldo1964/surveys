@@ -28,7 +28,7 @@ if (isset($routesArray[1])) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SISTEMA DE GESTION DE CONTRATACION</title>
+  <title>SISTEMA DE GESTION DE ENCUESTAS</title>
 
   <!-- Traigo la ruta base -->
   <base href="<?php echo TemplateController::path(); ?>">
