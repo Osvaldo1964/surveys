@@ -80,6 +80,28 @@ function execDatatable(text) {
         page = "crews";
     }
 
+    /* CONFIGURA DATATABLE PARA ENCUESTAS */
+    if ($(".tableOwners").length > 0) {
+
+        var url = "ajax/data-owners.php?text=" + text + "&between1=" + $("#between1").val() + "&between2=" + $("#between2").val() + "&token=" + localStorage.getItem("token_user")
+
+        var columns = [
+            { "data": "id_owner" },
+            { "data": "document_owner" },
+            { "data": "name_owner" },
+            { "data": "address_owner" },
+            { "data": "email_owner" },
+            { "data": "phone_owner" },
+            { "data": "status_owner" },
+            { "data": "actions", "orderable": false, "search": false }
+        ];
+
+        page = "owners";
+    }
+
+    
+    /* FIN CONFIGURA DATATABLE PARA ENCUESTAS */
+
     /* CONFIGURA DATATABLE PARA ELEMENTOS */
 
     /* Valido Tabla Potencias*/

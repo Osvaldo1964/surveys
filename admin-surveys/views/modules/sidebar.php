@@ -257,6 +257,69 @@ $rolUser = $_SESSION["user"]->id_class_user;
                         </ul>
                     </li>
                 <?php } ?>
+
+                <!-- Menu de DEFINICION ENCUESTAS-->
+                <?php if (in_array($rolUser, [1, 2])) { ?>
+                    <li class="nav-item menu-close">
+                        <a href="#" class="nav-link <?php if (!empty($routesArray[1]) && $routesArray[1] == "subjects") : ?>active bg-info<?php endif ?>">
+                            <i class="nav-icon far fa-plus-square"></i>
+                            <p>
+                                DEFINICION ENCUESTAS
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link <?php if (!empty($routesArray[1]) && $routesArray[1] == "subjects") : ?>active bg-info<?php endif ?>">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>
+                                        TABLAS
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="/owners" class="nav-link <?php if (!empty($routesArray[1]) && $routesArray[1] == "owners") : ?>active bg-info<?php endif ?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Clientes</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/surveys" class="nav-link <?php if (!empty($routesArray[1]) && $routesArray[1] == "surveys") : ?>active bg-info<?php endif ?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Definición Encuestas</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link <?php if (!empty($routesArray[1]) && $routesArray[1] == "generate") : ?>active bg-info<?php endif ?>">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>
+                                        REPORTES
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="/" class="nav-link <?php if (!empty($routesArray[1]) && $routesArray[1] == "infregs") : ?>active bg-info<?php endif ?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Informe de Clientes</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/" class="nav-link <?php if (!empty($routesArray[1]) && $routesArray[1] == "infaprobs") : ?>active bg-info<?php endif ?>">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Informe Encuestas</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                <?php } ?>
+
+                
                 <!-- Menu de DESARROLLO PROGRAMA -->
                 <li class="nav-item menu-close">
                     <a href="#" class="nav-link <?php if (!empty($routesArray[1]) && $routesArray[1] == "subjects") : ?>active bg-info<?php endif ?>">
@@ -592,10 +655,6 @@ $rolUser = $_SESSION["user"]->id_class_user;
         <br><br>
         <div class="container justify-content: center; text-align: center;">
             <img src="<?php echo TemplateController::srcImg() ?>views/img/logos/logo_fundaescol.jpg" width="200" alt="User Image">
-        <br><br><br>
-            <img src="<?php echo TemplateController::srcImg() ?>views/img/logos/logo_dpto.png" width="200" alt="User Image">
-        <br><br>
-            <img src="<?php echo TemplateController::srcImg() ?>views/img/logos/logo_entre.png" alt="User Image">
         </div>
     </div>
     <!-- /.sidebar -->
