@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Notificación Apertura"
+    },
+    {
+        "name": "Mandamiento de Pago"
+    },
+    {
+        "name": "Notificación Personal"
+    },
+    {
+        "name": "Notificación por Apoderado"
+    },
+    {
+        "name": "Resolución de Embargo"
+    },
+    {
+        "name": "Resolución de Desembargo"
+    }
+]

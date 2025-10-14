@@ -1,0 +1,30 @@
+[
+    {
+        "name": "Cédula de Ciudadanía",
+        "code": "C.c."
+    },
+    {
+        "name": "Tarjeta de Identidad",
+        "code": "T.I."
+    },
+    {
+        "name": "Cédula de Extranjería",
+        "code": "C.e."
+    },
+    {
+        "name": "Pasaporte",
+        "code": "P.P."
+    },
+    {
+        "name": "Permiso de Trabajo",
+        "code": "P.t."
+    },
+    {
+        "name": "Registro Civil",
+        "code": "R.C."
+    },
+    {
+        "name": "Perm. Prot. Temporal",
+        "code": "P.P.T."
+    }
+]

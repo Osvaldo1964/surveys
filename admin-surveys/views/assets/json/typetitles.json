@@ -1,0 +1,14 @@
+[
+    {
+    "name": "Infracciones de Tránsito",
+    "code": "01"
+    },
+    {
+    "name": "Impuesto Predial",
+    "code": "02"
+    },
+    {
+    "name": "Impuesto de Timbre Automotor",
+    "code": "03"
+    }
+]

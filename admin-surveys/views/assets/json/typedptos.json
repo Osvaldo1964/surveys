@@ -1,0 +1,134 @@
+[
+    {
+        "name": "ANTIOQUIA",
+        "code": "05"
+    },
+    {
+        "name": "ATLANTICO",
+        "code": "08"
+    },
+    {
+        "name": "BOGOTA",
+        "code": "11"
+    },
+    {
+        "name": "BOLIVAR",
+        "code": "13"
+    },
+    {
+        "name": "BOYACA",
+        "code": "15"
+    },
+    {
+        "name": "CALDAS",
+        "code": "17"
+    },
+    {
+        "name": "CAQUETA",
+        "code": "18"
+    },
+    {
+        "name": "CAUCA",
+        "code": "19"
+    },
+    {
+        "name": "CESAR",
+        "code": "20"
+    },
+    {
+        "name": "CORDOBA",
+        "code": "23"
+    },
+    {
+        "name": "CUNDINAMARCA",
+        "code": "25"
+    },
+    {
+        "name": "CHOCO",
+        "code": "27"
+    },
+    {
+        "name": "HUILA",
+        "code": "41"
+    },
+    {
+        "name": "LA GUAJIRA",
+        "code": "44"
+    },
+    {
+        "name": "MAGDALENA",
+        "code": "47"
+    },
+    {
+        "name": "META",
+        "code": "50"
+    },
+    {
+        "name": "NARIÑO",
+        "code": "52"
+    },
+    {
+        "name": "N. DE SANTANDER",
+        "code": "54"
+    },
+    {
+        "name": "QUINDIO",
+        "code": "63"
+    },
+    {
+        "name": "RISARALDA",
+        "code": "66"
+    },
+    {
+        "name": "SANTANDER",
+        "code": "68"
+    },
+    {
+        "name": "SUCRE",
+        "code": "70"
+    },
+    {
+        "name": "TOLIMA",
+        "code": "73"
+    },
+    {
+        "name": "VALLE DEL CAUCA",
+        "code": "76"
+    },
+    {
+        "name": "ARAUCA",
+        "code": "81"
+    },
+    {
+        "name": "CASANARE",
+        "code": "85"
+    },
+    {
+        "name": "PUTUMAYO",
+        "code": "86"
+    },
+    {
+        "name": "SAN ANDRES",
+        "code": "88"
+    },
+    {
+        "name": "AMAZONAS",
+        "code": "91"
+    },
+    {
+        "name": "GUAINIA",
+        "code": "94"
+    },
+    {
+        "name": "GUAVIARE",
+        "code": "95"
+    },
+    {
+        "name": "VAUPES",
+        "code": "97"
+    },
+    {
+        "name": "VICHADA",
+        "code": "99"
+    }
+]

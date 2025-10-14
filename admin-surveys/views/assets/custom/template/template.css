@@ -1,0 +1,32 @@
+.login-page, .register-page{
+    background-color:#17a2b8;
+}
+
+.note-image-input, .note-image-btn{
+    padding-bottom: 30px !important;
+}
+
+.notblock {
+    display: none !important;
+}
+
+.texcenter {
+    text-align: center;
+}
+
+input.numDocumento::-webkit-inner-spin-button,
+input.numDocumento::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input.salario::-webkit-inner-spin-button,
+input.salario::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.nav .nav-tabs {
+    margin-bottom: 0px;
+    font-size: .800rem !important;
+}
