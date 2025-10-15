@@ -152,7 +152,8 @@ if (isset($routesArray[1])) {
       "payrolls",
       "logout",
       "follows",
-      "owners"
+      "owners",
+      "surveys"
     ];
 
     if (in_array($routesArray[1], $validRoutes)) : ?>
@@ -273,7 +274,8 @@ if (isset($routesArray[1])) {
           "payrolls",
           "logout",
           "follows",
-          "owners"
+          "owners",
+          "surveys"
         ];
 
         if (!empty($routesArray[1])) {

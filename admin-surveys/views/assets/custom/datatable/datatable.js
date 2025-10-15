@@ -81,6 +81,8 @@ function execDatatable(text) {
     }
 
     /* CONFIGURA DATATABLE PARA ENCUESTAS */
+
+    /* Tabla de Clientes */
     if ($(".tableOwners").length > 0) {
 
         var url = "ajax/data-owners.php?text=" + text + "&between1=" + $("#between1").val() + "&between2=" + $("#between2").val() + "&token=" + localStorage.getItem("token_user")
@@ -98,8 +100,24 @@ function execDatatable(text) {
 
         page = "owners";
     }
+    /* Tabla de Encuestas */
+    if ($(".tableSurveys").length > 0) {
 
-    
+        var url = "ajax/data-surveys.php?text=" + text + "&between1=" + $("#between1").val() + "&between2=" + $("#between2").val() + "&token=" + localStorage.getItem("token_user")
+
+        var columns = [
+            { "data": "id_hsurvey" },
+            { "data": "name_owner" },
+            { "data": "name_hsurvey" },
+            { "data": "begindate_hsurvey" },
+            { "data": "enddate_hsurvey" },
+            { "data": "status_hsurvey" },
+            { "data": "actions", "orderable": false, "search": false }
+        ];
+
+        page = "surveys";
+    }
+
     /* FIN CONFIGURA DATATABLE PARA ENCUESTAS */
 
     /* CONFIGURA DATATABLE PARA ELEMENTOS */
@@ -358,7 +376,7 @@ function execDatatable(text) {
         page = "schools";
     }
 
-    
+
     /* Valido Tabla Centros */
     if ($(".tableCenters").length > 0) {
 
