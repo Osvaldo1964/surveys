@@ -1,14 +1,20 @@
+//Verifico departamentos al cargar la forma
+(function () {
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("Trigger ejecutado: DOM listo!");
+        tableItems();
+    });
+})();
+
 // Escuchar el boton de adicionar pregunta 
 const addQuestion = document.querySelector('#addQuestion');
 addQuestion.onclick = function () {
-    console.log('Botón alternativo presionado.');
     document.querySelector("#divDerecha").classList.remove("notblock");
 };
 
 // Activo el div segun el tipo de respuesta
 $(document).on("change", ".typeQuestion", function (event) {
     event.preventDefault();
-    console.log("Tipo de respuesta cambiado");
     var selectedType = $('#typeQuestion').find(':selected')
     var idType = selectedType.val(); // Captura el valor
 
@@ -27,9 +33,7 @@ $(document).on("change", ".typeQuestion", function (event) {
 
 // Adicionar pregunta de tipo Texto
 const addOptionText = document.querySelector('#addOptionText');
-console.log(addOptionText);
 document.querySelector('#addOptionText').onclick = function (event) {
-    console.log('Botón Adicionar Opción presionado.');
     event.preventDefault();
     var idQuestion = document.getElementById('idQuestion').value;
     var selectedType = $('#typeQuestion').find(':selected')
@@ -50,14 +54,28 @@ document.querySelector('#addOptionText').onclick = function (event) {
         cache: false,
         processData: false,
         success: function (response) {
-            //var responseData = JSON.parse(response);
-            console.log(response);
-            //document.querySelector("#divDerecha").classList.add("notblock");
         }
     })
 }
 
 
-function selDptos() {
+function tableItems() {
+    console.log("Cargando tabla de items...");
+    var idQuestion = document.getElementById('idQuestion').value;
+    //console.log(idQuestion);
 
+    var data = new FormData();
+    data.append("idSurveyTable", idQuestion);
+
+    $.ajax({
+        url: "ajax/ajax-surveys.php",
+        method: "POST",
+        data: data,
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function (response) {
+            console.log("Tabla de items cargada");
+        }
+    })
 }

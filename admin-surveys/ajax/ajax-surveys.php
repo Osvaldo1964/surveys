@@ -26,8 +26,6 @@ class bsurveysController
             $numQuestions = 0;
         }
 
-        //echo '<pre>'; print_r($numQuestions); echo '</pre>';exit;
-
         /* Agrupamos la información */
         $data = array(
             "id_hsurvey_bsurvey" => $this->idSurvey,
@@ -42,11 +40,22 @@ class bsurveysController
         $method = "POST";
         $fields = $data;
         $response = CurlController::request($url, $method, $fields);
-        echo '<pre>';
-        print_r($response);
-        print_r($data);
-        echo '</pre>';
-        exit;
+    }
+
+    public function genTable()
+    {
+        /* Verifico cuantas preguntas van */
+        $url = "bsurveys?linkTo=id_hsurvey_bsurvey&equalTo=" . $this->idSurvey;
+        $method = "GET";
+        $fields = array();
+        echo '<pre>'; print_r($url); echo '</pre>';
+        $secuencia = CurlController::request($url, $method, $fields);
+
+        if ($secuencia->status == 200) {
+            $numQuestions = $secuencia->results[0];
+        } else {
+            $numQuestions = 0;
+        }
     }
 }
 
@@ -60,3 +69,12 @@ if (isset($_POST["idSurvey"])) {
     $ajax->nameQuestion = $_POST["nameQuestion"];
     $ajax->saveText();
 }
+
+/* Función para Seleccionar departamentos al escoger un cargo en registers */
+if (isset($_POST["idSurveyTable"])) {
+    //echo '<pre>'; print_r($_POST); echo '</pre>';exit;
+    $ajax = new bsurveysController();
+    $ajax->idSurvey = $_POST["idSurveyTable"];
+    $ajax->genTable();
+}
+echo '<pre>'; print_r($_POST); echo '</pre>';exit;

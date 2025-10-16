@@ -35,26 +35,8 @@ if (isset($routesArray[3])) {
         </div>
         <div class="card-body">
             <div class="div-izq border" style="float: left; width: 49%; height: 400px; overflow: auto;">
-                <table id="miDataTable" class="display" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Registro Ejemplo 1</td>
-                            <td>
-                                <button class="btn btn-info btn-sm">Editar</button>
-                                <button class="btn btn-danger btn-sm">Eliminar</button>
-                            </td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table responsive notblock" id="TableItems">
+                </div>
                 <div style="float: left; width: 49%; height: 400px; overflow: auto;">
                     <button class="btn btn-success contenedor-flex" id="addQuestion"> Adicionar Pregunta</button>
                 </div>
