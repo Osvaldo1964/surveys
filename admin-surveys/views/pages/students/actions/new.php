@@ -705,7 +705,7 @@
     //Verifico departamentos al cargar la forma
     (function() {
         document.addEventListener("DOMContentLoaded", function() {
-            console.log("Trigger ejecutado: DOM listo!");
+            //console.log("Trigger ejecutado: DOM listo!");
             selDptos();
         });
     })();

@@ -108,7 +108,10 @@ class DatatableController
 						$actions = "<a href='/surveys/edit/" . base64_encode($value->id_hsurvey . "~" . $_GET["token"]) . "' class='btn btn-warning btn-sm mr-1 rounded-circle'>
 			            		<i class='fas fa-pencil-alt'></i>
 			            		</a>
-								<a href='/surveys/retired/" . base64_encode($value->id_hsurvey . "~" . $_GET["token"]) . "' class='btn btn-info btn-sm mr-1 rounded-circle'>
+								<a href='/surveys/questions/" . base64_encode($value->id_hsurvey . "~" . $_GET["token"]) . "' class='btn btn-info btn-sm mr-1 rounded-circle'>
+			            		<i class='fas fa-plus-circle'></i>
+			            		</a>
+								<a href='/surveys/close/" . base64_encode($value->id_hsurvey . "~" . $_GET["token"]) . "' class='btn btn-info btn-sm mr-1 rounded-circle'>
 			            		<i class='fas fa-sign-out-alt'></i>
 			            		</a>
 			            		<a class='btn btn-danger btn-sm rounded-circle removeItem' idItem='" . base64_encode($value->id_hsurvey . "~" . $_GET["token"]) . "' table='hsurveys' suffix='hsurvey' deleteFile='no' page='hsurveys'>

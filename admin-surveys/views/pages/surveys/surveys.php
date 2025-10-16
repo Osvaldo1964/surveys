@@ -9,7 +9,7 @@
                     <li class="breadcrumb-item"><a href="/">Inicio</a></li>
                     <?php
                     if (isset($routesArray[2])) {
-                        if ($routesArray[2] == "new" || $routesArray[2] == "edit") {
+                        if ($routesArray[2] == "new" || $routesArray[2] == "edit" || $routesArray[2] == "questions" || $routesArray[2] == "close") {
                             echo '<li class="breadcrumb-item"><a href="/surveys">Definición</a></li>';
                             echo '<li class="breadcrumb-item active">' . $routesArray[2] . '</li>';
                         }
@@ -31,7 +31,7 @@
         <div class="card-body">
             <?php
             if (isset($routesArray[2])) {
-                if ($routesArray[2] == "new" || $routesArray[2] == "edit") {
+                if ($routesArray[2] == "new" || $routesArray[2] == "edit" || $routesArray[2] == "questions" || $routesArray[2] == "close") {
                     include "actions/" . $routesArray[2] . ".php";
                 }
             } else {
