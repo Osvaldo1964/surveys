@@ -34,7 +34,7 @@ if (isset($routesArray[3])) {
             <h5>Cliente: <?php echo $hsurveys->name_owner ?></h5>
         </div>
         <div class="card-body">
-            <div class="div-izq border" style="float: left; width: 49%; height: 400px; overflow: auto;">
+            <div class="border" style="float: left; width: 49%; height: 400px; overflow: auto;">
                 <div class="table responsive notblock" id="TableItems">
                 </div>
                 <div style="float: left; width: 49%; height: 400px; overflow: auto;">
@@ -42,7 +42,7 @@ if (isset($routesArray[3])) {
                 </div>
             </div>
 
-            <div class="div-der border notblock" id="divDerecha" style="float: left; width: 50%; height: 400px;">
+            <div class="border notblock" id="divDerecha" style="float: left; width: 50%; height: 400px;">
                 <div class="input-group col-md-12 mt-2">
                     <label class="input-group-text" for="nameQuestion">Nombre</label>
                     <input type="text" class="form-control" pattern="[A-Za-zñÑáéíóúÁÉÍÓÚ ]{1,}" onchange="validateJS(event,'text')"
@@ -69,7 +69,11 @@ if (isset($routesArray[3])) {
                     <br>
                     <button class="btn btn-success btn-sm mb-2 addOptionText" onclick="addOptionText" id="addOptionText">Adicionar Opción</button>
                 </div>
-                <div class="notblock divFecha" id="divFecha">Div para respuestas fecha</div>
+                <div class="notblock divFecha border mt-2 col-md-8 mx-auto d-flex flex-column align-items-center" id="divFecha">
+                    <h6>Respuesta tipo Texto</h6>
+                    <br>
+                    <button class="btn btn-success btn-sm mb-2 addOptionText" onclick="addOptionText" id="addOptionText">Adicionar Opción</button>
+                </div>
                 <div class="notblock">Div para respuestas opcion</div>
                 <div class="notblock">Div para respuestas seleccion multiple</div>
             </div>

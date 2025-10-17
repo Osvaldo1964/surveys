@@ -19,13 +19,14 @@ class bsurveysController
         $fields = array();
         //echo '<pre>'; print_r($url); echo '</pre>';
         $secuencia = CurlController::request($url, $method, $fields);
-
+        echo '<pre>'; print_r($secuencia); echo '</pre>';
         if ($secuencia->status == 200) {
-            $numQuestions = $secuencia->results[0];
+            $numQuestions = $secuencia->total;
         } else {
             $numQuestions = 0;
         }
-
+        echo '<pre>'; print_r($numQuestions); echo '</pre>';
+        $numQuestions++;
         /* Agrupamos la información */
         $data = array(
             "id_hsurvey_bsurvey" => $this->idSurvey,
@@ -44,11 +45,12 @@ class bsurveysController
 
     public function genTable()
     {
+
         /* Verifico cuantas preguntas van */
         $url = "bsurveys?linkTo=id_hsurvey_bsurvey&equalTo=" . $this->idSurvey;
         $method = "GET";
         $fields = array();
-        echo '<pre>'; print_r($url); echo '</pre>';
+
         $secuencia = CurlController::request($url, $method, $fields);
 
         if ($secuencia->status == 200) {
@@ -56,11 +58,62 @@ class bsurveysController
         } else {
             $numQuestions = 0;
         }
+
+        $html = "";
+        $items = $secuencia->results;
+        //echo '<pre>'; print_r($items); echo '</pre>';exit;
+        if (!empty($items)) {
+            $html .= '
+            <table class="table table-bordered table-striped">
+                <thead style="text-align: center; font-size: 12px;">
+                    <tr style="height: 60px;">
+                        <th>ORDEN</th>
+                        <th>NOMBRE</th>
+                        <th>TIPO</th>
+                        <th>OPCIONES</th>
+                    </tr>
+                </thead>
+                <tbody>
+            ';
+            foreach ($items as $key => $value) {
+                switch ($value->type_bsurvey) {
+                    case 1:
+                        $tipoAnswer = "TEXTO";
+                        break;
+                    case 2:
+                        $tipoAnswer = "FECHA";
+                        break;
+                    case 3:
+                        $tipoAnswer = "OPCIÓN";
+                        break;
+                    case 4:
+                        $tipoAnswer = "SLECCIÓN MÚLTIPLE";
+                        break;
+                    default:
+                        $tipoAnswer = "Opción no válida.";
+                        break;
+                }
+                $html .= '
+            <tr>
+            <td style="text-align: left; font-size: 12px; ">' . $value->order_bsurvey . '</td>
+            <td style="text-align: left; font-size: 12px; ">' . $value->name_bsurvey . '</td>
+            <td style="text-align: left; font-size: 12px; ">' . $tipoAnswer . '</td>
+            <td style="text-align: left; font-size: 12px; ">
+                <button class="btn btn-primary btn-sm" id="editAnswer">Editar</button>
+                <button class="btn btn-danger btn-sm" id="deleteAnswer">Eliminar</button>
+            </td>
+            </tr>';
+            };
+            $html .= '
+                </tbody>
+            </table>';
+        }
+        echo $html;
     }
 }
 
 /* Función para Seleccionar departamentos al escoger un cargo en registers */
-if (isset($_POST["idSurvey"])) {
+if (isset($_POST["textAnswer"])) {
     //echo '<pre>'; print_r($_POST); echo '</pre>';exit;
     $ajax = new bsurveysController();
     $ajax->token_user = $_POST["token"];
@@ -72,9 +125,8 @@ if (isset($_POST["idSurvey"])) {
 
 /* Función para Seleccionar departamentos al escoger un cargo en registers */
 if (isset($_POST["idSurveyTable"])) {
-    //echo '<pre>'; print_r($_POST); echo '</pre>';exit;
+    //echo '<pre>'; print_r($_GET); echo '</pre>';exit;
     $ajax = new bsurveysController();
     $ajax->idSurvey = $_POST["idSurveyTable"];
     $ajax->genTable();
 }
-echo '<pre>'; print_r($_POST); echo '</pre>';exit;
