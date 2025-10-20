@@ -86,7 +86,16 @@ function tableItems() {
 }
 
 // Escuchar el boton de editar  pregunta 
-$(document).on("click", "#editAnswer", function () {
+$(document).on("click", ".btn-edit-answer", function () {
     console.log("Editando una respuesta...");
 
+    document.querySelector("#divDerecha").classList.remove("notblock");
+
+    // 4. .text() obtiene el texto visible dentro de la celda.
+    const idBsurvey = $(this).data('id-bsurvey');
+    //const idBsurvey = this.getAttribute('data-idBsurvey');
+
+    // ¡Listo!
+    alert('El nombre en esta fila es: ' + idBsurvey);
 })
+

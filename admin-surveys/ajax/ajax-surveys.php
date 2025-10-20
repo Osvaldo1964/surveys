@@ -64,7 +64,7 @@ class bsurveysController
         //echo '<pre>'; print_r($items); echo '</pre>';exit;
         if (!empty($items)) {
             $html .= '
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped" id="tableAnswers">
                 <thead style="text-align: center; font-size: 12px;">
                     <tr style="height: 60px;">
                         <th>ORDEN</th>
@@ -99,8 +99,8 @@ class bsurveysController
             <td style="text-align: left; font-size: 12px; ">' . $value->name_bsurvey . '</td>
             <td style="text-align: left; font-size: 12px; ">' . $tipoAnswer . '</td>
             <td style="text-align: left; font-size: 12px; ">
-                <button class="btn btn-primary btn-sm" id="editAnswer">Editar</button>
-                <button class="btn btn-danger btn-sm" id="deleteAnswer">Eliminar</button>
+                <button class="btn btn-primary btn-sm btn-edit-answer" data-id-bsurvey="' . $value->id_bsurvey . '">Editar</button>
+                <button class="btn btn-danger btn-sm btn-delete-answer" data-id-bsurvey="' . $value->id_bsurvey . '">Eliminar</button>
             </td>
             </tr>';
             };
