@@ -110,6 +110,28 @@ class bsurveysController
         }
         echo $html;
     }
+
+
+    public $idBsurvey;
+
+    public function selEditAnswer()
+    {
+        /* Verifico cuantas preguntas van */
+        $url = "bsurveys?linkTo=id_bsurvey&equalTo=" . $this->idBsurvey;
+        $method = "GET";
+        $fields = array();
+
+        $bsurveys = CurlController::request($url, $method, $fields);
+
+        if ($bsurveys->status == 200) {
+        $html = "";
+        $editAnswer = $bsurveys->results;
+        echo '<pre>'; print_r($editAnswer); echo '</pre>';exit;
+
+        } else {
+            $editAnswer = 0;
+        }
+    }
 }
 
 /* Función para Seleccionar departamentos al escoger un cargo en registers */
@@ -129,4 +151,12 @@ if (isset($_POST["idSurveyTable"])) {
     $ajax = new bsurveysController();
     $ajax->idSurvey = $_POST["idSurveyTable"];
     $ajax->genTable();
+}
+
+/* Función para Seleccionar la informacion de una respuesta para su edicion */
+if (isset($_POST["idBsurvey"])) {
+    //echo '<pre>'; print_r($_POST); echo '</pre>';exit;
+    $ajax = new bsurveysController();
+    $ajax->idBsurvey = $_POST["idBsurvey"];
+    $ajax->selEditAnswer();
 }

@@ -88,14 +88,31 @@ function tableItems() {
 // Escuchar el boton de editar  pregunta 
 $(document).on("click", ".btn-edit-answer", function () {
     console.log("Editando una respuesta...");
+    const idBsurvey = $(this).data('id-bsurvey');
+    alert('El nombre en esta fila es: ' + idBsurvey);
+
+    // busco la informacion para la respuesta seleccionada
+    var data = new FormData();
+    data.append("idBsurvey", idBsurvey);
+    $.ajax({
+        url: "ajax/ajax-surveys.php",
+        method: "POST",
+        data: data,
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function (response) {
+            console.log("Informacion de la respuesta cargada");
+            console.log(response);
+            var answerData = JSON.parse(response);
+            console.log(answerData);
+            // lleno los campos del formulario con la informacion obtenida
+            document.getElementById('idBsurveyEdit').value = answerData['id'];
+            document.getElementById('nameAnswerEdit').value = answerData['answer_text'];
+        }
+    })
+
 
     document.querySelector("#divDerecha").classList.remove("notblock");
-
-    // 4. .text() obtiene el texto visible dentro de la celda.
-    const idBsurvey = $(this).data('id-bsurvey');
-    //const idBsurvey = this.getAttribute('data-idBsurvey');
-
-    // ¡Listo!
-    alert('El nombre en esta fila es: ' + idBsurvey);
 })
 
