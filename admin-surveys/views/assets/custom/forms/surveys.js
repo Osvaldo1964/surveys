@@ -86,8 +86,7 @@ function tableItems() {
 }
 
 // Escuchar el boton de editar  pregunta 
-const editAnswer = document.querySelector('#editAnswer');
-editAnswer.onclick = function () {
-    console.log("Editando una pregunta...");
-    document.querySelector("#divDerecha").classList.remove("notblock");
-};
+$(document).on("click", "#editAnswer", function () {
+    console.log("Editando una respuesta...");
+
+})
