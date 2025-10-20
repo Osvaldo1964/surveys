@@ -48,6 +48,7 @@ document.querySelector('#addOptionText').onclick = function (event) {
     data.append("nameQuestion", nameQuestion);
     data.append("token", localStorage.getItem("token_user"));
     data.append("textAnswer", "ok");
+    data.append("new", $('.addOptionText').text());
 
     $.ajax({
         url: "ajax/ajax-surveys.php",
@@ -89,7 +90,7 @@ function tableItems() {
 $(document).on("click", ".btn-edit-answer", function () {
     console.log("Editando una respuesta...");
     const idBsurvey = $(this).data('id-bsurvey');
-    alert('El nombre en esta fila es: ' + idBsurvey);
+    //alert('El nombre en esta fila es: ' + idBsurvey);
 
     // busco la informacion para la respuesta seleccionada
     var data = new FormData();
@@ -107,12 +108,13 @@ $(document).on("click", ".btn-edit-answer", function () {
             var answerData = JSON.parse(response);
             console.log(answerData);
             // lleno los campos del formulario con la informacion obtenida
-            document.getElementById('idBsurveyEdit').value = answerData['id'];
-            document.getElementById('nameAnswerEdit').value = answerData['answer_text'];
+            document.getElementById('nameQuestion').value = answerData['name_bsurvey'];
+            document.getElementById('typeQuestion').value = answerData['type_bsurvey'];
         }
     })
 
-
     document.querySelector("#divDerecha").classList.remove("notblock");
+    document.querySelector("#divTexto").classList.remove("notblock");
+    $('#addOptionText').text('Actualizar');
 })
 

@@ -19,13 +19,16 @@ class bsurveysController
         $fields = array();
         //echo '<pre>'; print_r($url); echo '</pre>';
         $secuencia = CurlController::request($url, $method, $fields);
-        echo '<pre>'; print_r($secuencia); echo '</pre>';
+        echo '<pre>';
+        print_r($secuencia);
+        echo '</pre>';
         if ($secuencia->status == 200) {
             $numQuestions = $secuencia->total;
         } else {
             $numQuestions = 0;
         }
         echo '<pre>'; print_r($numQuestions); echo '</pre>';
+
         $numQuestions++;
         /* Agrupamos la información */
         $data = array(
@@ -124,10 +127,10 @@ class bsurveysController
         $bsurveys = CurlController::request($url, $method, $fields);
 
         if ($bsurveys->status == 200) {
-        $html = "";
-        $editAnswer = $bsurveys->results;
-        echo '<pre>'; print_r($editAnswer); echo '</pre>';exit;
-
+            $html = "";
+            $editAnswer = $bsurveys->results[0];
+            //echo '<pre>'; print_r($editAnswer); echo '</pre>';exit;
+            echo json_encode($editAnswer);
         } else {
             $editAnswer = 0;
         }
@@ -136,7 +139,7 @@ class bsurveysController
 
 /* Función para Seleccionar departamentos al escoger un cargo en registers */
 if (isset($_POST["textAnswer"])) {
-    //echo '<pre>'; print_r($_POST); echo '</pre>';exit;
+    echo '<pre>'; print_r($_POST); echo '</pre>';exit;
     $ajax = new bsurveysController();
     $ajax->token_user = $_POST["token"];
     $ajax->idSurvey = $_POST["idSurvey"];
