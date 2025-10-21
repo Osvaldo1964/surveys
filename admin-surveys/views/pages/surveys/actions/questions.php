@@ -63,9 +63,6 @@ if (isset($routesArray[3])) {
                     <label class="input-group-text" for="orderQuestion">Orden</label>
                     <input type="text" class="form-control" pattern="[0-9]+" onchange="validateJS(event,'text')"
                         name="orderQuestion" id="orderQuestion" required>
-
-                    <div class="valid-feedback">Valid.</div>
-                    <div class="invalid-feedback">Please fill out this field.</div>
                 </div>
                 <div class="notblock divTexto border mt-2 col-md-8 mx-auto d-flex flex-column align-items-center" id="divTexto">
                     <h6>Respuesta tipo Texto</h6>
@@ -80,17 +77,25 @@ if (isset($routesArray[3])) {
                     <button class='btn btn-success btn-sm mb-2 editOptionDate' style="display: none;" onclick="editOptionDate" id="editOptionDate">Actualizar</button>
                 </div>
                 <div class="col-md-12 notblock divOpcion border mt-2" style="text-align: center; height: 500px;" id="divOpcion">
-                    <div class="col-md-6 border mt-1 mx-auto d-flex flex-column" style="float: left; height: 300px;">
+                    <div class="col-md-12 border mt-1 mx-auto d-flex flex-column" style="float: left; height: 250px;">
                         <div class="table responsive notblock" style="height: 300px;" id="TableOptions"></div>
                         <div>
-                            <button class='btn btn-success contenedor-flex mb-1' id="addQuestion"> Adicionar Opción</button>
+                            <button class='btn btn-success contenedor-flex mb-1' id="addOption"> Adicionar Opción</button>
                         </div>
                     </div>
-                    <div class="div-der-options col-md-6 border mt-1 mx-auto d-flex flex-column notblock" style="float: left; height: 300px;">
+                    <div class="div-der-options col-md-12 border mt-1 mx-auto d-flex flex-column notblock" id="div-der-options" style="float: left; height: 250px;">
+                        <div class="input-group col-md-3 mt-2">
+                            <label class="input-group-text" for="orderOption">Orden</label>
+                            <input type="text" class="form-control" pattern="[0-9]+" onchange="validateJS(event,'text')"
+                                name="orderOption" id="orderOption" required>
+                        </div>
+                        <button class='btn btn-success btn-sm mb-2 mt-2 addOptionOption' onclick="addOptionOption" id="addOptionOption">Adicionar</button>
+                        <button class='btn btn-success btn-sm mb-2 mt-2 editOptionOption' style="display: none;" onclick="editOptionOption" id="editOptionOption">Actualizar</button>
                     </div>
-                    <br>
-                    <button class='btn btn-success btn-sm mb-2 mt-2 addOptionOption' onclick="addOptionOption" id="addOptionOption">Adicionar</button>
-                    <button class='btn btn-success btn-sm mb-2 mt-2 editOptionOption' style="display: none;" onclick="editOptionOption" id="editOptionOption">Actualizar</button>
+                    <div>
+                        <button class='btn btn-success btn-sm mb-2 mt-2 addOptionOption' onclick="addOptionOption" id="addOptionOption">Adicionar</button>
+                        <button class='btn btn-success btn-sm mb-2 mt-2 editOptionOption' style="display: none;" onclick="editOptionOption" id="editOptionOption">Actualizar</button>
+                    </div>
                 </div>
                 <div class="notblock">Div para respuestas seleccion multiple</div>
             </div>

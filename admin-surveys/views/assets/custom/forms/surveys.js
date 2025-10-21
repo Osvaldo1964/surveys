@@ -13,6 +13,13 @@ addQuestion.onclick = function () {
     document.querySelector("#divDerecha").classList.remove("notblock");
 };
 
+// Escuchar el boton de adicionar opcion 
+const addOption = document.querySelector('#addOption');
+addOption.onclick = function () {
+    console.log("Adicionando una opcion...");
+    document.querySelector("#div-der-options").classList.remove("notblock");
+};
+
 // Activo el div segun el tipo de respuesta
 $(document).on("change", ".typeQuestion", function (event) {
     event.preventDefault();
@@ -35,7 +42,7 @@ $(document).on("change", ".typeQuestion", function (event) {
         document.getElementById('addOptionDate').style.display = 'inline-block';
         document.getElementById('editOptionDate').style.display = 'none';
     }
-        if (idType == 3) { // Opción
+    if (idType == 3) { // Opción
         divFecha.classList.add("notblock");
         divTexto.classList.add("notblock");
         divOpcion.classList.remove("notblock");
@@ -217,7 +224,7 @@ function tableOptions() {
         processData: false,
         success: function (response) {
             console.log("Tabla de opciones cargada");
-            $("#TableItems").html(response);
+            $("#TableOptions").html(response);
             document.querySelector("#TableOptions").classList.remove("notblock");
             document.querySelector("#div-der-options").classList.add("notblock");
         }
