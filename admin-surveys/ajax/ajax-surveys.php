@@ -51,71 +51,7 @@ class bsurveysController
 
     public $idBsurvey;
 
-    public function editText()
-    {
-        /* Verifico cuantas preguntas van */
-        $url = "bsurveys?linkTo=id_bsurvey&equalTo=" . $this->idBsurvey;
-        $method = "GET";
-        $fields = array();
-        //echo '<pre>'; print_r($url); echo '</pre>';
-        $secuencia = CurlController::request($url, $method, $fields);
-        //echo '<pre>'; print_r($secuencia); echo '</pre>';
-        if ($secuencia->status == 200) {
-            /* Agrupamos la información */
-            $data = 
-                "name_bsurvey=" . trim(strtoupper($this->nameQuestion)) .
-                "&order_bsurvey=" . $this->orderQuestion .
-                "&type_bsurvey=" . $this->idType .
-                "&detail_bsurvey=" . "";
-
-            /* Solicitud a la API */
-            $url = "bsurveys?id=" . $this->idBsurvey . "&nameId=id_bsurvey&token=" . $this->token_user . "&table=users&suffix=user";
-            $method = "PUT";
-            $fields = $data;
-            $response = CurlController::request($url, $method, $fields);
-            echo '<pre>'; print_r($response); echo '</pre>';
-        } else {
-        }
-    }
-
-    public function saveDate()
-    {
-        /* Verifico cuantas preguntas van */
-        $url = "bsurveys?linkTo=id_hsurvey_bsurvey&equalTo=" . $this->idSurvey;
-        $method = "GET";
-        $fields = array();
-        //echo '<pre>'; print_r($url); echo '</pre>';
-        $secuencia = CurlController::request($url, $method, $fields);
-        echo '<pre>';
-        print_r($secuencia);
-        echo '</pre>';
-        if ($secuencia->status == 200) {
-            $numQuestions = $secuencia->total;
-        } else {
-            $numQuestions = 0;
-        }
-        echo '<pre>';
-        print_r($numQuestions);
-        echo '</pre>';
-
-        $numQuestions++;
-        /* Agrupamos la información */
-        $data = array(
-            "id_hsurvey_bsurvey" => $this->idSurvey,
-            "order_bsurvey" => $this->orderQuestion,
-            "name_bsurvey" => trim(strtoupper($this->nameQuestion)),
-            "type_bsurvey" => $this->idType,
-            "detail_bsurvey" => "",
-            "date_created_bsurvey" => date("Y-m-d")
-        );
-
-        $url = "bsurveys?token=" . $this->token_user . "&table=users&suffix=user";
-        $method = "POST";
-        $fields = $data;
-        $response = CurlController::request($url, $method, $fields);
-    }
-
-    public function editDate()
+    public function editTextDate()
     {
         /* Verifico cuantas preguntas van */
         $url = "bsurveys?linkTo=id_bsurvey&equalTo=" . $this->idBsurvey;
@@ -163,7 +99,7 @@ class bsurveysController
         //echo '<pre>'; print_r($items); echo '</pre>';exit;
         if (!empty($items)) {
             $html .= '
-            <table class="table table-bordered table-striped" id="tableAnswers">
+            <table class="table table-bordered table-striped mt-1" id="tableAnswers">
                 <thead style="text-align: center; font-size: 12px;">
                     <tr style="height: 60px;">
                         <th>ORDEN</th>
@@ -220,12 +156,9 @@ class bsurveysController
         $bsurveys = CurlController::request($url, $method, $fields);
 
         if ($bsurveys->status == 200) {
-            $html = "";
             $editAnswer = $bsurveys->results[0];
-            //echo '<pre>'; print_r($editAnswer); echo '</pre>';exit;
             echo json_encode($editAnswer);
         } else {
-            $editAnswer = 0;
         }
     }
 }
@@ -243,43 +176,17 @@ if (isset($_POST["newtextAnswer"])) {
 }
 
 /* Función para Editar pregunta de Texto */
-if (isset($_POST["idEdittext"])) {
+if (isset($_POST["idEditTextDate"])) {
     $ajax = new bsurveysController();
-    //echo '<pre>'; print_r($_POST); echo '</pre>';
+    echo '<pre>'; print_r($_POST); echo '</pre>';
     $ajax->token_user = $_POST["token"];
     $ajax->idSurvey = $_POST["idSurvey"];
     $ajax->idType = $_POST["idType"];
     $ajax->nameQuestion = $_POST["nameQuestion"];
-    $ajax->idBsurvey = $_POST["idEditText"];
+    $ajax->idBsurvey = $_POST["idEditTextDate"];
     $ajax->orderQuestion = $_POST["orderQuestion"];
-    $ajax->editText();
+    $ajax->editTextDate();
 }
-
-/* Función para Adicionar pregunta tipo Fecha */
-if (isset($_POST["newdateAnswer"])) {
-    //echo '<pre>'; print_r($_POST); echo '</pre>'; exit;
-    $ajax = new bsurveysController();
-    $ajax->token_user = $_POST["token"];
-    $ajax->idSurvey = $_POST["idSurvey"];
-    $ajax->idType = $_POST["idType"];
-    $ajax->nameQuestion = $_POST["nameQuestion"];
-    $ajax->orderQuestion = $_POST["orderQuestion"];
-    $ajax->saveDate();
-}
-
-/* Función para Editar pregunta de Texto */
-if (isset($_POST["idEditDate"])) {
-    $ajax = new bsurveysController();
-    //echo '<pre>'; print_r($_POST); echo '</pre>';
-    $ajax->token_user = $_POST["token"];
-    $ajax->idSurvey = $_POST["idSurvey"];
-    $ajax->idType = $_POST["idType"];
-    $ajax->nameQuestion = $_POST["nameQuestion"];
-    $ajax->idBsurvey = $_POST["idEditDate"];
-    $ajax->orderQuestion = $_POST["orderQuestion"];
-    $ajax->editDate();
-}
-
 
 /* Función para Generar la tabla de respuestas almacenadas */
 if (isset($_POST["idSurveyTable"])) {
