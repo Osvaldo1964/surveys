@@ -62,7 +62,7 @@ class bsurveysController
         //echo '<pre>'; print_r($secuencia); echo '</pre>';
         if ($secuencia->status == 200) {
             /* Agrupamos la información */
-            $data = 
+            $data =
                 "name_bsurvey=" . trim(strtoupper($this->nameQuestion)) .
                 "&order_bsurvey=" . $this->orderQuestion .
                 "&type_bsurvey=" . $this->idType .
@@ -73,7 +73,9 @@ class bsurveysController
             $method = "PUT";
             $fields = $data;
             $response = CurlController::request($url, $method, $fields);
-            echo '<pre>'; print_r($response); echo '</pre>';
+            echo '<pre>';
+            print_r($response);
+            echo '</pre>';
         } else {
         }
     }
@@ -161,6 +163,50 @@ class bsurveysController
         } else {
         }
     }
+
+    public $nameOption;
+    public $orderOption;
+    public $regTable = array();
+
+    public function tabVirtual()
+    {
+
+        $aux = array();
+        $aux['nameOption'] = $this->nameOption;
+        $aux['orderOption'] = $this->orderOption;
+        $this->regTable[] = $aux;
+        $items = $this->regTable;
+
+        if (!empty($items)) {
+            $html = '
+            <table class="table table-bordered table-striped mt-1" id="tableOptions">
+                <thead style="text-align: center; font-size: 12px;">
+                    <tr style="height: 60px;">
+                        <th>ORDEN</th>
+                        <th>DETALLE</th>
+                        <th>OPCIONES</th>
+                    </tr>
+                </thead>
+                <tbody>
+            ';
+            foreach ($items as $i => $value) {
+                $html .= '
+                <tr>
+                    <td style="text-align: left; font-size: 12px; ">' . $items[$i]['orderOption'] . '</td>
+                    <td style="text-align: left; font-size: 12px; ">' . $items[$i]['nameOption'] . '</td>
+                    <td style="text-align: left; font-size: 12px; ">
+                        <button class="btn btn-primary btn-sm btn-edit-answer" data-new="2" data-id-bsurvey="' . '1' . '">Editar</button>
+                        <button class="btn btn-danger btn-sm btn-delete-answer" data-id-bsurvey="' . '1' . '">Eliminar</button>
+                    </td>
+                    </tr>';
+            };
+
+            $html .= '
+                </tbody>
+            </table>';
+        }
+        echo $html;
+    }
 }
 
 /* Función para Adicionar pregunta tipo Texto */
@@ -178,7 +224,9 @@ if (isset($_POST["newtextAnswer"])) {
 /* Función para Editar pregunta de Texto */
 if (isset($_POST["idEditTextDate"])) {
     $ajax = new bsurveysController();
-    echo '<pre>'; print_r($_POST); echo '</pre>';
+    echo '<pre>';
+    print_r($_POST);
+    echo '</pre>';
     $ajax->token_user = $_POST["token"];
     $ajax->idSurvey = $_POST["idSurvey"];
     $ajax->idType = $_POST["idType"];
@@ -197,9 +245,9 @@ if (isset($_POST["idSurveyTable"])) {
 }
 
 /* Función para Seleccionar la informacion de una respuesta para su edicion */
-if (isset($_POST["idBsurvey"])) {
-    //echo '<pre>'; print_r($_POST); echo '</pre>';exit;
+if (isset($_POST["nameOption"])) {
     $ajax = new bsurveysController();
-    $ajax->idBsurvey = $_POST["idBsurvey"];
-    $ajax->selEditAnswer();
+    $ajax->nameOption = $_POST["nameOption"];
+    $ajax->orderOption = $_POST["orderOption"];
+    $ajax->tabVirtual();
 }

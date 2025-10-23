@@ -37,14 +37,14 @@ if (isset($routesArray[3])) {
             <h5>Cliente: <?php echo $hsurveys->name_owner ?></h5>
         </div>
         <div class="card-body">
-            <div class="border col-md-6" id="divIzquierda" style="text-align: center; float: left;  height: 550px; overflow: auto;">
+            <div class="border col-md-6" id="divIzquierda" style="text-align: center; float: left;  height: 560px; overflow: auto;">
                 <div class="table responsive notblock" id="TableItems"></div>
                 <div>
                     <button class='btn btn-success contenedor-flex' id="addQuestion"> Adicionar Pregunta</button>
                 </div>
             </div>
             <!-- Div Superior Derecho para el nombre tipo y orden de la pregunta a Crear o Editar -->
-            <div class="border col-md-6 notblock" id="divDerechaUp" style="float: left; height: 200px;">
+            <div class="border col-md-6 notblock" id="divDerechaUp" style="float: left; height: 190px;">
                 <div class="input-group-text col-md-12 mt-2">
                     <label class="input-group-text" for="nameQuestion">Nombre</label>
                     <input type="text" class="form-control" pattern="[A-Za-zñÑáéíóúÁÉÍÓÚ ]{1,}" onchange="validateJS(event,'text')"
@@ -67,9 +67,9 @@ if (isset($routesArray[3])) {
                 </div>
             </div>
             <!-- Div inferior derecho para crear o editar preguntas tipo Opcion  -->
-            <div class="col-md-6 notblock divOpcion border mt-2" style="float: right; text-align: center; height: 350px;" id="divOpcion">
-                <div class="col-md-6 border mt-1 mx-auto d-flex flex-column" style="float: left; height: 330px;">
-                    <div class="table responsive notblock" style="height: 300px;" id="TableOptions"></div>
+            <div class="col-md-6 notblock divOptions border mt-2" style="float: right; text-align: center; height: 310px;" id="divOptions">
+                <div class="col-md-6 border mt-1 mx-auto d-flex flex-column" style="float: left; height: 300px;">
+                    <div class="table responsive" style="height: 300px;" id="tableOptions"></div>
                     <div>
                         <button class='btn btn-success contenedor-flex mb-1' id="addOption"> Adicionar Opción</button>
                     </div>
@@ -87,6 +87,11 @@ if (isset($routesArray[3])) {
                     </div>
                     <button class='btn btn-success btn-sm mb-2 mt-2 addOptionOption' onclick="addOptionOption" id="addOptionOption">Adicionar</button>
                     <button class='btn btn-success btn-sm mb-2 mt-2 editOptionOption' style="display: none;" onclick="editOptionOption" id="editOptionOption">Actualizar</button>
+                </div>
+                <!-- Div inferior derecho centrado para preguntas tipo opcion y seleccion  -->
+                <div class="col-md-12 divOptionSel border mt-2" style="float: right; text-align: center; height: 50px;" id="divOptionSel">
+                    <button class='btn btn-success contenedor-flex mt-2' id="addOptionSel"> Adicionar</button>
+                    <button class='btn btn-success contenedor-flex mt-2 notblock' id="editOptionSel"> Actualizar</button>
                 </div>
             </div>
 

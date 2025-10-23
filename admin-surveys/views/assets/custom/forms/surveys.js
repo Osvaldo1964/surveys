@@ -32,51 +32,18 @@ $(document).on("change", ".typeQuestion", function (event) {
 
     if (idType == 1 || idType == 2) { // Texto
         divTextDate.classList.remove("notblock");
-        divOpcion.classList.add("notblock");
+        divOptions.classList.add("notblock");
         document.getElementById('addTextDate').style.display = 'inline-block';
         document.getElementById('editTextDate').style.display = 'none';
     }
     if (idType == 3) { // Opción
         divTextDate.classList.add("notblock");
-        divOpcion.classList.remove("notblock");
+        divOptions.classList.remove("notblock");
         document.getElementById('addOptionOption').style.display = 'inline-block';
         document.getElementById('editOptionOption').style.display = 'none';
         tableOptions();
     }
 });
-
-// Adicionar pregunta de tipo Texto
-const addOptionText = document.querySelector('#addTextDate');
-document.querySelector('#addTextDate').onclick = function (event) {
-    event.preventDefault();
-    console.log("Adicionando una pregunta de tipo texto o fecha...");
-    var idQuestion = document.getElementById('idQuestion').value;
-    var selectedType = $('#typeQuestion').find(':selected')
-    var idType = selectedType.val(); // Captura el valor
-    var nameQuestion = document.getElementById('nameQuestion').value;
-    var orderQuestion = document.getElementById('orderQuestion').value;
-
-    var data = new FormData();
-    data.append("idSurvey", idQuestion);
-    data.append("idType", idType);
-    data.append("nameQuestion", nameQuestion);
-    data.append("token", localStorage.getItem("token_user"));
-    data.append("newtextAnswer", "ok");
-    data.append("orderQuestion", orderQuestion);
-
-    $.ajax({
-        url: "ajax/ajax-surveys.php",
-        method: "POST",
-        data: data,
-        contentType: false,
-        cache: false,
-        processData: false,
-        success: function (response) {
-            document.getElementById('newQuestion').value = "";
-            tableItems();
-        }
-    })
-}
 
 // Editar pregunta de tipo Texto
 const editOptionText = document.querySelector('#editTextDate');
@@ -117,7 +84,33 @@ const addOptionOption = document.querySelector('#addOptionOption');
 document.querySelector('#addOptionOption').onclick = function (event) {
     event.preventDefault();
     console.log("Adicionando una opcion a una respuesta de tipo opcion ...");
+    var nameOption = document.getElementById('nameOption').value;
+    var orderOption = document.getElementById('orderOption').value;
+
+    var data = new FormData();
+    data.append("nameOption", nameOption);
+    data.append("orderOption", orderOption);
+
+    $.ajax({
+        url: "ajax/ajax-surveys.php",
+        method: "POST",
+        data: data,
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function (response) {
+            console.log(response);
+            $("#tableOptions").html(response);
+
+/*             document.querySelector("#divDerechaUp").classList.add("notblock");
+            document.querySelector("#divTextDate").classList.add("notblock");
+            tableItems();
+ */        }
+    })
+
+
 }
+
 
 function tableItems() {
     console.log("Cargando tabla de items...");
@@ -160,9 +153,11 @@ function tableOptions() {
         cache: false,
         processData: false,
         success: function (response) {
-            console.log("Tabla de opciones cargada");
-            $("#TableOptions").html(response);
-            document.querySelector("#TableOptions").classList.remove("notblock");
+            //console.log("Tabla de opciones cargada");
+            //$("#tableOptions").html(response);
+            $("#tableOptions").html(response);
+            document.querySelector("#divOptions").classList.remove("notblock");
+            document.querySelector("#tableOptions").classList.remove("notblock");
             document.querySelector("#div-der-options").classList.add("notblock");
         }
     })
