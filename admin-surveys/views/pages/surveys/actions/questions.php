@@ -48,11 +48,11 @@ if (isset($routesArray[3])) {
                 <div class="input-group-text col-md-12 mt-2">
                     <label class="input-group-text" for="nameQuestion">Nombre</label>
                     <input type="text" class="form-control" pattern="[A-Za-zñÑáéíóúÁÉÍÓÚ ]{1,}" onchange="validateJS(event,'text')"
-                        style="text-transform: uppercase;" name="nameQuestion" id="nameQuestion" required>
+                        style="text-transform: uppercase;" name="nameQuestion" id="nameQuestion">
                 </div>
                 <div class="input-group-text col-md-5 mt-2">
                     <label class="input-group-text" for="typeQuestion">Tipo</label>
-                    <select class="form-select typeQuestion" name="typeQuestion" id="typeQuestion" required>
+                    <select class="form-select typeQuestion" name="typeQuestion" id="typeQuestion">
                         <option value="">Tipo Respuesta</option>
                         <option value="1">Texto</option>
                         <option value="2">Fecha</option>
@@ -63,7 +63,7 @@ if (isset($routesArray[3])) {
                 <div class="input-group-text col-md-3 mt-2">
                     <label class="input-group-text" for="orderQuestion">Orden</label>
                     <input type="text" class="form-control" pattern="[0-9]+" onchange="validateJS(event,'text')"
-                        name="orderQuestion" id="orderQuestion" required>
+                        name="orderQuestion" id="orderQuestion">
                 </div>
             </div>
             <!-- Div inferior derecho para crear o editar preguntas tipo Opcion  -->
@@ -74,29 +74,30 @@ if (isset($routesArray[3])) {
                         <button class='btn btn-success contenedor-flex mb-1' id="addOption"> Adicionar Opción</button>
                     </div>
                 </div>
-                <div class="div-der-options col-md-6 border mt-1 mx-auto d-flex flex-column notblock" id="div-der-options">
+                <div class="div-der-options col-md-6 border mt-1 mx-auto d-flex flex-column " id="div-der-options">
                     <div class="input-group-text col-md-12 mt-2">
                         <label class="input-group-text" for="nameOption">Nombre</label>
-                        <input type="text" class="form-control" pattern="[A-Za-zñÑáéíóúÁÉÍÓÚ ]{1,}" onchange="validateJS(event,'text')"
-                            style="text-transform: uppercase;" name="nameOption" id="nameOption" required>
+                        <input type="text" class="form-control" pattern="[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ ]{1,}" onchange="validateJS(event,'text')"
+                            style="text-transform: uppercase;" name="nameOption" id="nameOption">
                     </div>
                     <div class="input-group-text col-md-6 mt-2">
                         <label class="input-group-text" for="orderOption">Orden</label>
                         <input type="text" class="form-control" pattern="[0-9]+" onchange="validateJS(event,'text')"
-                            name="orderOption" id="orderOption" required>
+                            name="orderOption" id="orderOption">
                     </div>
                     <button class='btn btn-success btn-sm mb-2 mt-2 addOptionOption' onclick="addOptionOption" id="addOptionOption">Adicionar</button>
                     <button class='btn btn-success btn-sm mb-2 mt-2 editOptionOption' style="display: none;" onclick="editOptionOption" id="editOptionOption">Actualizar</button>
                 </div>
                 <!-- Div inferior derecho centrado para preguntas tipo opcion y seleccion  -->
                 <div class="col-md-12 divOptionSel border mt-2" style="float: right; text-align: center; height: 50px;" id="divOptionSel">
+                    <button class='btn btn-info contenedor-flex mt-2' id="cancelOptionSel"> Cancelar</button>
                     <button class='btn btn-success contenedor-flex mt-2' id="addOptionSel"> Adicionar</button>
                     <button class='btn btn-success contenedor-flex mt-2 notblock' id="editOptionSel"> Actualizar</button>
                 </div>
             </div>
-
             <!-- Div inferior derecho centrado para preguntas tipo texto o fecha  -->
             <div class="col-md-6 notblock divTextDate border mt-2" style="float: right; text-align: center; height: 50px;" id="divTextDate">
+                <button class='btn btn-info contenedor-flex mt-2' id="cancelTextDate"> Cancelar</button>
                 <button class='btn btn-success contenedor-flex mt-2' id="addTextDate"> Adicionar</button>
                 <button class='btn btn-success contenedor-flex mt-2 notblock' id="editTextDate"> Actualizar</button>
             </div>

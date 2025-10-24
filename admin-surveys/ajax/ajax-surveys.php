@@ -171,12 +171,19 @@ class bsurveysController
     public function tabVirtual()
     {
 
-        $aux = array();
-        $aux['nameOption'] = $this->nameOption;
-        $aux['orderOption'] = $this->orderOption;
-        $this->regTable[] = $aux;
-        $items = $this->regTable;
+        if (!isset($_SESSION['regTable'])) {
+            $_SESSION['regTable'] = array();
+        }
 
+        // Nuevo item (orden primero, detalle después para coincidir con la tabla)
+        $nuevoItem = array($this->orderOption, $this->nameOption);
+
+        // Agregar al arreglo persistente en sesión
+        $_SESSION['regTable'][] = $nuevoItem;
+
+        // Utilizar los ítems almacenados en sesión
+        $items = &$_SESSION['regTable'];
+ 
         if (!empty($items)) {
             $html = '
             <table class="table table-bordered table-striped mt-1" id="tableOptions">
@@ -192,8 +199,8 @@ class bsurveysController
             foreach ($items as $i => $value) {
                 $html .= '
                 <tr>
-                    <td style="text-align: left; font-size: 12px; ">' . $items[$i]['orderOption'] . '</td>
-                    <td style="text-align: left; font-size: 12px; ">' . $items[$i]['nameOption'] . '</td>
+                    <td style="text-align: left; font-size: 12px; ">' . $items[$i][0] . '</td>
+                    <td style="text-align: left; font-size: 12px; ">' . $items[$i][1] . '</td>
                     <td style="text-align: left; font-size: 12px; ">
                         <button class="btn btn-primary btn-sm btn-edit-answer" data-new="2" data-id-bsurvey="' . '1' . '">Editar</button>
                         <button class="btn btn-danger btn-sm btn-delete-answer" data-id-bsurvey="' . '1' . '">Eliminar</button>
@@ -211,7 +218,7 @@ class bsurveysController
 
 /* Función para Adicionar pregunta tipo Texto */
 if (isset($_POST["newtextAnswer"])) {
-    //echo '<pre>'; print_r($_POST); echo '</pre>'; exit;
+    //echo '<pre>'; print_r($_POST); echo '</pre>'; exit; 
     $ajax = new bsurveysController();
     $ajax->token_user = $_POST["token"];
     $ajax->idSurvey = $_POST["idSurvey"];
