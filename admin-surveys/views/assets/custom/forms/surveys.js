@@ -143,54 +143,53 @@ document.querySelector('#addOptionSel').onclick = function (event) {
     var nameQuestion = document.getElementById('nameQuestion').value;
     var orderQuestion = document.getElementById('orderQuestion').value;
 
-    const filas = document.querySelectorAll('#tableOptions tr');
+    const tabla = document.getElementById('tableOptions');
+    const filas = tabla.querySelectorAll('tbody tr');
 
-    console.log("Filas encontradas:", filas);
+    // 2. Crear un array para guardar los datos
+    let datos = [];
 
-    // 4. Creamos un array vacío para guardar nuestros datos
-    let datosParaDB = [];
+    // 3. Iterar por cada fila (tr)
+    filas.forEach(fila => {
+        // Obtener todas las celdas (td) de esa fila
+        const celdas = fila.querySelectorAll('td');
 
-    // 5. Recorremos cada fila (tr)
-    filas.forEach(function (fila) {
-        // Dentro de cada fila, buscamos los inputs por su clase
-        const nombreInput = fila.querySelector('.input-orderOption');
-        const ordenInput = fila.querySelector('.input-nameOption');
+        // Extraer el texto de las celdas que nos interesan (col 0 y col 1)
+        const orden = celdas[0].textContent;
+        const nombre = celdas[1].textContent;
 
-        // Verificamos que los inputs existan en esa fila
-        if (nombreInput && ordenInput) {
-            // Creamos un objeto para esta fila
-            let filaObjeto = {
-                nombre: nombreInput.value,
-                order: ordenInput.value
-            };
+        // Crear un objeto para esta fila
+        const filaObjeto = {
+            orden: orden,
+            nombre: nombre
+        };
 
-            // 6. Añadimos el objeto al array principal
-            datosParaDB.push(filaObjeto);
-        }
+        // Añadir el objeto al array
+        datos.push(filaObjeto);
     });
 
-    console.log("Datos recopilados para la base de datos:", datosParaDB);
-    // 7. Convertimos el array de objetos a un string JSON
-    // Se verá así: [{"nombre":"Elemento A","order":"1"},{"nombre":"Elemento B","order":"2"},...]
-    const jsonString = JSON.stringify(datosParaDB);
-    console.log("Datos para enviar a la base de datos:", jsonString);
+    // 4. Convertir el array de objetos a un string JSON
+    const jsonString = JSON.stringify(datos);
 
-/*     var data = new FormData();
-    data.append("nameOption", nameOption);
-    data.append("orderOption", orderOption);
+    // 5. Mostrar el JSON en la consola (para depurar)
+    console.log(jsonString);
 
-    $.ajax({
-        url: "ajax/ajax-surveys.php",
-        method: "POST",
-        data: data,
-        contentType: false,
-        cache: false,
-        processData: false,
-        success: function (response) {
-            console.log(response);
-            $("#tableOptions").html(response);
-        }
-    }) */
+    /*     var data = new FormData();
+        data.append("nameOption", nameOption);
+        data.append("orderOption", orderOption);
+    
+        $.ajax({
+            url: "ajax/ajax-surveys.php",
+            method: "POST",
+            data: data,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (response) {
+                console.log(response);
+                $("#tableOptions").html(response);
+            }
+        }) */
 }
 
 function tableItems() {

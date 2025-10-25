@@ -69,7 +69,21 @@ if (isset($routesArray[3])) {
             <!-- Div inferior derecho para crear o editar preguntas tipo Opcion  -->
             <div class="col-md-6 notblock divOptions border mt-2" style="float: right; text-align: center; height: 310px;" id="divOptions">
                 <div class="col-md-6 border mt-1 mx-auto d-flex flex-column" style="float: left; height: 300px;">
-                    <div class="table responsive" style="height: 300px;" id="tableOptions"></div>
+                    <div class="table responsive" style="height: 300px;" id="tableOptions">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped mt-1" id="tableOptions">
+                                <thead style="text-align: center; font-size: 12px;">
+                                    <tr style="height: 60px;">
+                                        <th>ORDEN</th>
+                                        <th>DETALLE</th>
+                                        <th>OPCIONES</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                     <div>
                         <button class='btn btn-success contenedor-flex mb-1' id="addOption"> Adicionar Opción</button>
                     </div>

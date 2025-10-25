@@ -166,7 +166,7 @@ class bsurveysController
 
     public $nameOption;
     public $orderOption;
-    public $regTable = array();
+    //public $regTable = array();
 
     public function tabVirtual()
     {
@@ -183,6 +183,10 @@ class bsurveysController
 
         // Utilizar los ítems almacenados en sesión
         $items = &$_SESSION['regTable'];
+        var_dump($items);
+
+
+        
  
         if (!empty($items)) {
             $html = '
