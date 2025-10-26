@@ -82,69 +82,56 @@ class bsurveysController
 
     public function genTable()
     {
-
-        /* Verifico cuantas preguntas van */
-        $url = "bsurveys?linkTo=id_hsurvey_bsurvey&equalTo=" . $this->idSurvey;
+        $url = "bsurveys?linkTo=id_hsurvey_bsurvey&equalTo=" . urlencode($this->idSurvey);
         $method = "GET";
-        $fields = array();
+        $fields = [];
 
-        $secuencia = CurlController::request($url, $method, $fields);
+        $response = CurlController::request($url, $method, $fields);
 
-        if ($secuencia->status == 200) {
-            $numQuestions = $secuencia->results[0];
-        } else {
-            $numQuestions = 0;
+        if ($response->status != 200 || empty($response->results)) {
+            // No items or error: return empty output
+            echo '';
+            return;
         }
 
-        $html = "";
-        $items = $secuencia->results;
-        //echo '<pre>'; print_r($items); echo '</pre>';exit;
-        if (!empty($items)) {
-            $html .= '
-            <table class="table table-bordered table-striped mt-1" id="tableAnswers">
-                <thead style="text-align: center; font-size: 12px;">
-                    <tr style="height: 60px;">
-                        <th>ORDEN</th>
-                        <th>NOMBRE</th>
-                        <th>TIPO</th>
-                        <th>OPCIONES</th>
-                    </tr>
-                </thead>
-                <tbody>
-            ';
-            foreach ($items as $key => $value) {
-                switch ($value->type_bsurvey) {
-                    case 1:
-                        $tipoAnswer = "TEXTO";
-                        break;
-                    case 2:
-                        $tipoAnswer = "FECHA";
-                        break;
-                    case 3:
-                        $tipoAnswer = "OPCIÓN";
-                        break;
-                    case 4:
-                        $tipoAnswer = "SLECCIÓN MÚLTIPLE";
-                        break;
-                    default:
-                        $tipoAnswer = "Opción no válida.";
-                        break;
-                }
-                $html .= '
-            <tr>
-            <td style="text-align: left; font-size: 12px; ">' . $value->order_bsurvey . '</td>
-            <td style="text-align: left; font-size: 12px; ">' . $value->name_bsurvey . '</td>
-            <td style="text-align: left; font-size: 12px; ">' . $tipoAnswer . '</td>
-            <td style="text-align: left; font-size: 12px; ">
-                <button class="btn btn-primary btn-sm btn-edit-answer" data-new="2" data-id-bsurvey="' . $value->id_bsurvey . '">Editar</button>
-                <button class="btn btn-danger btn-sm btn-delete-answer" data-id-bsurvey="' . $value->id_bsurvey . '">Eliminar</button>
-            </td>
-            </tr>';
-            };
-            $html .= '
-                </tbody>
-            </table>';
+        $items = $response->results;
+        $typeMap = [
+            1 => 'TEXTO',
+            2 => 'FECHA',
+            3 => 'OPCIÓN',
+            4 => 'SELECCIÓN MÚLTIPLE'
+        ];
+
+        $html = '<table class="table table-bordered table-striped mt-1" id="tableAnswers">
+            <thead style="text-align: center; font-size: 12px;">
+                <tr>
+                    <th>ORDEN</th>
+                    <th>NOMBRE</th>
+                    <th>TIPO</th>
+                    <th>OPCIONES</th>
+                </tr>
+            </thead>
+            <tbody>';
+
+        foreach ($items as $value) {
+            $order = htmlspecialchars($value->order_bsurvey ?? '', ENT_QUOTES, 'UTF-8');
+            $name  = htmlspecialchars($value->name_bsurvey ?? '', ENT_QUOTES, 'UTF-8');
+            $type  = htmlspecialchars($typeMap[$value->type_bsurvey] ?? 'Opción no válida.', ENT_QUOTES, 'UTF-8');
+            $id    = htmlspecialchars($value->id_bsurvey ?? '', ENT_QUOTES, 'UTF-8');
+
+            $html .= "<tr>
+                <td style=\"text-align: left; font-size: 12px;\">{$order}</td>
+                <td style=\"text-align: left; font-size: 12px;\">{$name}</td>
+                <td style=\"text-align: left; font-size: 12px;\">{$type}</td>
+                <td style=\"text-align: left; font-size: 12px;\">
+                    <button class=\"btn btn-primary btn-sm btn-edit-answer\" data-new=\"2\" data-id-bsurvey=\"{$id}\">Editar</button>
+                    <button class=\"btn btn-danger btn-sm btn-delete-answer\" data-id-bsurvey=\"{$id}\">Eliminar</button>
+                </td>
+            </tr>";
         }
+
+        $html .= '</tbody></table>';
+
         echo $html;
     }
 
@@ -164,60 +151,6 @@ class bsurveysController
         }
     }
 
-    public $nameOption;
-    public $orderOption;
-    //public $regTable = array();
-
-    public function tabVirtual()
-    {
-
-        if (!isset($_SESSION['regTable'])) {
-            $_SESSION['regTable'] = array();
-        }
-
-        // Nuevo item (orden primero, detalle después para coincidir con la tabla)
-        $nuevoItem = array($this->orderOption, $this->nameOption);
-
-        // Agregar al arreglo persistente en sesión
-        $_SESSION['regTable'][] = $nuevoItem;
-
-        // Utilizar los ítems almacenados en sesión
-        $items = &$_SESSION['regTable'];
-        var_dump($items);
-
-
-        
- 
-        if (!empty($items)) {
-            $html = '
-            <table class="table table-bordered table-striped mt-1" id="tableOptions">
-                <thead style="text-align: center; font-size: 12px;">
-                    <tr style="height: 60px;">
-                        <th>ORDEN</th>
-                        <th>DETALLE</th>
-                        <th>OPCIONES</th>
-                    </tr>
-                </thead>
-                <tbody>
-            ';
-            foreach ($items as $i => $value) {
-                $html .= '
-                <tr>
-                    <td style="text-align: left; font-size: 12px; ">' . $items[$i][0] . '</td>
-                    <td style="text-align: left; font-size: 12px; ">' . $items[$i][1] . '</td>
-                    <td style="text-align: left; font-size: 12px; ">
-                        <button class="btn btn-primary btn-sm btn-edit-answer" data-new="2" data-id-bsurvey="' . '1' . '">Editar</button>
-                        <button class="btn btn-danger btn-sm btn-delete-answer" data-id-bsurvey="' . '1' . '">Eliminar</button>
-                    </td>
-                    </tr>';
-            };
-
-            $html .= '
-                </tbody>
-            </table>';
-        }
-        echo $html;
-    }
 }
 
 /* Función para Adicionar pregunta tipo Texto */
@@ -253,12 +186,4 @@ if (isset($_POST["idSurveyTable"])) {
     $ajax = new bsurveysController();
     $ajax->idSurvey = $_POST["idSurveyTable"];
     $ajax->genTable();
-}
-
-/* Función para Seleccionar la informacion de una respuesta para su edicion */
-if (isset($_POST["nameOption"])) {
-    $ajax = new bsurveysController();
-    $ajax->nameOption = $_POST["nameOption"];
-    $ajax->orderOption = $_POST["orderOption"];
-    $ajax->tabVirtual();
 }

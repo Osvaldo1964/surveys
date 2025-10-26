@@ -15,16 +15,6 @@ addQuestion.onclick = function (event) {
     document.getElementById('newQuestion').value = "ok";
 };
 
-// Escuchar el boton de adicionar opcion 
-const addOption = document.querySelector('#addOption');
-addOption.onclick = function (event) {
-    event.preventDefault();
-    console.log("Adicionando una opcion...");
-    document.querySelector("#divDerechaUp").classList.remove("notblock");
-    document.querySelector("#div-der-options").classList.remove("notblock");
-    document.getElementById('newOption').value = "ok";
-};
-
 // Escuchar el boton de cancelar adcionar texto o fecha
 const cancelTextDate = document.querySelector('#cancelTextDate');
 cancelTextDate.onclick = function (event) {
@@ -112,25 +102,26 @@ document.querySelector('#addOptionOption').onclick = function (event) {
     var nameOption = document.getElementById('nameOption').value;
     var orderOption = document.getElementById('orderOption').value;
 
-    var data = new FormData();
-    data.append("nameOption", nameOption);
-    data.append("orderOption", orderOption);
+    const tbody = document.getElementById("tableOptions").getElementsByTagName("tbody")[0];
+    const nuevaFila = tbody.insertRow();
 
-    $.ajax({
-        url: "ajax/ajax-surveys.php",
-        method: "POST",
-        data: data,
-        contentType: false,
-        cache: false,
-        processData: false,
-        success: function (response) {
-            console.log(response);
-            $("#tableOptions").html(response);
-            document.getElementById('nameOption').value = "";
-            document.getElementById('orderOption').value = "";
-            document.querySelector("#div-der-options").classList.add("notblock");
-        }
-    })
+    // 4. Insertar las celdas (<td>) en la nueva fila
+    const celdaNombre = nuevaFila.insertCell(0);
+    const celdaApellido = nuevaFila.insertCell(1);
+    const celdaOpciones = nuevaFila.insertCell(2);
+
+    // 5. Añadir el contenido a las celdas
+    celdaNombre.innerHTML = orderOption;
+    celdaApellido.innerHTML = nameOption;
+    celdaOpciones.innerHTML = `<td style="text-align: left; font-size: 12px; ">
+                                    <button class="btn btn-primary btn-sm btn-edit-answer" data-new="2" data-id-bsurvey="' . '1' . '">Editar</button>
+                                    <button class="btn btn-danger btn-sm btn-delete-answer" data-id-bsurvey="' . '1' . '">Eliminar</button>
+                                </td>`;
+
+    // (Opcional) Limpiar los inputs después de agregar
+    document.getElementById("orderOption").value = "";
+    document.getElementById("nameOption").value = "";
+
 }
 
 // Adicionar una opcion a una pregunta de tipo Opción
@@ -217,30 +208,30 @@ function tableItems() {
 }
 
 function tableOptions() {
-    console.log("Cargando tabla de opciones...");
-    var idQuestion = document.getElementById('idQuestion').value;
-
-    //console.log(idQuestion);
-
-    var data = new FormData();
-    data.append("idOptionTable", idQuestion);
-
-    $.ajax({
-        url: "ajax/ajax-surveys.php",
-        method: "POST",
-        data: data,
-        contentType: false,
-        cache: false,
-        processData: false,
-        success: function (response) {
-            //console.log("Tabla de opciones cargada");
-            //$("#tableOptions").html(response);
-            $("#tableOptions").html(response);
-            document.querySelector("#divOptions").classList.remove("notblock");
-            document.querySelector("#divDerechaUp").classList.remove("notblock");
-            document.querySelector("#div-der-options").classList.add("notblock");
-        }
-    })
+    /*     console.log("Cargando tabla de opciones...");
+        var idQuestion = document.getElementById('idQuestion').value;
+    
+        //console.log(idQuestion);
+    
+        var data = new FormData();
+        data.append("idOptionTable", idQuestion);
+    
+        $.ajax({
+            url: "ajax/ajax-surveys.php",
+            method: "POST",
+            data: data,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (response) {
+                //console.log("Tabla de opciones cargada");
+                //$("#tableOptions").html(response);
+                $("#tableOptions").html(response);
+                document.querySelector("#divOptions").classList.remove("notblock");
+                document.querySelector("#divDerechaUp").classList.remove("notblock");
+                document.querySelector("#div-der-options").classList.add("notblock");
+            }
+        }) */
 }
 
 // Escuchar el boton de editar  pregunta 

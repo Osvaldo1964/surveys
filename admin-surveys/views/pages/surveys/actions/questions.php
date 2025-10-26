@@ -73,7 +73,7 @@ if (isset($routesArray[3])) {
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped mt-1" id="tableOptions">
                                 <thead style="text-align: center; font-size: 12px;">
-                                    <tr style="height: 60px;">
+                                    <tr>
                                         <th>ORDEN</th>
                                         <th>DETALLE</th>
                                         <th>OPCIONES</th>
@@ -83,9 +83,6 @@ if (isset($routesArray[3])) {
                                 </tbody>
                             </table>
                         </div>
-                    </div>
-                    <div>
-                        <button class='btn btn-success contenedor-flex mb-1' id="addOption"> Adicionar Opción</button>
                     </div>
                 </div>
                 <div class="div-der-options col-md-6 border mt-1 mx-auto d-flex flex-column " id="div-der-options">
