@@ -11,8 +11,9 @@ class bsurveysController
     public $idType;
     public $nameQuestion;
     public $orderQuestion;
+    public $options;
 
-    public function saveText()
+    public function saveElement()
     {
         /* Verifico cuantas preguntas van */
         $url = "bsurveys?linkTo=id_hsurvey_bsurvey&equalTo=" . $this->idSurvey;
@@ -39,7 +40,7 @@ class bsurveysController
             "order_bsurvey" => $this->orderQuestion,
             "name_bsurvey" => trim(strtoupper($this->nameQuestion)),
             "type_bsurvey" => $this->idType,
-            "detail_bsurvey" => "",
+            "detail_bsurvey" => $this->options,
             "date_created_bsurvey" => date("Y-m-d")
         );
 
@@ -66,7 +67,7 @@ class bsurveysController
                 "name_bsurvey=" . trim(strtoupper($this->nameQuestion)) .
                 "&order_bsurvey=" . $this->orderQuestion .
                 "&type_bsurvey=" . $this->idType .
-                "&detail_bsurvey=" . "";
+                "&detail_bsurvey=" . $this->options;
 
             /* Solicitud a la API */
             $url = "bsurveys?id=" . $this->idBsurvey . "&nameId=id_bsurvey&token=" . $this->token_user . "&table=users&suffix=user";
@@ -154,7 +155,7 @@ class bsurveysController
 }
 
 /* Función para Adicionar pregunta tipo Texto */
-if (isset($_POST["newtextAnswer"])) {
+if (isset($_POST["newElement"])) {
     //echo '<pre>'; print_r($_POST); echo '</pre>'; exit; 
     $ajax = new bsurveysController();
     $ajax->token_user = $_POST["token"];
@@ -162,15 +163,14 @@ if (isset($_POST["newtextAnswer"])) {
     $ajax->idType = $_POST["idType"];
     $ajax->nameQuestion = $_POST["nameQuestion"];
     $ajax->orderQuestion = $_POST["orderQuestion"];
-    $ajax->saveText();
+    $ajax->options = $_POST["jsonOptions"];
+    $ajax->saveElement();
 }
 
 /* Función para Editar pregunta de Texto */
 if (isset($_POST["idEditTextDate"])) {
     $ajax = new bsurveysController();
-    echo '<pre>';
-    print_r($_POST);
-    echo '</pre>';
+    // echo '<pre>'; print_r($_POST); echo '</pre>';
     $ajax->token_user = $_POST["token"];
     $ajax->idSurvey = $_POST["idSurvey"];
     $ajax->idType = $_POST["idType"];
@@ -186,4 +186,12 @@ if (isset($_POST["idSurveyTable"])) {
     $ajax = new bsurveysController();
     $ajax->idSurvey = $_POST["idSurveyTable"];
     $ajax->genTable();
+}
+
+/* Función para Seleccionar la informacion de una respuesta para su edicion */
+if (isset($_POST["idBsurvey"])) {
+    //echo '<pre>'; print_r($_POST); echo '</pre>';exit;
+    $ajax = new bsurveysController();
+    $ajax->idBsurvey = $_POST["idBsurvey"];
+    $ajax->selEditAnswer();
 }

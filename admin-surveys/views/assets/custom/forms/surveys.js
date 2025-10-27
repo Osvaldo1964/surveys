@@ -16,21 +16,12 @@ addQuestion.onclick = function (event) {
 };
 
 // Escuchar el boton de cancelar adcionar texto o fecha
-const cancelTextDate = document.querySelector('#cancelTextDate');
+const cancelTextDate = document.querySelector('#cancelElement');
 cancelTextDate.onclick = function (event) {
     event.preventDefault();
     console.log("Cancelando una opcion...");
     document.querySelector("#divDerechaUp").classList.add("notblock");
-    document.querySelector("#divTextDate").classList.add("notblock");
-};
-
-// Escuchar el boton de cancelar adcionar texto o fecha
-const cancelOptionSel = document.querySelector('#cancelOptionSel');
-cancelOptionSel.onclick = function (event) {
-    event.preventDefault();
-    console.log("Cancelando una opcion...");
-    document.querySelector("#divDerechaUp").classList.add("notblock");
-    document.querySelector("#divOptions").classList.add("notblock");
+    document.querySelector("#divElement").classList.add("notblock");
 };
 
 // Activo el div segun el tipo de respuesta
@@ -45,39 +36,65 @@ $(document).on("change", ".typeQuestion", function (event) {
         divTextDate.classList.remove("notblock");
         console.log("no funciona...");
         //divOptions.classList.add("notblock");
-        document.querySelector("#divTextDate").classList.remove("notblock");
-        document.getElementById('addTextDate').style.display = 'inline-block';
-        document.getElementById('editTextDate').style.display = 'none';
+        document.querySelector("#divElement").classList.add("notblock");
+        document.getElementById('addElement').style.display = 'inline-block';
+        document.getElementById('editElement').style.display = 'none';
     }
-    if (idType == 3) { // Opción
-        divTextDate.classList.add("notblock");
+    if (idType == 3 || idType == 4 ) { // Opción
+        //div-der-tableOptions.classList.remove("notblock");
+        //divElement.classList.remove("notblock");
         //divOptions.classList.remove("notblock");
-        document.querySelector("#divTextDate").classList.add("notblock");
         document.querySelector("#divOptions").classList.remove("notblock");
-        document.getElementById('addOptionOption').style.display = 'inline-block';
-        document.getElementById('editOptionOption').style.display = 'none';
+        document.querySelector("#divElement").classList.remove("notblock");
         tableOptions();
     }
 });
 
 // Adicionar pregunta de tipo Texto
-const addOptionText = document.querySelector('#addTextDate');
-document.querySelector('#addTextDate').onclick = function (event) {
+const addOptionText = document.querySelector('#addElement');
+document.querySelector('#addElement').onclick = function (event) {
     event.preventDefault();
     console.log("Adicionando una pregunta de tipo texto o fecha...");
-    var idQuestion = document.getElementById('idQuestion').value;
-    var selectedType = $('#typeQuestion').find(':selected')
-    var idType = selectedType.val(); // Captura el valor
-    var nameQuestion = document.getElementById('nameQuestion').value;
-    var orderQuestion = document.getElementById('orderQuestion').value;
+    let idQuestion = document.getElementById('idQuestion').value;
+    let selectedType = $('#typeQuestion').find(':selected')
+    let idType = selectedType.val(); // Captura el valor
+    let nameQuestion = document.getElementById('nameQuestion').value;
+    let orderQuestion = document.getElementById('orderQuestion').value;
+    let inputNameOption = document.getElementById('nameOption');
+    let nameOption = (inputNameOption && inputNameOption.value) ? inputNameOption.value : "";
+    let inputOrderOption = document.getElementById('orderOption');
+    let orderOption = (inputOrderOption && inputOrderOption.value) ? inputOrderOption.value : "";
+
+    if (idType != 1 && idType != 2) {
+        const tabla = document.getElementById('tableOptions');
+        const filas = tabla.querySelectorAll('tbody tr');
+
+        let datos = [];
+
+        filas.forEach(fila => {
+            const celdas = fila.querySelectorAll('td');
+            const orden = celdas[0].textContent;
+            const nombre = celdas[1].textContent;
+
+            const filaObjeto = {
+                orden: orden,
+                nombre: nombre
+            };
+            datos.push(filaObjeto);
+        });
+        var jsonString = JSON.stringify(datos);
+    } else {
+        var jsonString = "";
+    }
 
     var data = new FormData();
     data.append("idSurvey", idQuestion);
     data.append("idType", idType);
     data.append("nameQuestion", nameQuestion);
     data.append("token", localStorage.getItem("token_user"));
-    data.append("newtextAnswer", "ok");
+    data.append("newElement", "ok");
     data.append("orderQuestion", orderQuestion);
+    data.append("jsonOptions", jsonString);
 
     $.ajax({
         url: "ajax/ajax-surveys.php",
@@ -92,14 +109,16 @@ document.querySelector('#addTextDate').onclick = function (event) {
             document.getElementById("nameQuestion").value = "";
             document.getElementById("typeQuestion").value = "";
             document.getElementById("orderQuestion").value = "";
-            document.querySelector("#divTextDate").classList.add("notblock");
+            document.querySelector("#divDerechaUp").classList.add("notblock");
+            document.querySelector("#divOptions").classList.add("notblock");
+            document.querySelector("#divElement").classList.add("notblock");
         }
     })
 }
 
-// Editar pregunta de tipo Texto
-const editOptionText = document.querySelector('#editTextDate');
-document.querySelector('#editTextDate').onclick = function (event) {
+// Editar pregunta 
+const editOptionText = document.querySelector('#editElement');
+document.querySelector('#editElement').onclick = function (event) {
     event.preventDefault();
     console.log("Editando una pregunta de tipo texto...");
     var idQuestion = document.getElementById('idQuestion').value;
@@ -109,7 +128,7 @@ document.querySelector('#editTextDate').onclick = function (event) {
     var orderQuestion = document.getElementById('orderQuestion').value;
 
     var data = new FormData();
-    data.append("idEditTextDate", document.getElementById('idEditBsurbey').value);
+    data.append("idEditElement", document.getElementById('idEditBsurbey').value);
     data.append("idSurvey", idQuestion);
     data.append("idType", idType);
     data.append("nameQuestion", nameQuestion);
@@ -162,7 +181,7 @@ document.querySelector('#addOptionOption').onclick = function (event) {
 }
 
 // Adicionar una opcion a una pregunta de tipo Opción
-const addOptionSel = document.querySelector('#addOptionSel');
+/* const addOptionSel = document.querySelector('#addOptionSel');
 document.querySelector('#addOptionSel').onclick = function (event) {
     event.preventDefault();
     console.log("Gabrar la pregunta con sus opciones o multiples ...");
@@ -223,7 +242,7 @@ document.querySelector('#addOptionSel').onclick = function (event) {
             $("#tableOptions").html(response);
         }
     })
-}
+} */
 
 function tableItems() {
     console.log("Cargando tabla de items...");
@@ -307,10 +326,10 @@ $(document).on("click", ".btn-edit-answer", function (event) {
 
             document.querySelector("#divDerechaUp").classList.remove("notblock");
             if (answerData['type_bsurvey'] == 1 || answerData['type_bsurvey'] == 2) {// Texto-Fecha
-                document.querySelector("#divTextDate").classList.remove("notblock");
-                document.getElementById('addTextDate').style.display = 'none';
-                document.querySelector("#editTextDate").classList.remove("notblock");
-                document.getElementById('editTextDate').style.display = 'inline-block';
+                document.querySelector("#divElement").classList.remove("notblock");
+                document.getElementById('addElement').style.display = 'none';
+                document.querySelector("#editElement").classList.remove("notblock");
+                document.getElementById('editElement').style.display = 'inline-block';
             }
 
         }

@@ -44,7 +44,7 @@ if (isset($routesArray[3])) {
                 </div>
             </div>
             <!-- Div Superior Derecho para el nombre tipo y orden de la pregunta a Crear o Editar -->
-            <div class="border col-md-6 notblock" id="divDerechaUp" style="float: left; height: 190px;">
+            <div class="border col-md-6 notblock divDerechaUp" id="divDerechaUp" style="float: left; height: 190px;">
                 <div class="input-group-text col-md-12 mt-2">
                     <label class="input-group-text" for="nameQuestion">Nombre</label>
                     <input type="text" class="form-control" pattern="[A-Za-zñÑáéíóúÁÉÍÓÚ ]{1,}" onchange="validateJS(event,'text')"
@@ -85,7 +85,7 @@ if (isset($routesArray[3])) {
                         </div>
                     </div>
                 </div>
-                <div class="div-der-options col-md-6 border mt-1 mx-auto d-flex flex-column " id="div-der-options">
+                <div class="div-der-options col-md-6 border mt-1 mx-auto d-flex flex-column" id="div-der-options">
                     <div class="input-group-text col-md-12 mt-2">
                         <label class="input-group-text" for="nameOption">Nombre</label>
                         <input type="text" class="form-control" pattern="[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ ]{1,}" onchange="validateJS(event,'text')"
@@ -99,18 +99,12 @@ if (isset($routesArray[3])) {
                     <button class='btn btn-success btn-sm mb-2 mt-2 addOptionOption' onclick="addOptionOption" id="addOptionOption">Adicionar</button>
                     <button class='btn btn-success btn-sm mb-2 mt-2 editOptionOption' style="display: none;" onclick="editOptionOption" id="editOptionOption">Actualizar</button>
                 </div>
-                <!-- Div inferior derecho centrado para preguntas tipo opcion y seleccion  -->
-                <div class="col-md-12 divOptionSel border mt-2" style="float: right; text-align: center; height: 50px;" id="divOptionSel">
-                    <button class='btn btn-info contenedor-flex mt-2' id="cancelOptionSel"> Cancelar</button>
-                    <button class='btn btn-success contenedor-flex mt-2' id="addOptionSel"> Adicionar</button>
-                    <button class='btn btn-success contenedor-flex mt-2 notblock' id="editOptionSel"> Actualizar</button>
-                </div>
             </div>
             <!-- Div inferior derecho centrado para preguntas tipo texto o fecha  -->
-            <div class="col-md-6 notblock divTextDate border mt-2" style="float: right; text-align: center; height: 50px;" id="divTextDate">
-                <button class='btn btn-info contenedor-flex mt-2' id="cancelTextDate"> Cancelar</button>
-                <button class='btn btn-success contenedor-flex mt-2' id="addTextDate"> Adicionar</button>
-                <button class='btn btn-success contenedor-flex mt-2 notblock' id="editTextDate"> Actualizar</button>
+            <div class="col-md-6 notblock divElement border mt-2" style="float: right; text-align: center; height: 50px;" id="divElement">
+                <button class='btn btn-info contenedor-flex mt-2' id="cancelElement"> Cancelar</button>
+                <button class='btn btn-success contenedor-flex mt-2' id="addElement"> Adicionar</button>
+                <button class='btn btn-success contenedor-flex mt-2 notblock' id="editElement"> Actualizar</button>
             </div>
 
         </div>
