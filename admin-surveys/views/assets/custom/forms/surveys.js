@@ -60,6 +60,43 @@ $(document).on("change", ".typeQuestion", function (event) {
     }
 });
 
+// Adicionar pregunta de tipo Texto
+const addOptionText = document.querySelector('#addTextDate');
+document.querySelector('#addTextDate').onclick = function (event) {
+    event.preventDefault();
+    console.log("Adicionando una pregunta de tipo texto o fecha...");
+    var idQuestion = document.getElementById('idQuestion').value;
+    var selectedType = $('#typeQuestion').find(':selected')
+    var idType = selectedType.val(); // Captura el valor
+    var nameQuestion = document.getElementById('nameQuestion').value;
+    var orderQuestion = document.getElementById('orderQuestion').value;
+
+    var data = new FormData();
+    data.append("idSurvey", idQuestion);
+    data.append("idType", idType);
+    data.append("nameQuestion", nameQuestion);
+    data.append("token", localStorage.getItem("token_user"));
+    data.append("newtextAnswer", "ok");
+    data.append("orderQuestion", orderQuestion);
+
+    $.ajax({
+        url: "ajax/ajax-surveys.php",
+        method: "POST",
+        data: data,
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function (response) {
+            document.getElementById('newQuestion').value = "";
+            tableItems();
+            document.getElementById("nameQuestion").value = "";
+            document.getElementById("typeQuestion").value = "";
+            document.getElementById("orderQuestion").value = "";
+            document.querySelector("#divTextDate").classList.add("notblock");
+        }
+    })
+}
+
 // Editar pregunta de tipo Texto
 const editOptionText = document.querySelector('#editTextDate');
 document.querySelector('#editTextDate').onclick = function (event) {
@@ -165,22 +202,27 @@ document.querySelector('#addOptionSel').onclick = function (event) {
     // 5. Mostrar el JSON en la consola (para depurar)
     console.log(jsonString);
 
-    /*     var data = new FormData();
-        data.append("nameOption", nameOption);
-        data.append("orderOption", orderOption);
-    
-        $.ajax({
-            url: "ajax/ajax-surveys.php",
-            method: "POST",
-            data: data,
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: function (response) {
-                console.log(response);
-                $("#tableOptions").html(response);
-            }
-        }) */
+    var data = new FormData();
+    data.append("nameQuestion", nameQuestion);
+    data.append("idType", idType);
+    data.append("orderQuestion", orderQuestion);
+    data.append("token", localStorage.getItem("token_user"));
+    data.append("nameOption", nameOption);
+    data.append("orderOption", orderOption);
+    data.append("jsonOptions", jsonString);
+
+    $.ajax({
+        url: "ajax/ajax-surveys.php",
+        method: "POST",
+        data: data,
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function (response) {
+            console.log(response);
+            $("#tableOptions").html(response);
+        }
+    })
 }
 
 function tableItems() {
