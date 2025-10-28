@@ -31,7 +31,7 @@ if (isset($routesArray[3])) {
         <input type="hidden" value="<?php echo $security[0] ?>" name="idQuestion" id="idQuestion">
         <input type="hidden" value="" name="newQuestion" id="newQuestion">
         <input type="hidden" value="" name="newOption" id="newOption">
-        <input type="hidden" value="" name="idEditBsurbey" id="idEditBsurbey">
+        <input type="hidden" value="" name="idEditBsurvey" id="idEditBsurvey">
         <div class="card-header">
             <h5>Encuesta: <?php echo $hsurveys->name_hsurvey ?></h5>
             <h5>Cliente: <?php echo $hsurveys->name_owner ?></h5>
@@ -79,7 +79,7 @@ if (isset($routesArray[3])) {
                                         <th>OPCIONES</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tbodyOptions">
                                 </tbody>
                             </table>
                         </div>

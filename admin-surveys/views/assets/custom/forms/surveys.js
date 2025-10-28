@@ -40,7 +40,7 @@ $(document).on("change", ".typeQuestion", function (event) {
         document.getElementById('addElement').style.display = 'inline-block';
         document.getElementById('editElement').style.display = 'none';
     }
-    if (idType == 3 || idType == 4 ) { // Opción
+    if (idType == 3 || idType == 4) { // Opción
         //div-der-tableOptions.classList.remove("notblock");
         //divElement.classList.remove("notblock");
         //divOptions.classList.remove("notblock");
@@ -121,20 +121,45 @@ const editOptionText = document.querySelector('#editElement');
 document.querySelector('#editElement').onclick = function (event) {
     event.preventDefault();
     console.log("Editando una pregunta de tipo texto...");
-    var idQuestion = document.getElementById('idQuestion').value;
-    var selectedType = $('#typeQuestion').find(':selected')
-    var idType = selectedType.val(); // Captura el valor
-    var nameQuestion = document.getElementById('nameQuestion').value;
-    var orderQuestion = document.getElementById('orderQuestion').value;
+    let idQuestion = document.getElementById('idQuestion').value;
+    let selectedType = $('#typeQuestion').find(':selected')
+    let idType = selectedType.val(); // Captura el valor
+    let nameQuestion = document.getElementById('nameQuestion').value;
+    let orderQuestion = document.getElementById('orderQuestion').value;
+    let idEditBsurvey = document.getElementById('idEditBsurvey').value;
+
+    const tabla = document.getElementById('tableOptions');
+
+    // 2. Selecciona todas las filas del tbody
+    const filasDelBody = tabla.querySelectorAll('tbody tr');
+
+    // 3. Procesa y almacena
+    const datosTabla = [...filasDelBody].map(fila => {
+
+        // Selecciona todas las celdas de esta fila
+        const celdas = fila.querySelectorAll('td');
+
+        // Crea el objeto directamente usando los índices 0 y 1
+        const objetoFila = {
+            orden: celdas[0].innerText,
+            nombre: celdas[1].innerText
+        };
+
+        // ¡Ojo! Esto asume que celdas[0] es 'orden' y celdas[1] es 'nombre'
+
+        return objetoFila;
+    });
+    const jsonString = JSON.stringify(datosTabla);
 
     var data = new FormData();
-    data.append("idEditElement", document.getElementById('idEditBsurbey').value);
     data.append("idSurvey", idQuestion);
     data.append("idType", idType);
     data.append("nameQuestion", nameQuestion);
-    data.append("orderQuestion", orderQuestion);
     data.append("token", localStorage.getItem("token_user"));
-
+    data.append("editElement", "ok");
+    data.append("orderQuestion", orderQuestion);
+    data.append("idEditBsurvey", idEditBsurvey);
+    data.append("jsonOptions", jsonString);
     $.ajax({
         url: "ajax/ajax-surveys.php",
         method: "POST",
@@ -143,9 +168,16 @@ document.querySelector('#editElement').onclick = function (event) {
         cache: false,
         processData: false,
         success: function (response) {
-            document.querySelector("#divDerechaUp").classList.add("notblock");
-            document.querySelector("#divTextDate").classList.add("notblock");
+            document.getElementById('idEditBsurvey').value = "";
             tableItems();
+            document.getElementById("nameQuestion").value = "";
+            document.getElementById("typeQuestion").value = "";
+            document.getElementById("orderQuestion").value = "";
+            document.querySelector("#divDerechaUp").classList.add("notblock");
+            document.querySelector("#divOptions").classList.add("notblock");
+            document.querySelector("#divElement").classList.add("notblock");
+            document.getElementById('addElement').style.display = 'inline-block';
+            document.getElementById('editElement').style.display = 'none';
         }
     })
 }
@@ -170,8 +202,8 @@ document.querySelector('#addOptionOption').onclick = function (event) {
     celdaNombre.innerHTML = orderOption;
     celdaApellido.innerHTML = nameOption;
     celdaOpciones.innerHTML = `<td style="text-align: left; font-size: 12px; ">
-                                    <button class="btn btn-primary btn-sm btn-edit-answer" data-new="2" data-id-bsurvey="' . '1' . '">Editar</button>
-                                    <button class="btn btn-danger btn-sm btn-delete-answer" data-id-bsurvey="' . '1' . '">Eliminar</button>
+                                    <button class="btn btn-primary btn-sm btn-edit-answer" data-new="2" data-id-bsurvey="' . '1'' . '">Editar</button>
+                                    <button class="btn btn-danger btn-sm btn-delete-answer" data-id-bsurvey="' . '1'' . '">Eliminar</button>
                                 </td>`;
 
     // (Opcional) Limpiar los inputs después de agregar
@@ -299,7 +331,9 @@ function tableOptions() {
 $(document).on("click", ".btn-edit-answer", function (event) {
     event.preventDefault();
     console.log("Editando una respuesta...");
-    const idBsurvey = $(this).data('id-bsurvey');
+    let idBsurvey = $(this).data('id-bsurvey');
+    console.log("ID de la respuesta a editar: " + idBsurvey);
+    document.getElementById('idEditBsurvey').value = idBsurvey;
     //alert('El nombre en esta fila es: ' + idBsurvey);
 
     // busco la informacion para la respuesta seleccionada
@@ -316,21 +350,46 @@ $(document).on("click", ".btn-edit-answer", function (event) {
         success: function (response) {
             console.log("Informacion de la respuesta cargada");
             console.log(response);
-            var answerData = JSON.parse(response);
-            console.log(answerData);
+            let answerData = JSON.parse(response);
+            let tableDetail = answerData.detail_bsurvey;
+            console.log(tableDetail);
+            tableDetail = JSON.parse(tableDetail);
+
+
+
+            /* armo la tabla detalle */
             // lleno los campos del formulario con la informacion obtenida
             document.getElementById('nameQuestion').value = answerData['name_bsurvey'];
             document.getElementById('typeQuestion').value = answerData['type_bsurvey'];
             document.getElementById('orderQuestion').value = answerData['order_bsurvey'];
-            document.getElementById('idEditBsurbey').value = answerData['id_bsurvey'];
+            document.getElementById('idEditBsurvey').value = answerData['id_bsurvey'];
 
             document.querySelector("#divDerechaUp").classList.remove("notblock");
-            if (answerData['type_bsurvey'] == 1 || answerData['type_bsurvey'] == 2) {// Texto-Fecha
+            if (answerData['type_bsurvey'] == 3 || answerData['type_bsurvey'] == 4) {// Opciones - Multiple
+                document.querySelector("#divOptions").classList.remove("notblock");
                 document.querySelector("#divElement").classList.remove("notblock");
-                document.getElementById('addElement').style.display = 'none';
-                document.querySelector("#editElement").classList.remove("notblock");
-                document.getElementById('editElement').style.display = 'inline-block';
             }
+
+            const tbody = document.getElementById('tbodyOptions');
+            const filasHTML = tableDetail.map(item => {
+                return `
+                    <tr>
+                        <td>${item.orden}</td>
+                        <td>${item.nombre}</td>
+                        <td style="text-align: left; font-size: 12px; ">
+                            <button class="btn btn-primary btn-sm btn-edit-answer" data-new="2" data-id-bsurvey="${answerData.id_bsurvey}">Editar</button>
+                            <button class="btn btn-danger btn-sm btn-delete-answer" data-id-bsurvey="${answerData.id_bsurvey}">Eliminar</button>
+                        </td>
+                    </tr>
+                `;
+            }).join(''); // Importante unirlos en un solo string
+
+            // 4. ¡Listo! Inserta el HTML de las filas dentro del tbody
+            tbody.innerHTML = filasHTML;
+
+            document.getElementById('addElement').style.display = 'none';
+            document.querySelector("#editElement").classList.remove("notblock");
+            document.getElementById('editElement').style.display = 'inline-block';
 
         }
     })

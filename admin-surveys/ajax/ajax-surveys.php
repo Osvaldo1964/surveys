@@ -52,7 +52,7 @@ class bsurveysController
 
     public $idBsurvey;
 
-    public function editTextDate()
+    public function editElement()
     {
         /* Verifico cuantas preguntas van */
         $url = "bsurveys?linkTo=id_bsurvey&equalTo=" . $this->idBsurvey;
@@ -60,7 +60,7 @@ class bsurveysController
         $fields = array();
         //echo '<pre>'; print_r($url); echo '</pre>';
         $secuencia = CurlController::request($url, $method, $fields);
-        //echo '<pre>'; print_r($secuencia); echo '</pre>';
+        echo '<pre>'; print_r($secuencia); echo '</pre>';
         if ($secuencia->status == 200) {
             /* Agrupamos la información */
             $data =
@@ -149,9 +149,9 @@ class bsurveysController
             $editAnswer = $bsurveys->results[0];
             echo json_encode($editAnswer);
         } else {
+            echo json_encode(array("status" => 404));
         }
     }
-
 }
 
 /* Función para Adicionar pregunta tipo Texto */
@@ -168,16 +168,18 @@ if (isset($_POST["newElement"])) {
 }
 
 /* Función para Editar pregunta de Texto */
-if (isset($_POST["idEditTextDate"])) {
+if (isset($_POST["editElement"])) {
     $ajax = new bsurveysController();
-    // echo '<pre>'; print_r($_POST); echo '</pre>';
+    //echo '<pre>'; print_r($_POST); echo '</pre>'; exit;
     $ajax->token_user = $_POST["token"];
     $ajax->idSurvey = $_POST["idSurvey"];
     $ajax->idType = $_POST["idType"];
+    $ajax->token_user = $_POST["token"];
     $ajax->nameQuestion = $_POST["nameQuestion"];
-    $ajax->idBsurvey = $_POST["idEditTextDate"];
     $ajax->orderQuestion = $_POST["orderQuestion"];
-    $ajax->editTextDate();
+    $ajax->options = $_POST["jsonOptions"];
+    $ajax->idBsurvey = $_POST["idEditBsurvey"];
+    $ajax->editElement();
 }
 
 /* Función para Generar la tabla de respuestas almacenadas */
