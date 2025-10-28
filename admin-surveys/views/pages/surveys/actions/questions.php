@@ -67,7 +67,7 @@ if (isset($routesArray[3])) {
                 </div>
             </div>
             <!-- Div inferior derecho para crear o editar preguntas tipo Opcion  -->
-            <div class="col-md-6 notblock divOptions border mt-2" style="float: right; text-align: center; height: 310px;" id="divOptions">
+            <div class="col-md-6 notblock divOptions border mt-1" style="float: right; text-align: center; height: 310px;" id="divOptions">
                 <div class="col-md-6 border mt-1 mx-auto d-flex flex-column" style="float: left; height: 300px;">
                     <div class="table responsive" style="height: 300px;" id="tableOptions">
                         <div class="table-responsive">
@@ -101,7 +101,7 @@ if (isset($routesArray[3])) {
                 </div>
             </div>
             <!-- Div inferior derecho centrado para preguntas tipo texto o fecha  -->
-            <div class="col-md-6 notblock divElement border mt-2" style="float: right; text-align: center; height: 50px;" id="divElement">
+            <div class="col-md-6 notblock divElement border mt-1" style="float: right; text-align: center; height: 50px;" id="divElement">
                 <button class='btn btn-info contenedor-flex mt-2' id="cancelElement"> Cancelar</button>
                 <button class='btn btn-success contenedor-flex mt-2' id="addElement"> Adicionar</button>
                 <button class='btn btn-success contenedor-flex mt-2 notblock' id="editElement"> Actualizar</button>

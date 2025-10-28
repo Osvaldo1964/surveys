@@ -20,8 +20,16 @@ const cancelTextDate = document.querySelector('#cancelElement');
 cancelTextDate.onclick = function (event) {
     event.preventDefault();
     console.log("Cancelando una opcion...");
+    document.getElementById("nameQuestion").value = "";
+    document.getElementById("typeQuestion").value = "";
+    document.getElementById("orderQuestion").value = "";
     document.querySelector("#divDerechaUp").classList.add("notblock");
+    document.querySelector("#divOptions").classList.add("notblock");
     document.querySelector("#divElement").classList.add("notblock");
+    const tbody = document.getElementById('tbodyOptions');
+    const filas = tbody.querySelectorAll('tbody tr');
+    filas.length = 0;
+    tbody.innerHTML = '';
 };
 
 // Activo el div segun el tipo de respuesta
@@ -33,24 +41,18 @@ $(document).on("change", ".typeQuestion", function (event) {
 
     if (idType == 1 || idType == 2) { // Texto
         console.log("Tipo de pregunta Texto o Fecha...");
-        divTextDate.classList.remove("notblock");
-        console.log("no funciona...");
-        //divOptions.classList.add("notblock");
-        document.querySelector("#divElement").classList.add("notblock");
+        document.querySelector("#divElement").classList.remove("notblock");
         document.getElementById('addElement').style.display = 'inline-block';
         document.getElementById('editElement').style.display = 'none';
     }
     if (idType == 3 || idType == 4) { // Opción
-        //div-der-tableOptions.classList.remove("notblock");
-        //divElement.classList.remove("notblock");
-        //divOptions.classList.remove("notblock");
         document.querySelector("#divOptions").classList.remove("notblock");
         document.querySelector("#divElement").classList.remove("notblock");
         tableOptions();
     }
 });
 
-// Adicionar pregunta de tipo Texto
+// Adicionar pregunta 
 const addOptionText = document.querySelector('#addElement');
 document.querySelector('#addElement').onclick = function (event) {
     event.preventDefault();
@@ -112,6 +114,10 @@ document.querySelector('#addElement').onclick = function (event) {
             document.querySelector("#divDerechaUp").classList.add("notblock");
             document.querySelector("#divOptions").classList.add("notblock");
             document.querySelector("#divElement").classList.add("notblock");
+            const tbody = document.getElementById('tbodyOptions');
+            const filas = tbody.querySelectorAll('tbody tr');
+            filas.length = 0;
+            tbody.innerHTML = '';
         }
     })
 }
@@ -130,23 +136,14 @@ document.querySelector('#editElement').onclick = function (event) {
 
     const tabla = document.getElementById('tableOptions');
 
-    // 2. Selecciona todas las filas del tbody
     const filasDelBody = tabla.querySelectorAll('tbody tr');
-
-    // 3. Procesa y almacena
     const datosTabla = [...filasDelBody].map(fila => {
-
-        // Selecciona todas las celdas de esta fila
         const celdas = fila.querySelectorAll('td');
 
-        // Crea el objeto directamente usando los índices 0 y 1
         const objetoFila = {
             orden: celdas[0].innerText,
             nombre: celdas[1].innerText
         };
-
-        // ¡Ojo! Esto asume que celdas[0] es 'orden' y celdas[1] es 'nombre'
-
         return objetoFila;
     });
     const jsonString = JSON.stringify(datosTabla);
@@ -178,6 +175,10 @@ document.querySelector('#editElement').onclick = function (event) {
             document.querySelector("#divElement").classList.add("notblock");
             document.getElementById('addElement').style.display = 'inline-block';
             document.getElementById('editElement').style.display = 'none';
+            const tbody = document.getElementById('tbodyOptions');
+            const filas = tbody.querySelectorAll('tbody tr');
+            filas.length = 0;
+            tbody.innerHTML = '';
         }
     })
 }
@@ -212,70 +213,6 @@ document.querySelector('#addOptionOption').onclick = function (event) {
 
 }
 
-// Adicionar una opcion a una pregunta de tipo Opción
-/* const addOptionSel = document.querySelector('#addOptionSel');
-document.querySelector('#addOptionSel').onclick = function (event) {
-    event.preventDefault();
-    console.log("Gabrar la pregunta con sus opciones o multiples ...");
-    var selectedType = $('#typeQuestion').find(':selected')
-    var idType = selectedType.val(); // Captura el valor
-    var nameQuestion = document.getElementById('nameQuestion').value;
-    var orderQuestion = document.getElementById('orderQuestion').value;
-
-    const tabla = document.getElementById('tableOptions');
-    const filas = tabla.querySelectorAll('tbody tr');
-
-    // 2. Crear un array para guardar los datos
-    let datos = [];
-
-    // 3. Iterar por cada fila (tr)
-    filas.forEach(fila => {
-        // Obtener todas las celdas (td) de esa fila
-        const celdas = fila.querySelectorAll('td');
-
-        // Extraer el texto de las celdas que nos interesan (col 0 y col 1)
-        const orden = celdas[0].textContent;
-        const nombre = celdas[1].textContent;
-
-        // Crear un objeto para esta fila
-        const filaObjeto = {
-            orden: orden,
-            nombre: nombre
-        };
-
-        // Añadir el objeto al array
-        datos.push(filaObjeto);
-    });
-
-    // 4. Convertir el array de objetos a un string JSON
-    const jsonString = JSON.stringify(datos);
-
-    // 5. Mostrar el JSON en la consola (para depurar)
-    console.log(jsonString);
-
-    var data = new FormData();
-    data.append("nameQuestion", nameQuestion);
-    data.append("idType", idType);
-    data.append("orderQuestion", orderQuestion);
-    data.append("token", localStorage.getItem("token_user"));
-    data.append("nameOption", nameOption);
-    data.append("orderOption", orderOption);
-    data.append("jsonOptions", jsonString);
-
-    $.ajax({
-        url: "ajax/ajax-surveys.php",
-        method: "POST",
-        data: data,
-        contentType: false,
-        cache: false,
-        processData: false,
-        success: function (response) {
-            console.log(response);
-            $("#tableOptions").html(response);
-        }
-    })
-} */
-
 function tableItems() {
     console.log("Cargando tabla de items...");
     var idQuestion = document.getElementById('idQuestion').value;
@@ -298,33 +235,6 @@ function tableItems() {
             document.querySelector("#divDerechaUp").classList.add("notblock");
         }
     })
-}
-
-function tableOptions() {
-    /*     console.log("Cargando tabla de opciones...");
-        var idQuestion = document.getElementById('idQuestion').value;
-    
-        //console.log(idQuestion);
-    
-        var data = new FormData();
-        data.append("idOptionTable", idQuestion);
-    
-        $.ajax({
-            url: "ajax/ajax-surveys.php",
-            method: "POST",
-            data: data,
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: function (response) {
-                //console.log("Tabla de opciones cargada");
-                //$("#tableOptions").html(response);
-                $("#tableOptions").html(response);
-                document.querySelector("#divOptions").classList.remove("notblock");
-                document.querySelector("#divDerechaUp").classList.remove("notblock");
-                document.querySelector("#div-der-options").classList.add("notblock");
-            }
-        }) */
 }
 
 // Escuchar el boton de editar  pregunta 
@@ -351,28 +261,21 @@ $(document).on("click", ".btn-edit-answer", function (event) {
             console.log("Informacion de la respuesta cargada");
             console.log(response);
             let answerData = JSON.parse(response);
-            let tableDetail = answerData.detail_bsurvey;
-            console.log(tableDetail);
-            tableDetail = JSON.parse(tableDetail);
 
 
-
-            /* armo la tabla detalle */
             // lleno los campos del formulario con la informacion obtenida
             document.getElementById('nameQuestion').value = answerData['name_bsurvey'];
             document.getElementById('typeQuestion').value = answerData['type_bsurvey'];
             document.getElementById('orderQuestion').value = answerData['order_bsurvey'];
             document.getElementById('idEditBsurvey').value = answerData['id_bsurvey'];
-
             document.querySelector("#divDerechaUp").classList.remove("notblock");
             if (answerData['type_bsurvey'] == 3 || answerData['type_bsurvey'] == 4) {// Opciones - Multiple
-                document.querySelector("#divOptions").classList.remove("notblock");
-                document.querySelector("#divElement").classList.remove("notblock");
-            }
-
-            const tbody = document.getElementById('tbodyOptions');
-            const filasHTML = tableDetail.map(item => {
-                return `
+                let tableDetail = answerData.detail_bsurvey;
+                console.log(tableDetail);
+                tableDetail = JSON.parse(tableDetail);
+                const tbody = document.getElementById('tbodyOptions');
+                const filasHTML = tableDetail.map(item => {
+                    return `
                     <tr>
                         <td>${item.orden}</td>
                         <td>${item.nombre}</td>
@@ -382,11 +285,12 @@ $(document).on("click", ".btn-edit-answer", function (event) {
                         </td>
                     </tr>
                 `;
-            }).join(''); // Importante unirlos en un solo string
+                }).join(''); // Importante unirlos en un solo string
 
-            // 4. ¡Listo! Inserta el HTML de las filas dentro del tbody
-            tbody.innerHTML = filasHTML;
-
+                tbody.innerHTML = filasHTML;
+                document.querySelector("#divOptions").classList.remove("notblock");
+            }
+            document.querySelector("#divElement").classList.remove("notblock");
             document.getElementById('addElement').style.display = 'none';
             document.querySelector("#editElement").classList.remove("notblock");
             document.getElementById('editElement').style.display = 'inline-block';

@@ -86,7 +86,6 @@ class bsurveysController
         $url = "bsurveys?linkTo=id_hsurvey_bsurvey&equalTo=" . urlencode($this->idSurvey);
         $method = "GET";
         $fields = [];
-
         $response = CurlController::request($url, $method, $fields);
 
         if ($response->status != 200 || empty($response->results)) {
@@ -170,7 +169,6 @@ if (isset($_POST["newElement"])) {
 /* Función para Editar pregunta de Texto */
 if (isset($_POST["editElement"])) {
     $ajax = new bsurveysController();
-    //echo '<pre>'; print_r($_POST); echo '</pre>'; exit;
     $ajax->token_user = $_POST["token"];
     $ajax->idSurvey = $_POST["idSurvey"];
     $ajax->idType = $_POST["idType"];
@@ -184,7 +182,6 @@ if (isset($_POST["editElement"])) {
 
 /* Función para Generar la tabla de respuestas almacenadas */
 if (isset($_POST["idSurveyTable"])) {
-    //echo '<pre>'; print_r($_GET); echo '</pre>';exit;
     $ajax = new bsurveysController();
     $ajax->idSurvey = $_POST["idSurveyTable"];
     $ajax->genTable();
