@@ -35,7 +35,7 @@
                     include "actions/" . $routesArray[2] . ".php";
                 }
             } else {
-                include "actions/list.php";
+                include "actions/new.php";
             }
             ?>
         </div>

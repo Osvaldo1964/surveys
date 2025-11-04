@@ -24876,3 +24876,45 @@ Stack trace:
 [28-Oct-2025 10:28:34 America/Bogota] PHP Warning:  Attempt to read property "name_hsurvey" on null in C:\xampp\htdocs\surveys\admin-surveys\views\pages\surveys\actions\questions.php on line 36
 [28-Oct-2025 10:28:34 America/Bogota] PHP Warning:  Undefined variable $hsurveys in C:\xampp\htdocs\surveys\admin-surveys\views\pages\surveys\actions\questions.php on line 37
 [28-Oct-2025 10:28:34 America/Bogota] PHP Warning:  Attempt to read property "name_owner" on null in C:\xampp\htdocs\surveys\admin-surveys\views\pages\surveys\actions\questions.php on line 37
+[04-Nov-2025 06:58:30 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[04-Nov-2025 06:58:30 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[04-Nov-2025 07:06:17 America/Bogota] PHP Warning:  foreach() argument must be of type array|object, string given in C:\xampp\htdocs\surveys\admin-surveys\views\pages\answers\actions\list.php on line 55
+[04-Nov-2025 07:06:36 America/Bogota] PHP Warning:  foreach() argument must be of type array|object, string given in C:\xampp\htdocs\surveys\admin-surveys\views\pages\answers\actions\list.php on line 55
+[04-Nov-2025 07:08:02 America/Bogota] PHP Warning:  foreach() argument must be of type array|object, string given in C:\xampp\htdocs\surveys\admin-surveys\views\pages\answers\actions\list.php on line 56
+[04-Nov-2025 07:09:43 America/Bogota] PHP Fatal error:  Uncaught Error: Cannot use object of type stdClass as array in C:\xampp\htdocs\surveys\admin-surveys\views\pages\answers\actions\list.php:57
+Stack trace:
+#0 C:\xampp\htdocs\surveys\admin-surveys\views\pages\answers\answers.php(38): include()
+#1 C:\xampp\htdocs\surveys\admin-surveys\views\template.php(285): include('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\surveys\admin-surveys\controllers\template.controller.php(18): include('C:\\xampp\\htdocs...')
+#3 C:\xampp\htdocs\surveys\admin-surveys\index.php(31): TemplateController->index()
+#4 {main}
+  thrown in C:\xampp\htdocs\surveys\admin-surveys\views\pages\answers\actions\list.php on line 57
+[04-Nov-2025 07:10:12 America/Bogota] PHP Fatal error:  Uncaught Error: Cannot use object of type stdClass as array in C:\xampp\htdocs\surveys\admin-surveys\views\pages\answers\actions\list.php:57
+Stack trace:
+#0 C:\xampp\htdocs\surveys\admin-surveys\views\pages\answers\answers.php(38): include()
+#1 C:\xampp\htdocs\surveys\admin-surveys\views\template.php(285): include('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\surveys\admin-surveys\controllers\template.controller.php(18): include('C:\\xampp\\htdocs...')
+#3 C:\xampp\htdocs\surveys\admin-surveys\index.php(31): TemplateController->index()
+#4 {main}
+  thrown in C:\xampp\htdocs\surveys\admin-surveys\views\pages\answers\actions\list.php on line 57
+[04-Nov-2025 07:10:52 America/Bogota] PHP Fatal error:  Uncaught Error: Cannot use object of type stdClass as array in C:\xampp\htdocs\surveys\admin-surveys\views\pages\answers\actions\list.php:57
+Stack trace:
+#0 C:\xampp\htdocs\surveys\admin-surveys\views\pages\answers\answers.php(38): include()
+#1 C:\xampp\htdocs\surveys\admin-surveys\views\template.php(285): include('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\surveys\admin-surveys\controllers\template.controller.php(18): include('C:\\xampp\\htdocs...')
+#3 C:\xampp\htdocs\surveys\admin-surveys\index.php(31): TemplateController->index()
+#4 {main}
+  thrown in C:\xampp\htdocs\surveys\admin-surveys\views\pages\answers\actions\list.php on line 57
+[04-Nov-2025 08:00:27 America/Bogota] PHP Warning:  foreach() argument must be of type array|object, string given in C:\xampp\htdocs\surveys\admin-surveys\views\pages\answers\actions\new.php on line 99
+[04-Nov-2025 08:01:22 America/Bogota] PHP Warning:  foreach() argument must be of type array|object, string given in C:\xampp\htdocs\surveys\admin-surveys\views\pages\answers\actions\new.php on line 100
+[04-Nov-2025 08:10:45 America/Bogota] PHP Warning:  foreach() argument must be of type array|object, string given in C:\xampp\htdocs\surveys\admin-surveys\views\pages\answers\actions\new.php on line 100
+[04-Nov-2025 08:48:10 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[04-Nov-2025 08:48:10 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[04-Nov-2025 08:49:51 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[04-Nov-2025 08:49:51 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[04-Nov-2025 09:11:17 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[04-Nov-2025 09:11:17 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[04-Nov-2025 09:40:42 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[04-Nov-2025 09:40:42 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[04-Nov-2025 09:47:19 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[04-Nov-2025 09:47:19 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76

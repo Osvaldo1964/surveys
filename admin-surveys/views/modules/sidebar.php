@@ -1,4 +1,4 @@
-<?php
+|<?php
 $routesArray = explode("/", $_SERVER['REQUEST_URI']);
 $routesArray = array_filter($routesArray);
 $rolUser = $_SESSION["user"]->id_class_user;
@@ -264,7 +264,7 @@ $rolUser = $_SESSION["user"]->id_class_user;
                         <a href="#" class="nav-link <?php if (!empty($routesArray[1]) && $routesArray[1] == "subjects") : ?>active bg-info<?php endif ?>">
                             <i class="nav-icon far fa-plus-square"></i>
                             <p>
-                                DEFINICION ENCUESTAS
+                                ENCUESTAS
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
@@ -296,21 +296,15 @@ $rolUser = $_SESSION["user"]->id_class_user;
                                 <a href="#" class="nav-link <?php if (!empty($routesArray[1]) && $routesArray[1] == "generate") : ?>active bg-info<?php endif ?>">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>
-                                        REPORTES
+                                        REGISTRO
                                         <i class="fas fa-angle-left right"></i>
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="/" class="nav-link <?php if (!empty($routesArray[1]) && $routesArray[1] == "infregs") : ?>active bg-info<?php endif ?>">
+                                        <a href="/answers" class="nav-link <?php if (!empty($routesArray[1]) && $routesArray[1] == "answers") : ?>active bg-info<?php endif ?>">
                                             <i class="far fa-circle nav-icon"></i>
-                                            <p>Informe de Clientes</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="/" class="nav-link <?php if (!empty($routesArray[1]) && $routesArray[1] == "infaprobs") : ?>active bg-info<?php endif ?>">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Informe Encuestas</p>
+                                            <p>Registro Encuestas</p>
                                         </a>
                                     </li>
                                 </ul>

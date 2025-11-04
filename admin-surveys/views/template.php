@@ -153,7 +153,8 @@ if (isset($routesArray[1])) {
       "logout",
       "follows",
       "owners",
-      "surveys"
+      "surveys",
+      "answers"
     ];
 
     if (in_array($routesArray[1], $validRoutes)) : ?>
@@ -275,7 +276,8 @@ if (isset($routesArray[1])) {
           "logout",
           "follows",
           "owners",
-          "surveys"
+          "surveys",
+          "answers"
         ];
 
         if (!empty($routesArray[1])) {
