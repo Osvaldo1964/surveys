@@ -61,10 +61,9 @@
 </style>
 <div class="card card-dark card-outline col-md-12">
     <form method="post" class="needs-validation" novalidate>
-        <div class="card-header">
-        </div>
         <div class="card-body">
             <!-- Información Personal -->
+
             <div class="row">
                 <!-- Encuesta -->
                 <div class="form-group col-md-8">
@@ -89,9 +88,13 @@
                     </div>
                 </div>
             </div>
-            <div class="row notblock" id="dynamicFormFields">
+            <div class="row notblock border" style="overflow: auto; height:450px" id="dynamicFormFields">
             </div>
-            <div class="card-footer pb-1 pt-1">
+
+            <!--             <div class="row notblock border" style="overflow: auto;" id="AddAnswerFields">
+                <button class='btn btn-success btn-sm mb-1 addAnswer' onclick='addAnswer' id='addAnswer'>Adicionar</button>
+            </div> -->
+            <div class="card-footer pb-1 pt-1 mt-1">
                 <?php
                 require_once "controllers/surveys.controller.php";
                 $create = new SurveysController();
