@@ -44,6 +44,7 @@ contenedorDelFormulario.addEventListener("click", function (event) {
     if (event.target.id === 'addAnswer') {
         event.preventDefault(); // Evita el comportamiento por defecto del botón
         console.log("Botón 'Adicionar' clickeado.");
+        const selectedType = document.getElementById('idbsurvey');
         const formulario = event.target.closest('form');
         if (!formulario) {
             console.error("Error: No se pudo encontrar el formulario '#miFormularioDinamico'");
@@ -66,6 +67,24 @@ contenedorDelFormulario.addEventListener("click", function (event) {
         }
         console.log("Contenido del formulario leído:");
         console.log(datosDelFormulario);
+
+        var data = new FormData();
+        data.append("totAnswer", JSON.stringify(datosDelFormulario));
+
+        $.ajax({
+            url: "ajax/ajax-answers.php",
+            method: "POST",
+            data: data,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (response) {
+                console.log("Respuesta Ajax recibida al adicionar opción:");
+                console.log(response);
+                //Inserto los campos dinamicos
+                //document.querySelector("#dynamicFormFields").innerHTML = response;
+            }
+        });
     }
 });
 

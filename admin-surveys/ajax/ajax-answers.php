@@ -25,10 +25,11 @@ class bsurveysController
 
         $items = $response->results;
         $formulario_html = '<form id="formAnswers" actions="">'; // 1. Iniciamos la variable vacía
-
+        //var_dump($items);
         if ($response->total > 0) {
 
             // 2. Recorremos las preguntas y CONCATENAMOS el HTML
+
             foreach ($items as $key => $value) {
                 $id_pregunta = $value->id_bsurvey;
                 $texto_pregunta = htmlspecialchars($value->name_bsurvey);
@@ -85,20 +86,25 @@ class bsurveysController
 
                 $formulario_html .= '</div>'; // Cierre de .pregunta
             }
-                $formulario_html .="<div class='row border' style='overflow: auto;'>
+            $formulario_html .= "<div class='row border' style='overflow: auto;'>
                                     <button class='btn btn-success btn-sm mb-1 addAnswer' id='addAnswer'>Adicionar</button>
                                 </div>";
             $formulario_html .= "</form>";
         } else {
             $formulario_html = "<p>No hay preguntas para mostrar.</p>";
         }
-        
+
         echo $formulario_html;
     }
 
     /* Función para adicionar encuestas */
+    public $jsonData;
+
     public function addAnswers()
     {
+        $answersArray = json_decode($this->jsonData, true);
+        echo '<pre>'; print_r($answersArray); echo '</pre>';exit;
+
         $url = "bsurveys?linkTo=id_hsurvey_bsurvey&equalTo=" . urlencode($this->idHsurvey);
         $method = "GET";
         $fields = [];
@@ -112,51 +118,15 @@ class bsurveysController
             echo '';
             return;
         }
-        $items = $response->results;
-        foreach ($items as $key => $value) {
-            $id_pregunta = $value->id_bsurvey;
-            $tipo = $value->type_bsurvey;
-            
-            switch ($tipo) {
 
-                case 1:
-                    $name_pregunta = "pregunta_" . $id_pregunta;
-                    $$name_pregunta = '';
-                    $pregunta .= "<input type='text' class='form-control' name='pregunta_" . $id_pregunta . "' id='pregunta_" . $id_pregunta . "'>";
-                    break;
+        foreach ($this->jsonData as $id_pregunta => $valor_respuesta) {
 
-                case 2:
-                    $formulario_html .= "<input type='date' name='pregunta_" . $id_pregunta . "' id='pregunta_" . $id_pregunta . "'>";
-                    break;
-
-                case 3:
-                    if (!empty($opciones_str)) {
-                        //$opciones_array = explode(',', $opciones_str);
-                        foreach ($opciones_str as $opcion => $element) {
-                            //var_dump($element);
-                            $opcion_limpia = htmlspecialchars(trim($element["nombre"]));
-                            $formulario_html .= "<div class='form-check form-check-inline'>";
-                            $formulario_html .= "<input type='radio' class='form-check-input' name='pregunta_" . $id_pregunta . "' value='" . $opcion_limpia . "'> ";
-                            $formulario_html .= $opcion_limpia;
-                            $formulario_html .= "</div>";
-                        }
-                    }
-                    break;
-
-                case 4:
-                    if (!empty($opciones_str)) {
-                        //$opciones_array = explode(',', $opciones_str);
-                        foreach ($opciones_str as $opcion => $element) {
-                            $opcion_limpia = htmlspecialchars(trim($element["nombre"]));
-                            $formulario_html .= "<div class='opcion'>";
-                            // Nota el '[]' en el name
-                            $formulario_html .= "<input type='checkbox' name='pregunta_" . $id_pregunta . "[]' value='" . $opcion_limpia . "'> ";
-                            $formulario_html .= $opcion_limpia;
-                            $formulario_html .= "</div>";
-                        }
-                    }
-                    break;
+            if ($id_pregunta == 'idHsurvey') {
+                continue; // Saltamos el ID
             }
+            var_dump($id_pregunta);
+            var_dump($valor_respuesta);
+
         }
     }
 }
@@ -171,10 +141,10 @@ if (isset($_POST["idHsurvey"])) {
 }
 
 /* Función para Adicionar pregunta tipo Texto */
-if (isset($_POST["idHsurveyAnswer"])) {
+if (isset($_POST["totAnswer"])) {
     //echo '<pre>'; print_r($_POST); echo '</pre>'; exit;
     $ajax = new bsurveysController();
     //$ajax->token_user = $_POST["token"];
-    $ajax->idHsurvey = $_POST["idHsurveyAnswer"];
+    $ajax->jsonData = $_POST["totAnswer"];
     $ajax->addAnswers();
 }
