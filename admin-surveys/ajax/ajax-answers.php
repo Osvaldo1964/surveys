@@ -25,10 +25,7 @@ class bsurveysController
 
         $items = $response->results;
         $formulario_html = '<form id="formAnswers" actions="">'; // 1. Iniciamos la variable vacía
-        //var_dump($items);
         if ($response->total > 0) {
-
-            // 2. Recorremos las preguntas y CONCATENAMOS el HTML
 
             foreach ($items as $key => $value) {
                 $id_pregunta = $value->id_bsurvey;
@@ -69,15 +66,11 @@ class bsurveysController
 
                     case 4:
                         if (!empty($opciones_str)) {
-                            //$opciones_array = explode(',', $opciones_str);
                             $i = 1;
                             foreach ($opciones_str as $opcion => $element) {
                                 $opcion_limpia = htmlspecialchars(trim($element["nombre"]));
                                 $formulario_html .= "<div class='form-check form-check-inline'>";
-                                // Nota el '[]' en el name
                                 $formulario_html .= "<input class='form-check-input' type='checkbox' name='pregunta_" . $id_pregunta . "' id='pregunta_" . $id_pregunta . $i . "' value='" . $opcion_limpia . "'> ";
-                                //$formulario_html .= "<label class='form-check-label' for='" . $id_pregunta . $i . "'>" . $opcion_limpia . "</label>";
-                                //$formulario_html .= "<label for='inlineCheckbox1</label>";
                                 $formulario_html .= $opcion_limpia;
                                 $formulario_html .= "</div>";
                                 $i++;
@@ -89,7 +82,7 @@ class bsurveysController
                 $formulario_html .= '</div>'; // Cierre de .pregunta
             }
             $formulario_html .= "<div class='row border' style='overflow: auto;'>
-                                    <button class='btn btn-success btn-sm mb-1 addAnswer' id='addAnswer'>Adicionar</button>
+                                    <button class='btn btn-success btn-sm mb-1 mt-1 addAnswer' id='addAnswer'>Adicionar</button>
                                 </div>";
             $formulario_html .= "</form>";
         } else {
@@ -111,10 +104,8 @@ class bsurveysController
         $method = "GET";
         $fields = [];
         $response = CurlController::request($url, $method, $fields);
-        //echo '<pre>'; print_r($response); echo '</pre>'; exit;
 
         if ($response->status != 200 || empty($response->results)) {
-            // No items or error: return empty output
             echo '';
             return;
         }
@@ -125,11 +116,9 @@ class bsurveysController
             throw new Exception("Error: El JSON recibido no es válido.");
         }
 
-        // --- ¡PASO 2: Extraer el ID de la encuesta ---
         $idEncuesta = $datos['idHsurvey'];
         echo "Iniciando guardado para la Encuesta ID: $idEncuesta...<br>";
 
-        // --- ¡PASO 3: Bucle 'while' para recorrer las preguntas ---
         $i = 1; // Empezamos el contador en 1
 
         // El bucle continuará mientras exista una 'pregunta_X' (pregunta_1, pregunta_2, etc.)
@@ -165,8 +154,6 @@ class bsurveysController
             $method = "POST";
             $fields = $data;
             $response = CurlController::request($url, $method, $fields);
-
-            // ¡Importante! Incrementamos el contador
             $i++;
         }
 
@@ -176,16 +163,13 @@ class bsurveysController
 
 /* Función para Adicionar pregunta tipo Texto */
 if (isset($_POST["idHsurvey"])) {
-    //echo '<pre>'; print_r($_POST); echo '</pre>'; exit; 
     $ajax = new bsurveysController();
-    //$ajax->token_user = $_POST["token"];
     $ajax->idHsurvey = $_POST["idHsurvey"];
     $ajax->genForm();
 }
 
 /* Función para Adicionar pregunta tipo Texto */
 if (isset($_POST["totAnswer"])) {
-    //echo '<pre>'; print_r($_POST["totAnswer"]); echo '</pre>'; exit;
     $ajax = new bsurveysController();
     $ajax->token_user = $_POST["token"];
     $ajax->jsonData = $_POST["totAnswer"];

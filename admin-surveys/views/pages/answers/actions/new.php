@@ -100,9 +100,8 @@
                 $create = new SurveysController();
                 $create->create();
                 ?>
-                <div class="form-group mb-1">
-                    <a href="/surveys" class="btn btn-light border text-left">Regresar</a>
-                    <button type="submit" class="btn bg-dark float-right">Guardar</button>
+                <div class="form-group mb-1 justify-items-center">
+                    <a href="/surveys" class="btn btn-light border">Regresar</a>
                 </div>
             </div>
         </div>

@@ -187,7 +187,6 @@ document.querySelector('#editElement').onclick = function (event) {
 const addOptionOption = document.querySelector('#addOptionOption');
 document.querySelector('#addOptionOption').onclick = function (event) {
     event.preventDefault();
-    console.log("Adicionando una opcion a una respuesta de tipo opcion ...");
     var nameOption = document.getElementById('nameOption').value;
     var orderOption = document.getElementById('orderOption').value;
 
@@ -214,9 +213,7 @@ document.querySelector('#addOptionOption').onclick = function (event) {
 }
 
 function tableItems() {
-    console.log("Cargando tabla de items...");
     var idQuestion = document.getElementById('idQuestion').value;
-    //console.log(idQuestion);
 
     var data = new FormData();
     data.append("idSurveyTable", idQuestion);
@@ -240,11 +237,8 @@ function tableItems() {
 // Escuchar el boton de editar  pregunta 
 $(document).on("click", ".btn-edit-answer", function (event) {
     event.preventDefault();
-    console.log("Editando una respuesta...");
     let idBsurvey = $(this).data('id-bsurvey');
-    console.log("ID de la respuesta a editar: " + idBsurvey);
     document.getElementById('idEditBsurvey').value = idBsurvey;
-    //alert('El nombre en esta fila es: ' + idBsurvey);
 
     // busco la informacion para la respuesta seleccionada
     var data = new FormData();
@@ -258,11 +252,7 @@ $(document).on("click", ".btn-edit-answer", function (event) {
         cache: false,
         processData: false,
         success: function (response) {
-            console.log("Informacion de la respuesta cargada");
-            console.log(response);
             let answerData = JSON.parse(response);
-
-
             // lleno los campos del formulario con la informacion obtenida
             document.getElementById('nameQuestion').value = answerData['name_bsurvey'];
             document.getElementById('typeQuestion').value = answerData['type_bsurvey'];
@@ -271,7 +261,6 @@ $(document).on("click", ".btn-edit-answer", function (event) {
             document.querySelector("#divDerechaUp").classList.remove("notblock");
             if (answerData['type_bsurvey'] == 3 || answerData['type_bsurvey'] == 4) {// Opciones - Multiple
                 let tableDetail = answerData.detail_bsurvey;
-                console.log(tableDetail);
                 tableDetail = JSON.parse(tableDetail);
                 const tbody = document.getElementById('tbodyOptions');
                 const filasHTML = tableDetail.map(item => {

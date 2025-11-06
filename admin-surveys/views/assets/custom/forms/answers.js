@@ -11,12 +11,9 @@ $(document).on("change", ".selectSurvey", function (event) {
     event.preventDefault();
     var selectedType = $('#idHsurvey').find(':selected')
     var idHsurvey = selectedType.val(); // Captura el valor
-    //const divTextDate = document.querySelector("#divTextDate");
 
-    console.log("Tipo de pregunta Texto o Fecha...");
-    console.log("ID Encuesta seleccionada: " + idHsurvey);
     document.querySelector("#dynamicFormFields").classList.remove("notblock");
-    //Llamada ajax para traer los campos dinamicos
+
     var data = new FormData();
     data.append("idHsurvey", idHsurvey);
     $.ajax({
@@ -27,11 +24,8 @@ $(document).on("change", ".selectSurvey", function (event) {
         cache: false,
         processData: false,
         success: function (response) {
-            console.log("Respuesta Ajax recibida:");
-            console.log(response);
             //Inserto los campos dinamicos
             document.querySelector("#dynamicFormFields").classList.remove("notblock");
-            //document.querySelector("#AddAnswerFields").classList.remove("notblock");
             document.querySelector("#dynamicFormFields").innerHTML = response;
         }
     });
@@ -43,7 +37,6 @@ contenedorDelFormulario.addEventListener("click", function (event) {
 
     if (event.target.id === 'addAnswer') {
         event.preventDefault(); // Evita el comportamiento por defecto del botón
-        console.log("Botón 'Adicionar' clickeado.");
         const selectedType = document.getElementById('idbsurvey');
         const formulario = event.target.closest('form');
         if (!formulario) {
@@ -65,8 +58,6 @@ contenedorDelFormulario.addEventListener("click", function (event) {
                 datosDelFormulario[name] = value;
             }
         }
-        console.log("Contenido del formulario leído:");
-        //console.log(datosDelFormulario);
 
         var data = new FormData();
         data.append("token", localStorage.getItem("token_user"));
@@ -80,10 +71,8 @@ contenedorDelFormulario.addEventListener("click", function (event) {
             cache: false,
             processData: false,
             success: function (response) {
-                console.log("Respuesta Ajax recibida al adicionar opción:");
-                //console.log(response);
-                //Inserto los campos dinamicos
-                //document.querySelector("#dynamicFormFields").innerHTML = response;
+                formulario.reset();
+                document.getElementById('pregunta_1').focus();
             }
         });
     }
