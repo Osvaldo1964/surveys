@@ -66,9 +66,10 @@ contenedorDelFormulario.addEventListener("click", function (event) {
             }
         }
         console.log("Contenido del formulario leído:");
-        console.log(datosDelFormulario);
+        //console.log(datosDelFormulario);
 
         var data = new FormData();
+        data.append("token", localStorage.getItem("token_user"));
         data.append("totAnswer", JSON.stringify(datosDelFormulario));
 
         $.ajax({
@@ -80,7 +81,7 @@ contenedorDelFormulario.addEventListener("click", function (event) {
             processData: false,
             success: function (response) {
                 console.log("Respuesta Ajax recibida al adicionar opción:");
-                console.log(response);
+                //console.log(response);
                 //Inserto los campos dinamicos
                 //document.querySelector("#dynamicFormFields").innerHTML = response;
             }

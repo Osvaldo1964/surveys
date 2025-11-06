@@ -35,6 +35,8 @@ class bsurveysController
                 $texto_pregunta = htmlspecialchars($value->name_bsurvey);
                 $tipo = $value->type_bsurvey;
                 $opciones_str = $value->detail_bsurvey;
+                $formulario_html .= '<input type="hidden" value="' . $tipo . '" name="type_' . $id_pregunta . '" id="type_' . $id_pregunta . '">';
+
 
                 $opciones_str = json_decode($value->detail_bsurvey, true);
                 $formulario_html .= '<div class="form-group col-md-10 mt-0 mb-0">';
@@ -103,15 +105,13 @@ class bsurveysController
     public function addAnswers()
     {
         $answersArray = json_decode($this->jsonData, true);
-        echo '<pre>'; print_r($answersArray); echo '</pre>';exit;
-
+        //echo '<pre>'; print_r($answersArray); echo '</pre>';
+        $this->idHsurvey = $answersArray['idHsurvey'];
         $url = "bsurveys?linkTo=id_hsurvey_bsurvey&equalTo=" . urlencode($this->idHsurvey);
         $method = "GET";
         $fields = [];
         $response = CurlController::request($url, $method, $fields);
-        echo '<pre>';
-        print_r($response);
-        echo '</pre>';
+        //echo '<pre>'; print_r($response); echo '</pre>'; exit;
 
         if ($response->status != 200 || empty($response->results)) {
             // No items or error: return empty output
@@ -119,15 +119,58 @@ class bsurveysController
             return;
         }
 
-        foreach ($this->jsonData as $id_pregunta => $valor_respuesta) {
+        $datos = json_decode($this->jsonData, true);
 
-            if ($id_pregunta == 'idHsurvey') {
-                continue; // Saltamos el ID
-            }
-            var_dump($id_pregunta);
-            var_dump($valor_respuesta);
-
+        if ($datos === null) {
+            throw new Exception("Error: El JSON recibido no es válido.");
         }
+
+        // --- ¡PASO 2: Extraer el ID de la encuesta ---
+        $idEncuesta = $datos['idHsurvey'];
+        echo "Iniciando guardado para la Encuesta ID: $idEncuesta...<br>";
+
+        // --- ¡PASO 3: Bucle 'while' para recorrer las preguntas ---
+        $i = 1; // Empezamos el contador en 1
+
+        // El bucle continuará mientras exista una 'pregunta_X' (pregunta_1, pregunta_2, etc.)
+        while (isset($datos['pregunta_' . $i])) {
+
+            // Armamos las llaves que vamos a buscar
+            $keyPregunta = 'pregunta_' . $i;
+            $keyTipo = 'type_' . $i;
+
+            // Extraemos los valores
+            $numeroPregunta = $i;
+            $tipoRespuesta = $datos[$keyTipo]; // Ej: "1", "3", "1"...
+            $valorRespuesta = $datos[$keyPregunta]; // Ej: "osvaldo", "SI", ["si tiene","no tiene"]...
+
+            // Convertimos el valor a JSON si es un array (para pregunta_4)
+            $valorAGuardar = '';
+            if (is_array($valorRespuesta)) {
+                $valorAGuardar = json_encode($valorRespuesta);
+            } else {
+                $valorAGuardar = $valorRespuesta;
+            }
+
+            /* Agrupamos la información y grabo*/
+            $data = array(
+                "id_hsurvey_answer" => $idEncuesta,
+                "id_bsurvey_answer" => $numeroPregunta,
+                "type_answer" => $tipoRespuesta,
+                "detail_answer" => $valorAGuardar,
+                "date_created_answer" => date("Y-m-d")
+            );
+            var_dump($data);
+            $url = "answers?token=" . $this->token_user . "&table=users&suffix=user";
+            $method = "POST";
+            $fields = $data;
+            $response = CurlController::request($url, $method, $fields);
+
+            // ¡Importante! Incrementamos el contador
+            $i++;
+        }
+
+
     }
 }
 
@@ -142,9 +185,9 @@ if (isset($_POST["idHsurvey"])) {
 
 /* Función para Adicionar pregunta tipo Texto */
 if (isset($_POST["totAnswer"])) {
-    //echo '<pre>'; print_r($_POST); echo '</pre>'; exit;
+    //echo '<pre>'; print_r($_POST["totAnswer"]); echo '</pre>'; exit;
     $ajax = new bsurveysController();
-    //$ajax->token_user = $_POST["token"];
+    $ajax->token_user = $_POST["token"];
     $ajax->jsonData = $_POST["totAnswer"];
     $ajax->addAnswers();
 }
