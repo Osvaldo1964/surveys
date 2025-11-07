@@ -1,35 +1,31 @@
 <?php
 
 /*=============================================
-total de Cargos
+Total Clientes
 =============================================*/
 
 $totcharges = 0;
-$url = "charges?select=id_charge,total_charge";
+$url = "owners?select=id_owner";
 $method = "GET";
 $fields = array();
 $charges = CurlController::request($url, $method, $fields);
 //echo '<pre>'; print_r($charges); echo '</pre>';
 if ($charges->status == 200) {
-  $rows = $charges->total;
-  $charges = $charges->results;
-  for ($c = 0; $c < $rows; $c++) {
-    $totcharges = $totcharges + $charges[$c]->total_charge;
-  }
+  $totcharges = $charges->total;
 } else {
   $totcharges = 0;
 }
 
 /*=============================================
-total Inscritos
+Total Encuestas
 =============================================*/
-$url = "subjects?select=id_subject";
-$subjects = CurlController::request($url, $method, $fields);
+$url = "hsurveys?select=id_hsurvey";
+$hsurveys = CurlController::request($url, $method, $fields);
 
-if ($subjects->status == 200) {
-  $subjects = $subjects->total;
+if ($hsurveys->status == 200) {
+  $hsurveys = $hsurveys->total;
 } else {
-  $subjects = 0;
+  $hsurveys = 0;
 }
 
 /*=============================================
@@ -63,7 +59,7 @@ if ($users->status == 200) {
     <div class="info-box mb-3">
       <span class="info-box-icon bg-info elevation-1"><i class="fas fa-file-alt"></i></span>
       <div class="info-box-content">
-        <span class="info-box-text">Cargos Totales</span>
+        <span class="info-box-text">Clientes</span>
         <span class="info-box-number">
           <?php echo $totcharges ?>
         </span>
@@ -78,8 +74,8 @@ if ($users->status == 200) {
       <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-user-check"></i></span>
 
       <div class="info-box-content">
-        <span class="info-box-text">Inscritos</span>
-        <span class="info-box-number"><?php echo $subjects ?></span>
+        <span class="info-box-text">Encuestas Creadas</span>
+        <span class="info-box-number"><?php echo $hsurveys ?></span>
       </div>
       <!-- /.info-box-content -->
     </div>
@@ -92,7 +88,7 @@ if ($users->status == 200) {
       <span class="info-box-icon bg-success elevation-1"><i class="fas fa-file-signature"></i></span>
 
       <div class="info-box-content">
-        <span class="info-box-text">Beneficiarios</span>
+        <span class="info-box-text">Encuestas Registradas</span>
         <span class="info-box-number"><?php echo $students ?></span>
       </div>
       <!-- /.info-box-content -->

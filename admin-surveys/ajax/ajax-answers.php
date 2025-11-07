@@ -100,6 +100,15 @@ class bsurveysController
         $answersArray = json_decode($this->jsonData, true);
         //echo '<pre>'; print_r($answersArray); echo '</pre>';
         $this->idHsurvey = $answersArray['idHsurvey'];
+
+        // Leo el consecutivo de las encuestas
+        $url = "settings";
+        $method = "GET";
+        $fields = [];
+        $settings = CurlController::request($url, $method, $fields)->results;
+        //echo '<pre>'; print_r($settings[0]->sequence_answer_setting); echo '</pre>';exit;
+        $sequence = $settings[0]->sequence_answer_setting + 1;
+
         $url = "bsurveys?linkTo=id_hsurvey_bsurvey&equalTo=" . urlencode($this->idHsurvey);
         $method = "GET";
         $fields = [];
@@ -144,12 +153,13 @@ class bsurveysController
             /* Agrupamos la información y grabo*/
             $data = array(
                 "id_hsurvey_answer" => $idEncuesta,
+                "sequence_answer" => $sequence,
                 "id_bsurvey_answer" => $numeroPregunta,
                 "type_answer" => $tipoRespuesta,
                 "detail_answer" => $valorAGuardar,
                 "date_created_answer" => date("Y-m-d")
             );
-            var_dump($data);
+            //var_dump($data);
             $url = "answers?token=" . $this->token_user . "&table=users&suffix=user";
             $method = "POST";
             $fields = $data;
@@ -157,7 +167,11 @@ class bsurveysController
             $i++;
         }
 
-
+        /* Actualizo el ultimo registro de Encuesta en Settings*/
+        $url = "settings?id=1&nameId=id_setting&token=" . $this->token_user . "&table=users&suffix=user";
+        $method = "PUT";
+        $fields = "sequence_answer_setting=" . $sequence;
+        $settings = CurlController::request($url, $method, $fields);
     }
 }
 

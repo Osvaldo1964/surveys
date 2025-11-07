@@ -46,7 +46,7 @@ const URLPAYPAL = "https://api-m.sandbox.paypal.com";
 //Datos envio de correo
 const NOMBRE_REMITENTE = "Sistema Integrado de Control Centros de Atención Adulto Mayor";
 const EMAIL_REMITENTE = "info@vidactiva.com.co";
-const NOMBRE_EMPRESA = "UNION TEMPORAL VIDA PLENA";
+const NOMBRE_EMPRESA = "UNION TEMPORAL VIDA ACTIVA";
 const WEB_EMPRESA = "https://admin.vidactiva.com.co";
 
 const DESCRIPCION = "Sistema Integrado de Control Centros de Atención Adulto Mayor";
