@@ -8,17 +8,17 @@ $idFormer = $_SESSION["former"] ?? 0;
     <form actions="">
         <div class="card-body">
             <div class="col-md-10">
-                <!-- Departamentos -->
+                <!-- Encuentas -->
                 <div class="input-group col-md-3">
-                    <label class="input-group-text" for="dpto_student">Departamento</label>
-                    <select class="form-select dpto_student" id="dpto_student" name="dpto_student" onchange="setNombre()" required>
+                    <label class="input-group-text" for="hsurvey">Encuesta</label>
+                    <select class="form-select hsurvey" id="hsurvey" name="hsurvey" required>
                     </select>
                 </div>
 
-                <!-- Municipios -->
+                <!-- Preguntas -->
                 <div class="input-group col-md-3">
-                    <label class="input-group-text" for="muni_student">Municipio</label>
-                    <select class="form-select muni_student" id="muni_student" name="muni_student" onchange="setNombre()" required>
+                    <label class="input-group-text" for="bsurvey">Pregunta</label>
+                    <select class="form-select bsurvey" id="bsurvey" name="bsurvey" required>
                     </select>
                 </div>
             </div>
@@ -35,3 +35,5 @@ $idFormer = $_SESSION["former"] ?? 0;
     </form>
     <!-- /.card-body -->
 </div>
+
+<script src="views/assets/custom/forms/answers.js"></script>

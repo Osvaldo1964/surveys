@@ -5,7 +5,6 @@
     });
 })();
 
-
 // Activo el div segun el tipo de respuesta
 $(document).on("change", ".selectSurvey", function (event) {
     event.preventDefault();
