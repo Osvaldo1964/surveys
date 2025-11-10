@@ -2,6 +2,12 @@
 
 require_once "../controllers/curl.controller.php";
 require_once "../controllers/template.controller.php";
+require_once "../config/config.php";
+require '../extensions/vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 
 class bsurveysController
 {
@@ -173,6 +179,141 @@ class bsurveysController
         $fields = "sequence_answer_setting=" . $sequence;
         $settings = CurlController::request($url, $method, $fields);
     }
+
+    public function excelSurvey()
+    {
+        /* Buscos Todos los registros de Personas segun Programa y Rol*/
+        $select = "*";
+        $url = "answers?select=" . $select . "&linkTo=id_hsurvey_answer&equalTo=" . $this->idHsurvey .
+            "&orderBy=sequence_answer,id_bsurvey_answer&orderMode=ASC";
+
+        $method = "GET";
+        $fields = array();
+        $answers = CurlController::request($url, $method, $fields);
+        //echo '<pre>'; print_r($answers); echo '</pre>';exit;
+
+        if ($answers->status == 200) {
+            $answers = $answers->results;
+
+
+
+            foreach ($subjects as $subjects) {
+                $aux = array();
+                $fechaNacimiento = new DateTime($subjects->birth_subject);
+                $hoy = new DateTime();
+                $edad = $hoy->diff($fechaNacimiento);
+                $stredad = (string)$edad->y;
+
+                $aux['id_subject'] = $subjects->id_subject;
+                $aux['typedoc_subject'] = $subjects->typedoc_subject;
+                $aux['document_subject'] = $subjects->document_subject;
+                $aux['lastname_subject'] = $subjects->lastname_subject;
+                $aux['surname_subject'] = $subjects->surname_subject;
+                $aux['firstname_subject'] = $subjects->firstname_subject;
+                $aux['secondname_subject'] = $subjects->secondname_subject;
+                $aux['id_department_subject'] = $subjects->id_department_subject;
+                $aux['id_department'] = $subjects->id_department;
+                $aux['name_department'] = $subjects->name_department;
+                $aux['id_municipality_subject'] = $subjects->id_municipality_subject;
+                $aux['id_municipality'] = $subjects->id_municipality;
+                $aux['name_municipality'] = ($subjects->name_municipality == "") ? "NM" : $subjects->name_municipality;
+                $aux['address_subject'] = $subjects->address_subject;
+                $aux['email_subject'] = $subjects->email_subject;
+                $aux['phone_subject'] = $subjects->phone_subject;
+                $aux['id_place_subject'] = $subjects->id_place_subject;
+                $aux['id_place'] = $subjects->id_place;
+                $aux['name_place'] = $subjects->name_place;
+                $aux['valid_subject'] = $subjects->valid_subject;
+                $aux['birth_subject'] = $subjects->birth_subject;
+                $aux['edad'] = $stredad;
+                $aux['sexo'] = $subjects->sex_subject;
+                $aux['approved_subject'] = "";
+                $aux['date_created_subject'] = $subjects->date_created_subject;
+
+                array_push($subjectsArray, $aux);
+            }
+
+            for ($i = 0; $i < count($subjectsArray); $i++) {
+                if ($subjectsArray[$i]["valid_subject"] == 1) {
+                    foreach ($validations as $key => $value) {
+                        if ($subjectsArray[$i]["id_subject"] == $value->id_subject_validation) {
+                            $subjectsArray[$i]["approved_subject"] = $value->approved_validation;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            $filtrado = array_filter($subjectsArray, function ($subjectsArray) {
+                return $subjectsArray['approved_subject'] == "SI";
+            });
+
+            // Reindexamos el array
+            $subjectsArray = array_values($filtrado);
+            //echo '<pre>'; print_r($subjectsArray); echo '</pre>';exit;
+
+            //var_dump($subjectsArray);exit;
+
+            if (empty($subjectsArray)) {
+                echo "No Hay Registros";
+                header("location: ../genera_informe_analisis.php");
+            } else {
+
+                // Crear Excel
+                $spreadsheet = new Spreadsheet();
+                $sheet = $spreadsheet->getActiveSheet();
+
+                // Encabezados
+                $sheet->setCellValue('A1', 'INFORME DE POSTULANTES APROBADOS PARA CONTRATACION');
+                $sheet->setCellValue('A2', 'ROL/CARGO');
+                $sheet->setCellValue('B2', 'APELLIDOS Y NOMBRES');
+                $sheet->setCellValue('C2', 'TIPO DE DOCUMENTO');
+                $sheet->setCellValue('D2', 'NUMERO DE DOCUMENTO');
+                $sheet->setCellValue('E2', 'FECHA DE NACIMIENTO');
+                $sheet->setCellValue('F2', 'EDAD');
+                $sheet->setCellValue('G2', 'SEXO');
+                $sheet->setCellValue('H2', 'TELEFONO');
+                $sheet->setCellValue('I2', 'CORREO');
+                $sheet->setCellValue('J2', 'DIRECCION');
+                $sheet->setCellValue('K2', 'DEPARTAMENTO');
+                $sheet->setCellValue('L2', 'MUNICIPIO');
+
+                $spreadsheet->getActiveSheet()->mergeCells('A1:L1');
+                $spreadsheet->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $spreadsheet->getActiveSheet()->getStyle('A2:L2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $spreadsheet->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+                $spreadsheet->getActiveSheet()->getStyle('A2:L2')->getFont()->setBold(true);
+
+                // Insertar registros
+                $fila = 3; // empezamos en la fila 2
+                for ($regj = 0; $regj <= count($subjectsArray) - 1; $regj++) {
+                    $sheet->setCellValue("A{$fila}", $subjectsArray[$regj]['name_place']);
+                    $sheet->setCellValue("B{$fila}", strtoupper($subjectsArray[$regj]['lastname_subject'] . " " . $subjectsArray[$regj]['surname_subject'] . " " .
+                        $subjectsArray[$regj]['firstname_subject'] . " " . $subjectsArray[$regj]['secondname_subject']));
+                    $sheet->setCellValue("C{$fila}", $subjectsArray[$regj]['typedoc_subject']);
+                    $sheet->setCellValue("D{$fila}", $subjectsArray[$regj]['document_subject']);
+                    $sheet->setCellValue("E{$fila}", $subjectsArray[$regj]['birth_subject']);
+                    $sheet->setCellValue("F{$fila}", $subjectsArray[$regj]['edad']);
+                    $sheet->setCellValue("G{$fila}", $subjectsArray[$regj]['sexo']);
+                    $sheet->setCellValue("H{$fila}", $subjectsArray[$regj]['phone_subject']);
+                    $sheet->setCellValue("I{$fila}", $subjectsArray[$regj]['email_subject']);
+                    $sheet->setCellValue("J{$fila}", $subjectsArray[$regj]['address_subject']);
+                    $sheet->setCellValue("K{$fila}", $subjectsArray[$regj]['name_department']);
+                    $sheet->setCellValue("L{$fila}", $subjectsArray[$regj]['name_municipality']);
+                    $fila++;
+                }
+
+                // Descargar Excel
+                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                header('Content-Disposition: attachment;filename="answers.xlsx"');
+                header('Cache-Control: max-age=0');
+
+                $writer = new Xlsx($spreadsheet);
+                $writer->save('answers.xlsx');
+                exit;
+            }
+        }
+    }
 }
 
 /* Función para Adicionar pregunta tipo Texto */
@@ -188,4 +329,11 @@ if (isset($_POST["totAnswer"])) {
     $ajax->token_user = $_POST["token"];
     $ajax->jsonData = $_POST["totAnswer"];
     $ajax->addAnswers();
+}
+
+if (isset($_POST["idInfHsurvey"])) {
+    $ajax = new bsurveysController();
+    //echo '<pre>'; print_r($_POST); echo '</pre>';exit;
+    $ajax->idHsurvey = $_POST["idInfHsurvey"];
+    $ajax->excelSurvey();
 }

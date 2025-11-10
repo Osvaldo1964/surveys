@@ -177,7 +177,7 @@
                             <ul class="nav nav-treeview">
                                 <?php if (in_array($rolUser, [1, 2, 3])) { ?>
                                     <li class="nav-item">
-                                        <a href="/centers" class="nav-link <?php if (!empty($routesArray[1]) && $routesArray[1] == "centers") : ?>active bg-info<?php endif ?>">
+                                        <a href="/infanswers" class="nav-link <?php if (!empty($routesArray[1]) && $routesArray[1] == "infanswers") : ?>active bg-info<?php endif ?>">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Informe de Encuestas</p>
                                         </a>
@@ -202,7 +202,7 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="/follows" class="nav-link <?php if (!empty($routesArray[1]) && $routesArray[1] == "follows") : ?>active bg-info<?php endif ?>">
+                                        <a href="/granswers" class="nav-link <?php if (!empty($routesArray[1]) && $routesArray[1] == "granswers") : ?>active bg-info<?php endif ?>">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Graficar Encuestas</p>
                                         </a>

@@ -1459,7 +1459,7 @@ function genPayroll() {
   var payMonth = selMonth.val(); // Captura el valor
   var selType = $('#payType').find(':selected')
   var payType = selType.val(); // Captura el valor
-  
+
   var data = new FormData();
   data.append("payYear", payYear);
   data.append("payMonth", payMonth);
@@ -1492,6 +1492,28 @@ function students_excel() {
     success: function (response) {
       console.log(response);
       window.location.href = "/views/pages/students/actions/students.xlsx";
+    }
+  })
+}
+
+function surveys_excel() {
+  var selSurvey = $('#survey').find(':selected')
+  var idHsurvey = selSurvey.val(); // Captura el valor
+  console.log(idHsurvey);
+
+  var data = new FormData();
+  data.append("idInfHsurvey", idHsurvey);
+
+  $.ajax({
+    url: "/ajax/ajax-answers.php",
+    method: "POST",
+    data: data,
+    contentType: false,
+    cache: false,
+    processData: false,
+    success: function (response) {
+      console.log(response);
+      //window.location.href = "/views/pages/students/actions/answers.xlsx";
     }
   })
 }

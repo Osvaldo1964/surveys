@@ -154,7 +154,9 @@ if (isset($routesArray[1])) {
       "follows",
       "owners",
       "surveys",
-      "answers"
+      "answers",
+      "infanswers",
+      "granswers"
     ];
 
     if (in_array($routesArray[1], $validRoutes)) : ?>
@@ -277,7 +279,9 @@ if (isset($routesArray[1])) {
           "follows",
           "owners",
           "surveys",
-          "answers"
+          "answers",
+          "infanswers",
+          "granswers"
         ];
 
         if (!empty($routesArray[1])) {
