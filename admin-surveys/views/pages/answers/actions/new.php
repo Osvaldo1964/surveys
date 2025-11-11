@@ -76,7 +76,7 @@
                     ?>
 
                     <div class="form-group">
-                        <select class="form-control select2 selectSurvey" name="idHsurvey" id="idHsurvey" style="width:100%" required>
+                        <select class="form-control select2 selectSurvey" name="idHsurvey" id="idHsurvey" style="width:100%">
                             <option value="">Seleccione Encuesta</option>
                             <?php foreach ($hsurveys as $key => $value) : ?>
                                 <option value="<?php echo $value->id_hsurvey ?>"><?php echo $value->name_hsurvey ?></option>

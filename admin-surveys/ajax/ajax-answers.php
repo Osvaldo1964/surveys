@@ -14,6 +14,7 @@ class bsurveysController
     /* Función para grabar tipo Texto */
     public $token_user;
     public $idHsurvey;
+    public $idBsurvey;
 
     public function genForm()
     {
@@ -287,7 +288,122 @@ class bsurveysController
             }
         }
     }
+
+    public function selHsurveys()
+    {
+        /* Verifico si el rol afecta departamentos o municipios */
+        $url = "relations?rel=hsurveys,owners&type=hsurvey,owner&orderBy=name_owner,name_hsurvey&orderMode=ASC";
+        $method = "GET";
+        $fields = array();
+        $hsurveys = CurlController::request($url, $method, $fields)->results;
+
+        $cadena = "";
+        $cadena .= "<option value=''>Seleccione Encuesta</option>";
+        foreach ($hsurveys as $key => $value) {
+            $cadena .= "<option value='" . $value->id_hsurvey .  "'>" . $value->name_hsurvey . "</option>";
+        }
+
+        echo $cadena;
+    }
+
+    public function selBsurveys()
+    {
+        // Selecciono las preguntas segun la encuesta
+        $url = "relations?rel=bsurveys,hsurveys&type=bsurvey,hsurvey" . "&linkTo=id_hsurvey_bsurvey&equalTo=" . $this->idHsurvey . "&orderBy=order_bsurvey&orderMode=ASC";
+        $method = "GET";
+        $fields = array();
+        $bsurveys = CurlController::request($url, $method, $fields)->results;
+
+        $cadena = "";
+        $cadena .= "<option value=''>Seleccione La Pregunta a Graficar</option>";
+        foreach ($bsurveys as $key => $value) {
+            $cadena .= "<option value='" . $value->id_bsurvey .  "'>" . $value->name_bsurvey . "</option>";
+        }
+
+        echo $cadena;
+    }
+
+    public function selAnswers()
+    {
+        // Selecciono las respuestas segun la pregunta
+        $select = "id_answer,name_bsurvey,detail_answer";
+        $url = "relations?rel=answers,bsurveys,hsurveys&type=answer,bsurvey,hsurvey&select=" . $select . "&linkTo=id_bsurvey_answer&equalTo=" .
+            $this->idBsurvey . "&orderBy=order_bsurvey&orderMode=ASC";
+        $method = "GET";
+        $fields = array();
+        $answers = CurlController::request($url, $method, $fields)->results;
+        //echo '<pre>'; print_r($answers); echo '</pre>'; exit;
+
+        $counts = [];
+        foreach ($answers as $row) {
+            $answer = $row->detail_answer;
+            if (!isset($counts[$answer])) {
+                $counts[$answer] = 0;
+            }
+            $counts[$answer]++;
+        }
+
+        $highchartsData = [];
+        foreach ($counts as $answer => $total) {
+            $highchartsData[] = [
+                'name' => $answer,
+                'y' => (int)$total // 'y' es la propiedad para el valor
+            ];
+        }
+        //echo json_encode($counts);
+        $chartTitle = !empty($answers[0]->name_bsurvey) ? $answers[0]->name_bsurvey : 'Resultados';
+        $jsonData = json_encode($highchartsData);
+
+        $html= "<script>
+            // Inyectamos las variables de PHP en JavaScript
+            const misDatos = <?php echo $jsonData; ?>;
+            const miTitulo = '<?php echo $chartTitle; ?>';
+
+            // Configuración de Highcharts
+            Highcharts.chart('graphAnswers', {
+                chart: {
+                    type: 'pie' // El tipo base es 'pie'
+                },
+                title: {
+                    text: miTitulo // El título que tomamos de PHP
+                },
+                tooltip: {
+                    // Texto que aparece al pasar el mouse
+                    pointFormat: '<b>{point.percentage:.1f}%</b> ({point.y} votos)'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Respuestas',
+                    colorByPoint: true,
+                    
+                    // --- ESTA ES LA CLAVE DEL DONUT ---
+                    innerSize: '50%', // Esto convierte el 'pie' en 'donut'
+                    // ------------------------------------
+
+                    data: misDatos // ¡Aquí usamos los datos de PHP!
+                    // misDatos es:
+                    // [
+                    //   { name: 'NO TENGO', y: 3 },
+                    //   { name: 'LO VOY A COMPRAR', y: 1 },
+                    //   { name: 'SI TENGO', y: 2 }
+                    // ]
+                }]
+            });
+        </script>";
+
+        echo $html;
+    }
 }
+
 
 /* Función para Adicionar pregunta tipo Texto */
 if (isset($_POST["idHsurvey"])) {
@@ -309,4 +425,24 @@ if (isset($_POST["idInfHsurvey"])) {
     //echo '<pre>'; print_r($_POST); echo '</pre>';exit;
     $ajax->idHsurvey = $_POST["idInfHsurvey"];
     $ajax->excelSurvey();
+}
+
+if (isset($_POST["selSurveys"])) {
+    $ajax = new bsurveysController();
+    $ajax->selHsurveys();
+}
+
+if (isset($_POST["idHsurveyBsurvey"])) {
+    $ajax = new bsurveysController();
+    //echo '<pre>'; print_r($_POST); echo '</pre>';exit;
+    $ajax->idHsurvey = $_POST["idHsurveyBsurvey"];
+    $ajax->selBsurveys();
+}
+
+
+if (isset($_POST["idBsurveyAnswers"])) {
+    $ajax = new bsurveysController();
+    //echo '<pre>'; print_r($_POST); echo '</pre>';exit;
+    $ajax->idBsurvey = $_POST["idBsurveyAnswers"];
+    $ajax->selAnswers();
 }
