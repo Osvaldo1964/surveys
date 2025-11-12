@@ -326,6 +326,7 @@ class bsurveysController
     public function selAnswers()
     {
         // Selecciono las respuestas segun la pregunta
+        //var_dump($this->idBsurvey);
         $select = "id_answer,name_bsurvey,detail_answer";
         $url = "relations?rel=answers,bsurveys,hsurveys&type=answer,bsurvey,hsurvey&select=" . $select . "&linkTo=id_bsurvey_answer&equalTo=" .
             $this->idBsurvey . "&orderBy=order_bsurvey&orderMode=ASC";
@@ -350,60 +351,9 @@ class bsurveysController
                 'y' => (int)$total // 'y' es la propiedad para el valor
             ];
         }
-        //echo json_encode($counts);
-        $chartTitle = !empty($answers[0]->name_bsurvey) ? $answers[0]->name_bsurvey : 'Resultados';
-        $jsonData = json_encode($highchartsData);
-
-        $html= "<script>
-            // Inyectamos las variables de PHP en JavaScript
-            const misDatos = <?php echo $jsonData; ?>;
-            const miTitulo = '<?php echo $chartTitle; ?>';
-
-            // Configuración de Highcharts
-            Highcharts.chart('graphAnswers', {
-                chart: {
-                    type: 'pie' // El tipo base es 'pie'
-                },
-                title: {
-                    text: miTitulo // El título que tomamos de PHP
-                },
-                tooltip: {
-                    // Texto que aparece al pasar el mouse
-                    pointFormat: '<b>{point.percentage:.1f}%</b> ({point.y} votos)'
-                },
-                plotOptions: {
-                    pie: {
-                        allowPointSelect: true,
-                        cursor: 'pointer',
-                        dataLabels: {
-                            enabled: true,
-                            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-                        }
-                    }
-                },
-                series: [{
-                    name: 'Respuestas',
-                    colorByPoint: true,
-                    
-                    // --- ESTA ES LA CLAVE DEL DONUT ---
-                    innerSize: '50%', // Esto convierte el 'pie' en 'donut'
-                    // ------------------------------------
-
-                    data: misDatos // ¡Aquí usamos los datos de PHP!
-                    // misDatos es:
-                    // [
-                    //   { name: 'NO TENGO', y: 3 },
-                    //   { name: 'LO VOY A COMPRAR', y: 1 },
-                    //   { name: 'SI TENGO', y: 2 }
-                    // ]
-                }]
-            });
-        </script>";
-
-        echo $html;
+        echo json_encode($highchartsData);
     }
 }
-
 
 /* Función para Adicionar pregunta tipo Texto */
 if (isset($_POST["idHsurvey"])) {

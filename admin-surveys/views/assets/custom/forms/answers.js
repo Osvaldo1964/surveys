@@ -124,7 +124,7 @@ $(document).on("change", ".hsurvey", function () {
 })
 
 // Cargo las respuestas segun la pregunta seleccionada
-$(document).on("change", ".bsurvey", function () {
+/* $(document).on("change", ".bsurvey", function () {
     console.log("Cambio en pregunta detectado");
     var selectedBsurvey = $('#bsurvey').find(':selected')
     var idBsurvey = selectedBsurvey.val(); // Captura el valor 
@@ -142,9 +142,6 @@ $(document).on("change", ".bsurvey", function () {
         processData: false,
         success: function (response) {
             console.log("Respuesta recibida para las respuestas de la pregunta:");
-            console.log(response);
-            $("#graphAnswers").html("");
-            $("#graphAnswers").innerHTML = response;
         }
     })
-});
+}); */

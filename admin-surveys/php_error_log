@@ -24966,3 +24966,7 @@ Stack trace:
 [10-Nov-2025 10:42:11 America/Bogota] PHP Warning:  foreach() argument must be of type array|object, string given in C:\xampp\htdocs\surveys\admin-surveys\views\pages\granswers\actions\list.php on line 44
 [11-Nov-2025 08:38:53 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
 [11-Nov-2025 08:38:53 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[12-Nov-2025 07:30:20 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[12-Nov-2025 07:30:20 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[12-Nov-2025 07:30:25 America/Bogota] PHP Warning:  include(modules/charts.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\surveys\admin-surveys\views\pages\granswers\actions\list.php on line 25
+[12-Nov-2025 07:30:25 America/Bogota] PHP Warning:  include(): Failed opening 'modules/charts.php' for inclusion (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\surveys\admin-surveys\views\pages\granswers\actions\list.php on line 25

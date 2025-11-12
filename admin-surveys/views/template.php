@@ -188,6 +188,7 @@ if (isset($routesArray[1])) {
   <script src="https://code.highcharts.com/modules/exporting.js"></script>
   <script src="https://code.highcharts.com/modules/export-data.js"></script>
   <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+  <script src="https://code.highcharts.com/highcharts-3d.js"></script>
   <!-- Chart -->
   <script src="views/assets/plugins/chart/js/Chart.min.js"></script>
   <script src="views/assets/custom/alerts/alerts.js"></script>
