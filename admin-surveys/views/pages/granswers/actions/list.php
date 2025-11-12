@@ -61,7 +61,6 @@ $idFormer = $_SESSION["former"] ?? 0;
             type: 'pie'
         }, // O 'column', 'bar', etc.
         tooltip: {
-            // Tooltip muestra valor exacto (y) y porcentaje
             pointFormat: 'Total: <b>{point.y}</b><br>Porcentaje: <b>{point.percentage:.1f}%</b>'
         },
         plotOptions: {
@@ -71,13 +70,7 @@ $idFormer = $_SESSION["former"] ?? 0;
                 depth: 35,
                 dataLabels: {
                     enabled: true,
-                    // Etiqueta muestra Nombre y Porcentaje
                     formatter: function() {
-                        // this.point.name  -> Nombre
-                        // this.y           -> Cantidad
-                        // this.percentage  -> Porcentaje (número)
-
-                        // .toFixed(1) recorta a 1 decimal
                         return '<b>' + this.point.name + '</b>: ' +
                             this.y + ' (' + this.percentage.toFixed(2) + '%)';
                     },
@@ -137,9 +130,6 @@ $idFormer = $_SESSION["former"] ?? 0;
         miGrafico.update({
             chart: {
                 type: nuevoTipo,
-                // Si estabas usando 3D en el Pie y pasas a Linea, 
-                // a veces es mejor desactivar el 3D para que se vea limpio,
-                // o ajustarlo (opcional).
                 options3d: {
                     enabled: (nuevoTipo === 'pie' || nuevoTipo === 'column'), // Solo 3D en pie y columnas
                     alpha: (nuevoTipo === 'pie') ? 45 : 15 // Ángulo diferente según el tipo
@@ -153,8 +143,6 @@ $idFormer = $_SESSION["former"] ?? 0;
                     }
                 }
             },
-            // IMPORTANTE: Al pasar de Pie a Columnas, necesitamos asegurarnos
-            // de que el eje X entienda los nombres ("SI", "NO", etc.)
             xAxis: {
                 type: 'category'
             },
