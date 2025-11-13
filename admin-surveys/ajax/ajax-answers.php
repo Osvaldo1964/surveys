@@ -36,24 +36,25 @@ class bsurveysController
 
             foreach ($items as $key => $value) {
                 $id_pregunta = $value->id_bsurvey;
+                $id_answer = $value->order_bsurvey;
                 $texto_pregunta = htmlspecialchars($value->name_bsurvey);
                 $tipo = $value->type_bsurvey;
                 $opciones_str = $value->detail_bsurvey;
-                $formulario_html .= '<input type="hidden" value="' . $tipo . '" name="type_' . $id_pregunta . '" id="type_' . $id_pregunta . '">';
+                $formulario_html .= '<input type="hidden" value="' . $tipo . '" name="type_' . $id_answer . '" id="type_' . $id_answer . '">';
 
 
                 $opciones_str = json_decode($value->detail_bsurvey, true);
                 $formulario_html .= '<div class="form-group col-md-10 mt-0 mb-0">';
-                $formulario_html .= "<label for='pregunta_" . $id_pregunta . "'>" . $texto_pregunta . "</label>";
+                $formulario_html .= "<label for='pregunta_" . $id_answer . "'>" . $texto_pregunta . "</label>";
 
                 switch ($tipo) {
 
                     case 1:
-                        $formulario_html .= "<input type='text' class='form-control' name='pregunta_" . $id_pregunta . "' id='pregunta_" . $id_pregunta . "'>";
+                        $formulario_html .= "<input type='text' class='form-control' name='pregunta_" . $id_answer . "' id='pregunta_" . $id_answer . "'>";
                         break;
 
                     case 2:
-                        $formulario_html .= "<input type='date' name='pregunta_" . $id_pregunta . "' id='pregunta_" . $id_pregunta . "'>";
+                        $formulario_html .= "<input type='date' name='pregunta_" . $id_answer . "' id='pregunta_" . $id_answer . "'>";
                         break;
 
                     case 3:
@@ -63,7 +64,7 @@ class bsurveysController
                             foreach ($opciones_str as $opcion => $element) {
                                 $opcion_limpia = htmlspecialchars(trim($element["nombre"]));
                                 $formulario_html .= "<div class='form-check form-check-inline'>";
-                                $formulario_html .= "<input type='radio' class='form-check-input' name='pregunta_" . $id_pregunta . "' id='pregunta_" . $id_pregunta . $i . "' value='" . $opcion_limpia . "'> ";
+                                $formulario_html .= "<input type='radio' class='form-check-input' name='pregunta_" . $id_answer . "' id='pregunta_" . $id_answer . $i . "' value='" . $opcion_limpia . "'> ";
                                 $formulario_html .= $opcion_limpia;
                                 $formulario_html .= "</div>";
                                 $i++;
@@ -77,7 +78,7 @@ class bsurveysController
                             foreach ($opciones_str as $opcion => $element) {
                                 $opcion_limpia = htmlspecialchars(trim($element["nombre"]));
                                 $formulario_html .= "<div class='form-check form-check-inline'>";
-                                $formulario_html .= "<input class='form-check-input' type='checkbox' name='pregunta_" . $id_pregunta . "' id='pregunta_" . $id_pregunta . $i . "' value='" . $opcion_limpia . "'> ";
+                                $formulario_html .= "<input class='form-check-input' type='checkbox' name='pregunta_" . $id_answer . "' id='pregunta_" . $id_answer . $i . "' value='" . $opcion_limpia . "'> ";
                                 $formulario_html .= $opcion_limpia;
                                 $formulario_html .= "</div>";
                                 $i++;
@@ -105,7 +106,7 @@ class bsurveysController
     public function addAnswers()
     {
         $answersArray = json_decode($this->jsonData, true);
-        //echo '<pre>'; print_r($answersArray); echo '</pre>';
+        echo '<pre>'; print_r($answersArray); echo '</pre>';
         $this->idHsurvey = $answersArray['idHsurvey'];
 
         // Leo el consecutivo de las encuestas
@@ -127,6 +128,7 @@ class bsurveysController
         }
 
         $datos = json_decode($this->jsonData, true);
+        //echo '<pre>'; print_r($datos); echo '</pre>';exit;
 
         if ($datos === null) {
             throw new Exception("Error: El JSON recibido no es válido.");
@@ -135,6 +137,7 @@ class bsurveysController
         $idEncuesta = $datos['idHsurvey'];
         echo "Iniciando guardado para la Encuesta ID: $idEncuesta...<br>";
 
+        echo '<pre>'; print_r($datos); echo '</pre>';
         $i = 1; // Empezamos el contador en 1
 
         // El bucle continuará mientras exista una 'pregunta_X' (pregunta_1, pregunta_2, etc.)
@@ -172,6 +175,7 @@ class bsurveysController
             $fields = $data;
             $response = CurlController::request($url, $method, $fields);
             $i++;
+            echo '<pre>'; print_r($response); echo '</pre>';
         }
 
         /* Actualizo el ultimo registro de Encuesta en Settings*/
@@ -365,6 +369,7 @@ if (isset($_POST["idHsurvey"])) {
 /* Función para Adicionar pregunta tipo Texto */
 if (isset($_POST["totAnswer"])) {
     $ajax = new bsurveysController();
+    //echo '<pre>'; print_r($_POST); echo '</pre>';exit;
     $ajax->token_user = $_POST["token"];
     $ajax->jsonData = $_POST["totAnswer"];
     $ajax->addAnswers();
@@ -393,6 +398,7 @@ if (isset($_POST["idHsurveyBsurvey"])) {
 if (isset($_POST["idBsurveyAnswers"])) {
     $ajax = new bsurveysController();
     //echo '<pre>'; print_r($_POST); echo '</pre>';exit;
+    $ajax->idHsurvey = $_POST["idHsurveyAnswer"];
     $ajax->idBsurvey = $_POST["idBsurveyAnswers"];
     $ajax->selAnswers();
 }

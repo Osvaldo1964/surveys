@@ -2,113 +2,64 @@
 
 error_reporting(0);
 
-/* Obtengo los Cargos*/
-$select = "id_charge,id_department_charge,id_municipality_charge";
-$url = "charges?select=" . $select;
-$places = CurlController::request($url, $method, $fields)->results;
+/* Obtengo los Encuestas*/
+$select = "id_hsurvey,name_hsurvey";
+$url = "hsurveys?select=" . $select;
+$hsurveys = CurlController::request($url, $method, $fields)->results;
 
 
-//echo '<pre>'; print_r($placesDpto); echo '</pre>';
+
+//echo '<pre>'; print_r($hsurveys); echo '</pre>';
 
 //echo '<pre>'; print_r($placesMuni); echo '</pre>';exit;
 
-/* Obtengo los Departamentos*/
-$select = "id_department,name_department";
-$url = "departments?select=" . $select;
-$dptos = CurlController::request($url, $method, $fields)->results;
-//echo '<pre>'; print_r($dptos); echo '</pre>';
+/* Obtengo las Respuestas */
+$select = "id_answer,id_hsurvey,name_hsurvey,sequence_answer";
+$url = "relations?rel=answers,bsurveys,hsurveys&type=answer,bsurvey,hsurvey&select=" . $select;
+$answers = CurlController::request($url, $method, $fields)->results;
+echo '<pre>';
+print_r($bsurveys);
+echo '</pre>';
 
-/* Obtengo los Municipios */
-$select = "id_municipality,name_municipality,id_department_municipality";
-$url = "municipalities?select=" . $select;
-$munis = CurlController::request($url, $method, $fields)->results;
+$temp = [];
 
-/* Obtengo los Cargos */
-$select = "id_place,name_place";
-$url = "places?select=" . $select;
-$places = CurlController::request($url, $method, $fields)->results;
+foreach ($answers as $row) {
+    $id = $row->id_hsurvey;
 
-/* Obtengo los valores para agrupar Departamentos*/
-$select = "id_charge,id_department_charge,id_department,name_department,id_municipality_charge,id_municipality,name_municipality,name_place,total_charge,used_charge";
-$url = "relations?rel=charges,departments,municipalities,places&type=charge,department,municipality,place&select=" . $select .
-    "&orderBy=name_department,name_municipality&orderMode=ASC";
-$charges = CurlController::request($url, $method, $fields);
-//echo '<pre>'; print_r($charges); echo '</pre>';exit;
+    // 1. Guardamos el nombre de la encuesta
+    $temp[$id]['name_hsurvey'] = $row->name_hsurvey;
 
-if ($charges->status == 200) {
-    $rows = $charges->total;
-    $charges = $charges->results;
-} else {
-    $charges = array();
+    // 2. Guardamos la secuencia como CLAVE.
+    // Esto es el truco: al usar el numero de secuencia como índice,
+    // eliminamos los duplicados automáticamente.
+    $temp[$id]['unique_sequences'][$row->sequence_answer] = true;
 }
 
-/* TOTAL POR DEPARTAMENTOS TODOS LOS CARGOS */
-$dpto_gral = array();
-$contar = 1;
-$depvalido = '';
+$resultadoFinal = [];
 
-for ($c = 0; $c <= $rows - 1; $c++) {
-    if ($charges[$c]->name_municipality == "") {
-        $charges[$c]->name_municipality = "NM";
-    }
-    if ($depvalido == '') {
-        $dpto_gral[$contar][0] = $charges[$c]->id_department;
-        $dpto_gral[$contar][1] = $charges[$c]->name_department;
-        $dpto_gral[$contar][2] = $charges[$c]->total_charge;
-        $depvalido = $charges[$c]->name_department;
-        $contar++;
-    } else {
-        if ($depvalido == $charges[$c]->name_department) {
-            $dpto_gral[$contar - 1][2] = $dpto_gral[$contar - 1][2] + $charges[$c]->total_charge;
-        } else {
-            $dpto_gral[$contar][0] = $charges[$c]->id_department;
-            $dpto_gral[$contar][1] = $charges[$c]->name_department;
-            $dpto_gral[$contar][2] = $charges[$c]->total_charge;
-            $depvalido = $charges[$c]->name_department;
-            $contar++;
-        }
-    }
+foreach ($temp as $id => $info) {
+    $resultadoFinal[] = [
+        'id_hsurvey'   => $id,
+        'name_hsurvey' => $info['name_hsurvey'],
+
+        // 3. Contamos cuántas secuencias únicas encontramos (en tu caso: 1 y 2)
+        'num_surveys'  => count($info['unique_sequences'])
+    ];
 }
-//echo '<pre>'; print_r($charges[0]->id_department); echo '</pre>';
-//echo '<pre>'; print_r($dpto_gral); echo '</pre>';exit;
 
-/* TOTAL DE UN DEPARTAMENTO */
+//echo '<pre>'; print_r($resultadoFinal); echo '</pre>';
 
-$muni_gral = array();
-$contar2 = 1;
-$munvalido = '';
-
-for ($c = 0; $c <= $rows - 1; $c++) {
-    if ($charges[$c]->id_department == $charges[0]->id_department) {
-        if ($munvalido == '') {
-            $muni_gral[$contar2][0] = $charges[$c]->name_municipality;
-            $muni_gral[$contar2][1] = $charges[$c]->total_charge;
-            $munvalido = $charges[$c]->name_municipality;
-            $contar2++;
-        } else {
-            if ($munvalido == $charges[$c]->name_municipality) {
-                $muni_gral[$contar2 - 1][1] = $muni_gral[$contar2 - 1][1] + $charges[$c]->total_charge;
-            } else {
-                $muni_gral[$contar2][0] = $charges[$c]->name_municipality;
-                $muni_gral[$contar2][1] = $charges[$c]->total_charge;
-                $munvalido = $charges[$c]->name_municipality;
-                $contar2++;
-            }
-        }
-    }
-}
-//echo '<pre>'; print_r($muni_gral); echo '</pre>';exit;
 ?>
 
 <div class="row col-md-12">
     <!--=====================================
-    Gráfico de Cargos por Departamento
+    Encuestas Contratadas
     ======================================-->
 
     <!-- PIE CHART -->
     <div class="card card-danger col-md-6">
         <div class="card-header">
-            <h3 class="card-title">Cargos Totales por Departamento</h3>
+            <h3 class="card-title">Encuestas Contratadas</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -120,20 +71,21 @@ for ($c = 0; $c <= $rows - 1; $c++) {
             </div>
         </div>
         <div class="card-body">
-            <div id="cantDpto"></div>
+            <div id="cantSurveys"></div>
         </div>
         <!-- /.card-body -->
     </div>
     <!-- /.card -->
 
     <!--=====================================
-    Gráfico de Cargos Por Municipio
+    Respuestas por Encuestas
     ======================================-->
 
     <!-- PIE CHART -->
     <div class="card card-info col-md-6">
         <div class="card-header">
-            <h3 class="card-title">Cargos Totales por Municipio</h3>
+            <h3 class="card-title">Respuestas por Encuestas</h3>
+
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
@@ -144,38 +96,15 @@ for ($c = 0; $c <= $rows - 1; $c++) {
             </div>
         </div>
         <div class="card-body">
-            <div class="container-title">
-                <div class="dflex text-left">
-                    <div class="input-group col-md-8">
-                        <?php
-                        $url = "dptorigins?select=id_dptorigin,name_dptorigin&linkTo=";
-                        $method = "GET";
-                        $fields = array();
-                        $dptorigins = CurlController::request($url, $method, $fields)->results;
-                        ?>
-                        <span class="input-group-text">
-                            Seleccione Departamento
-                        </span>
-                        <select class="form-control select2 dptoSearch" name="dptoSearch" id="dptoSearch">
-                            <?php for ($c = 1; $c <= count($dpto_gral) - 1; $c++) { ?>
-                                <option value="<?php echo $dpto_gral[$c][0] ?>"><?php echo $dpto_gral[$c][1] ?></option>
-                            <?php } ?>
-                        </select>
-
-                    </div>
-                </div>
-            </div>
-            <div class="cantMuni" id="cantMuni">
-            </div>
+            <div id="cantAnswers"></div>
         </div>
         <!-- /.card-body -->
     </div>
-    <!-- /.card -->
 </div>
 
 
 <script>
-    Highcharts.chart('cantDpto', {
+    Highcharts.chart('cantSurveys', {
         chart: {
             plotBackgroundColor: null,
             plotBorderWidth: null,
@@ -208,8 +137,8 @@ for ($c = 0; $c <= $rows - 1; $c++) {
             colorByPoint: true,
             data: [
                 <?php
-                for ($c = 1; $c <= $contar - 1; $c++) {
-                    echo "{name:'" . $dpto_gral[$c][1] . "',y:" . $dpto_gral[$c][2] . "},";
+                foreach ($hsurveys as $key => $value) {
+                    echo "{name:'" . $value->name_hsurvey . "',y:1},";
                 }
 
                 ?>
@@ -217,7 +146,7 @@ for ($c = 0; $c <= $rows - 1; $c++) {
         }]
     });
 
-    Highcharts.chart('cantMuni', {
+    Highcharts.chart('cantAnswers', {
         chart: {
             plotBackgroundColor: null,
             plotBorderWidth: null,
@@ -228,21 +157,25 @@ for ($c = 0; $c <= $rows - 1; $c++) {
             text: ''
         },
         tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
-        accessibility: {
-            point: {
-                valueSuffix: '%'
-            }
+            pointFormat: 'Total: <b>{point.y}</b><br>Porcentaje: <b>{point.percentage:.1f}%</b>'
         },
         plotOptions: {
             pie: {
                 allowPointSelect: true,
                 cursor: 'pointer',
+                depth: 35,
                 dataLabels: {
                     enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                    formatter: function() {
+                        return '<b>' + this.point.name + '</b>: ' +
+                            this.y + ' (' + this.percentage.toFixed(2) + '%)';
+                    },
                 }
+            }
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
             }
         },
         series: [{
@@ -250,15 +183,12 @@ for ($c = 0; $c <= $rows - 1; $c++) {
             colorByPoint: true,
             data: [
                 <?php
-                $contar2 = count($muni_gral);
-                for ($c = 1; $c <= $contar2 - 1; $c++) {
-                    echo "{name:'" . $muni_gral[$c][0] . "',y:" . $muni_gral[$c][1] . "},";
+                foreach ($resultadoFinal as $item) {
+                    echo "{name:'" . $item['name_hsurvey'] . "',y:" . $item['num_surveys'] . "},";
                 }
 
                 ?>
             ]
         }]
     });
-
-   
 </script>

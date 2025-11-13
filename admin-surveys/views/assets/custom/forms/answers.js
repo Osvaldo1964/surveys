@@ -38,6 +38,9 @@ if (contenedorDelFormulario != null) {
 
         if (event.target.id === 'addAnswer') {
             event.preventDefault(); // Evita el comportamiento por defecto del botón
+            var selectedHsurvey = $('#idHsurvey').find(':selected')
+            var idHsurvey = selectedHsurvey.val(); // Captura el valor
+
             const selectedType = document.getElementById('idbsurvey');
             const formulario = event.target.closest('form');
             if (!formulario) {
@@ -62,6 +65,7 @@ if (contenedorDelFormulario != null) {
 
             var data = new FormData();
             data.append("token", localStorage.getItem("token_user"));
+            data.append("idHsurveyAnswer", idHsurvey);
             data.append("totAnswer", JSON.stringify(datosDelFormulario));
 
             $.ajax({
