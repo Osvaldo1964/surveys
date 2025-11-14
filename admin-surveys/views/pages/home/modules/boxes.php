@@ -29,17 +29,25 @@ if ($hsurveys->status == 200) {
 }
 
 /*=============================================
-total de Beneficiarios / Estudiantes
+total de Encuestas Registradas
 =============================================*/
 
-$url = "students?select=id_student";
-$students = CurlController::request($url, $method, $fields);
+/* Obtengo las Respuestas */
+$select = "id_answer,id_hsurvey,name_hsurvey,sequence_answer";
+$url = "relations?rel=answers,bsurveys,hsurveys&type=answer,bsurvey,hsurvey&select=" . $select;
+$answers = CurlController::request($url, $method, $fields)->results;
+$secuenciasUnicas = [];
 
-if ($students->status == 200) {
-  $students = $students->total;
-} else {
-  $students = 0;
+foreach ($answers as $row) {
+    // Guardamos la secuencia como CLAVE en un array global.
+    // Si la secuencia "A-001" aparece en la encuesta 1 y luego en la 5,
+    // aquí solo se guardará una vez.
+    $secuenciasUnicas[$row->sequence_answer] = true;
 }
+
+// El conteo final de claves es tu totalidad general
+$totAnswers = count($secuenciasUnicas);;
+
 
 /*=============================================
 total de usuarios
@@ -89,7 +97,7 @@ if ($users->status == 200) {
 
       <div class="info-box-content">
         <span class="info-box-text">Encuestas Registradas</span>
-        <span class="info-box-number"><?php echo $students ?></span>
+        <span class="info-box-number"><?php echo $totAnswers ?></span>
       </div>
       <!-- /.info-box-content -->
     </div>

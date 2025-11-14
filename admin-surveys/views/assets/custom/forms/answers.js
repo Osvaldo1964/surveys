@@ -126,26 +126,3 @@ $(document).on("change", ".hsurvey", function () {
         }
     })
 })
-
-// Cargo las respuestas segun la pregunta seleccionada
-/* $(document).on("change", ".bsurvey", function () {
-    console.log("Cambio en pregunta detectado");
-    var selectedBsurvey = $('#bsurvey').find(':selected')
-    var idBsurvey = selectedBsurvey.val(); // Captura el valor 
-    console.log("ID de la pregunta seleccionada: " + idBsurvey);
-
-    var data = new FormData();
-    data.append("idBsurveyAnswers", idBsurvey);
-
-    $.ajax({
-        url: "/ajax/ajax-answers.php",
-        method: "POST",
-        data: data, 
-        contentType: false,
-        cache: false,
-        processData: false,
-        success: function (response) {
-            console.log("Respuesta recibida para las respuestas de la pregunta:");
-        }
-    })
-}); */

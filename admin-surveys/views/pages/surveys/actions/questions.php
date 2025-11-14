@@ -62,7 +62,7 @@ if (isset($routesArray[3])) {
                 </div>
                 <div class="input-group-text col-md-3 mt-2">
                     <label class="input-group-text" for="orderQuestion">Orden</label>
-                    <input type="text" class="form-control" pattern="[0-9]+" onchange="validateJS(event,'text')"
+                    <input type="number" class="form-control" pattern="[0-9]+" onchange="validateJS(event,'num')"
                         name="orderQuestion" id="orderQuestion">
                 </div>
             </div>
@@ -93,7 +93,7 @@ if (isset($routesArray[3])) {
                     </div>
                     <div class="input-group-text col-md-6 mt-2">
                         <label class="input-group-text" for="orderOption">Orden</label>
-                        <input type="text" class="form-control" pattern="[0-9]+" onchange="validateJS(event,'text')"
+                        <input type="number" class="form-control" pattern="[0-9]+" onchange="validateJS(event,'num')"
                             name="orderOption" id="orderOption">
                     </div>
                     <button class='btn btn-success btn-sm mb-2 mt-2 addOptionOption' onclick="addOptionOption" id="addOptionOption">Adicionar</button>
