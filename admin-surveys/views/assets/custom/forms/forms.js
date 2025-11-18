@@ -1,5 +1,5 @@
-let latitude;
-let longitude;
+/*let latitude;
+let longitude;*/
 
 
 /* Validacion de formularios */
