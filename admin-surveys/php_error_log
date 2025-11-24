@@ -25072,3 +25072,11 @@ Stack trace:
 [24-Nov-2025 08:46:00 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
 [24-Nov-2025 10:02:59 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
 [24-Nov-2025 10:02:59 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[24-Nov-2025 13:58:29 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[24-Nov-2025 13:58:29 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[24-Nov-2025 14:00:13 America/Bogota] PHP Warning:  Undefined variable $hsurveys in C:\xampp\htdocs\surveys\admin-surveys\views\pages\surveys\actions\questions.php on line 36
+[24-Nov-2025 14:00:13 America/Bogota] PHP Warning:  Attempt to read property "name_hsurvey" on null in C:\xampp\htdocs\surveys\admin-surveys\views\pages\surveys\actions\questions.php on line 36
+[24-Nov-2025 14:00:13 America/Bogota] PHP Warning:  Undefined variable $hsurveys in C:\xampp\htdocs\surveys\admin-surveys\views\pages\surveys\actions\questions.php on line 37
+[24-Nov-2025 14:00:13 America/Bogota] PHP Warning:  Attempt to read property "name_owner" on null in C:\xampp\htdocs\surveys\admin-surveys\views\pages\surveys\actions\questions.php on line 37
+[24-Nov-2025 14:50:23 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[24-Nov-2025 14:50:23 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76

@@ -287,3 +287,45 @@ $(document).on("click", ".btn-edit-answer", function (event) {
         }
     })
 })
+
+// Escuchar el boton de eliminar  pregunta 
+$(document).on("click", ".btn-delete-answer", function (event) {
+    event.preventDefault();
+    let idBsurvey = $(this).data('id-bsurvey');
+    document.getElementById('idEditBsurvey').value = idBsurvey;
+
+    fncSweetAlert("confirm", "Esta seguro de borrar este registro?", "").then(resp => {
+        if (resp) {
+            var data = new FormData();
+            data.append("token", localStorage.getItem("token_user"));
+            data.append("iddeleteBsurvey", idBsurvey);
+
+            $.ajax({
+                url: "ajax/ajax-surveys.php",
+                method: "POST",
+                data: data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (response) {
+                    if (response == "ok") {
+                        fncSweetAlert(
+                            "success",
+                            "El registro fue eliminado",
+                            ""
+                        );
+                        tableItems();
+                    } else if (response == "no delete") {
+                        fncSweetAlert(
+                            "error",
+                            "El registro tiene datos relacionados",
+                            ""
+                        );
+                    } else {
+                        fncNotie(3, "Error al eliminar el registro");
+                    }
+                }
+            })
+        }
+    })
+})

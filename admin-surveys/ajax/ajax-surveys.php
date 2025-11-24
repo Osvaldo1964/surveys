@@ -60,7 +60,9 @@ class bsurveysController
         $fields = array();
         //echo '<pre>'; print_r($url); echo '</pre>';
         $secuencia = CurlController::request($url, $method, $fields);
-        echo '<pre>'; print_r($secuencia); echo '</pre>';
+        echo '<pre>';
+        print_r($secuencia);
+        echo '</pre>';
         if ($secuencia->status == 200) {
             /* Agrupamos la información */
             $data =
@@ -151,6 +153,20 @@ class bsurveysController
             echo json_encode(array("status" => 404));
         }
     }
+
+    public function deleteQuestion()
+    {
+        $url = "bsurveys?id=" . $this->idBsurvey . "&nameId=id_bsurvey&token=" . $this->token_user . "&table=users&suffix=user";
+        $method = "DELETE";
+        $fields = array();
+        $response = CurlController::request($url, $method, $fields);
+
+        if ($response->status == 200) {
+            echo "ok";
+        } else {
+            echo "error";
+        }
+    }
 }
 
 /* Función para Adicionar pregunta tipo Texto */
@@ -193,4 +209,13 @@ if (isset($_POST["idBsurvey"])) {
     $ajax = new bsurveysController();
     $ajax->idBsurvey = $_POST["idBsurvey"];
     $ajax->selEditAnswer();
+}
+
+/* Función para Seleccionar la informacion de una respuesta para su edicion */
+if (isset($_POST["iddeleteBsurvey"])) {
+    //echo '<pre>'; print_r($_POST); echo '</pre>';exit;
+    $ajax = new bsurveysController();
+    $ajax->token_user = $_POST["token"];
+    $ajax->idBsurvey = $_POST["iddeleteBsurvey"];
+    $ajax->deleteQuestion();
 }
