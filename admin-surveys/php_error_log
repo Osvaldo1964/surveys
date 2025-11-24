@@ -25066,3 +25066,9 @@ Stack trace:
 [15-Nov-2025 09:50:21 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
 [23-Nov-2025 22:08:43 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
 [23-Nov-2025 22:08:43 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[24-Nov-2025 08:43:03 America/Bogota] PHP Warning:  Attempt to read property "status" on null in C:\xampp\htdocs\surveys\admin-surveys\controllers\admins.controller.php on line 16
+[24-Nov-2025 08:43:03 America/Bogota] PHP Warning:  Attempt to read property "results" on null in C:\xampp\htdocs\surveys\admin-surveys\controllers\admins.controller.php on line 89
+[24-Nov-2025 08:46:00 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[24-Nov-2025 08:46:00 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[24-Nov-2025 10:02:59 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[24-Nov-2025 10:02:59 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76

@@ -27,7 +27,7 @@
                         <a class="nav-link" href="pqrs.php">PQRS</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-primary" href="http://localhost/surveys/admin-surveys" target="_blank">Administración</a>
+                        <a class="btn btn-primary" href="http://admin-surveys.com/login" target="_blank">Administración</a>
                     </li>
                 </ul>
             </div>
