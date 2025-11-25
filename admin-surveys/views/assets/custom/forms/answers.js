@@ -30,7 +30,7 @@ $(document).on("change", ".selectSurvey", function (event) {
     });
 });
 
-// Adicionar una opcion a una pregunta de tipo Opción
+// Adicionar una Respuesta
 const contenedorDelFormulario = document.getElementById("dynamicFormFields");
 if (contenedorDelFormulario != null) {
     contenedorDelFormulario.addEventListener("click", function (event) {
@@ -46,19 +46,37 @@ if (contenedorDelFormulario != null) {
                 console.error("Error: No se pudo encontrar el formulario '#miFormularioDinamico'");
                 return;
             }
-
+            //console.log("Formulario encontrado:", formulario);
             const formData = new FormData(formulario);
             const datosDelFormulario = {};
 
             for (let [name, value] of formData.entries()) {
-                if (datosDelFormulario.hasOwnProperty(name)) {
-                    if (!Array.isArray(datosDelFormulario[name])) {
-                        datosDelFormulario[name] = [datosDelFormulario[name]];
-                    }
-                    datosDelFormulario[name].push(value);
 
+                const match = name.match(/^(.+)\[(.+)\]$/);
+
+                if (match) {
+                    // CASO A: Es un input compuesto (ej: pregunta_1[largo])
+                    const llavePrincipal = match[1]; // "pregunta_1"
+                    const subLlave = match[2];       // "largo"
+
+                    // Si no existe el objeto padre, lo creamos
+                    if (!datosDelFormulario[llavePrincipal]) {
+                        datosDelFormulario[llavePrincipal] = {};
+                    }
+
+                    // Asignamos el valor a la sub-propiedad
+                    datosDelFormulario[llavePrincipal][subLlave] = value;
                 } else {
-                    datosDelFormulario[name] = value;
+
+                    if (datosDelFormulario.hasOwnProperty(name)) {
+                        if (!Array.isArray(datosDelFormulario[name])) {
+                            datosDelFormulario[name] = [datosDelFormulario[name]];
+                        }
+                        datosDelFormulario[name].push(value);
+
+                    } else {
+                        datosDelFormulario[name] = value;
+                    }
                 }
             }
 

@@ -90,36 +90,19 @@ class bsurveysController
                         //var_dump($opciones_str);
                         foreach ($opciones_str as $item) {
                             $campos[] = [
-                                // A. Seleccionamos el elemento que queremos mantener
-                                'label'      => ucfirst(strtolower($item['nombre'])),
-                                // B. Agregamos el elemento ADICIONAL (hardcodeado o calculado)
-                                'key'      => $item['nombre']
+                                'label' => ucfirst(strtolower($item['nombre'])),
+                                'key'   => $item['nombre']
                             ];
                         }
                         
                         $sin_duplicados = array_unique($campos, SORT_REGULAR);
-
-                        // 2. Re-indexamos (IMPORTANTE)
-                        // array_unique deja huecos en los índices (ej: 0, 1, 3), esto los vuelve a poner 0, 1, 2
                         $campos_final = array_values($sin_duplicados);
-
-                        //echo '<pre>'; print_r($campos_final); echo '</pre>'; exit;
                         $formulario_html .= '<div class="row mt-0 mb-0">';
 
-                        // 2. Decodificamos el JSON de la base de datos.
-                        // El segundo parámetro 'true' convierte el objeto JSON en un Array Asociativo de PHP.
-                        //$campos = $opciones_str; //json_decode($opciones_str, true);
-                        //var_dump($opciones_str);
-                        // Verificamos que la decodificación fue exitosa y es un array
                         foreach ($campos_final as $campo) {
-                            //var_dump($campos);
-                            // Extraemos variables para que el código HTML sea más limpio
                             $label = htmlspecialchars($campo['label']); // Sanitizamos por seguridad
                             $key   = htmlspecialchars($campo['key']);
                             $id    = $id_answer;
-
-                            // 3. Concatenamos el HTML
-                            // Nota el atributo name: respuesta_ID[KEY]
                             $formulario_html .= '
                                     <div class="col-md-3 mb-2">
                                         <label class="small">' . $label . '</label>
@@ -133,7 +116,6 @@ class bsurveysController
                         $formulario_html .= '</div>'; // Cerramos el row
                         break;
                 }
-
                 $formulario_html .= '</div>'; // Cierre de .pregunta
             }
             $formulario_html .= "<div class='row border' style='overflow: auto;'>
