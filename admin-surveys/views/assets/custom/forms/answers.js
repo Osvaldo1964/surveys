@@ -32,14 +32,13 @@ $(document).on("change", ".selectSurvey", function (event) {
 
 // Adicionar una opcion a una pregunta de tipo Opción
 const contenedorDelFormulario = document.getElementById("dynamicFormFields");
-console.log(contenedorDelFormulario);
 if (contenedorDelFormulario != null) {
     contenedorDelFormulario.addEventListener("click", function (event) {
 
         if (event.target.id === 'addAnswer') {
             event.preventDefault(); // Evita el comportamiento por defecto del botón
-            var selectedHsurvey = $('#idHsurvey').find(':selected')
-            var idHsurvey = selectedHsurvey.val(); // Captura el valor
+            let selectedHsurvey = $('#idHsurvey').find(':selected')
+            let idHsurvey = selectedHsurvey.val(); // Captura el valor
 
             const selectedType = document.getElementById('idbsurvey');
             const formulario = event.target.closest('form');
@@ -77,6 +76,7 @@ if (contenedorDelFormulario != null) {
                 processData: false,
                 success: function (response) {
                     formulario.reset();
+                    document.getElementById("idHsurvey").value = idHsurvey;
                     document.getElementById('pregunta_1').focus();
                 }
             });

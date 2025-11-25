@@ -58,6 +58,7 @@ if (isset($routesArray[3])) {
                         <option value="2">Fecha</option>
                         <option value="3">Opción</option>
                         <option value="4">Selección Múltiple</option>
+                        <option value="5">Opción Compuesta</option>
                     </select>
                 </div>
                 <div class="input-group-text col-md-3 mt-2">
@@ -70,7 +71,7 @@ if (isset($routesArray[3])) {
             <div class="col-md-6 notblock divOptions border mt-1" style="float: right; text-align: center; height: 310px;" id="divOptions">
                 <div class="col-md-6 border mt-1 mx-auto d-flex flex-column" style="float: left; height: 300px;">
                     <div class="table responsive" style="height: 300px;" id="tableOptions">
-                        <div class="table-responsive">
+                        <div class="table-responsive" style="overflow: auto;">
                             <table class="table table-bordered table-striped mt-1" id="tableOptions">
                                 <thead style="text-align: center; font-size: 12px;">
                                     <tr>
@@ -98,6 +99,40 @@ if (isset($routesArray[3])) {
                     </div>
                     <button class='btn btn-success btn-sm mb-2 mt-2 addOptionOption' onclick="addOptionOption" id="addOptionOption">Adicionar</button>
                     <button class='btn btn-success btn-sm mb-2 mt-2 editOptionOption' style="display: none;" onclick="editOptionOption" id="editOptionOption">Actualizar</button>
+                </div>
+            </div>
+            <!-- Div inferior derecho para crear o editar preguntas tipo Opcion  -->
+            <div class="col-md-6 notblock divComposite border mt-1" style="float: right; text-align: center; height: 310px;" id="divComposite">
+                <div class="col-md-6 border mt-1 mx-auto d-flex flex-column" style="float: left; height: 300px;">
+                    <div class="table responsive" style="height: 300px;" id="tableComposites">
+                        <div class="table-responsive" style="overflow: auto;">
+                            <table class="table table-bordered table-striped mt-1" id="tableComposite">
+                                <thead style="text-align: center; font-size: 12px;">
+                                    <tr>
+                                        <th>ORDEN</th>
+                                        <th>DETALLE</th>
+                                        <th>OPCIONES</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyOptions">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="div-der-composite col-md-6 border mt-1 mx-auto d-flex flex-column" id="div-der-composite">
+                    <div class="input-group-text col-md-12 mt-2">
+                        <label class="input-group-text" for="nameComposite">Nombre</label>
+                        <input type="text" class="form-control" pattern="[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ ]{1,}" onchange="validateJS(event,'text')"
+                            style="text-transform: uppercase;" name="nameComposite" id="nameComposite">
+                    </div>
+                    <div class="input-group-text col-md-6 mt-2">
+                        <label class="input-group-text" for="orderComposite">Orden</label>
+                        <input type="number" class="form-control" pattern="[0-9]+" onchange="validateJS(event,'num')"
+                            name="orderOption" id="orderComposite">
+                    </div>
+                    <button class='btn btn-success btn-sm mb-2 mt-2 addOptionComposite' onclick="addOptionOption" id="addOptionComposite">Adicionar</button>
+                    <button class='btn btn-success btn-sm mb-2 mt-2 editOptionComposite' style="display: none;" onclick="editOptionOption" id="editOptionComposite">Actualizar</button>
                 </div>
             </div>
             <!-- Div inferior derecho centrado para preguntas tipo texto o fecha  -->

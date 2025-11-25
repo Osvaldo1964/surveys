@@ -50,6 +50,11 @@ $(document).on("change", ".typeQuestion", function (event) {
         document.querySelector("#divElement").classList.remove("notblock");
         tableOptions();
     }
+    if (idType == 5) { // Opción
+        document.querySelector("#divComposite").classList.remove("notblock");
+        document.querySelector("#divElement").classList.remove("notblock");
+        tableOptions();
+    }
 });
 
 // Adicionar pregunta 
@@ -67,7 +72,7 @@ document.querySelector('#addElement').onclick = function (event) {
     let inputOrderOption = document.getElementById('orderOption');
     let orderOption = (inputOrderOption && inputOrderOption.value) ? inputOrderOption.value : "";
 
-    if (idType != 1 && idType != 2) {
+    if (idType != 1 && idType != 2 && idType != 5) { // Opción
         const tabla = document.getElementById('tableOptions');
         const filas = tabla.querySelectorAll('tbody tr');
 
@@ -76,6 +81,28 @@ document.querySelector('#addElement').onclick = function (event) {
         filas.forEach(fila => {
             const celdas = fila.querySelectorAll('td');
             const orden = celdas[0].textContent;
+            const nombre = celdas[1].textContent;
+
+            const filaObjeto = {
+                orden: orden,
+                nombre: nombre
+            };
+            datos.push(filaObjeto);
+        });
+        var jsonString = JSON.stringify(datos);
+    } else {
+        var jsonString = "";
+    }
+
+        if (idType == 5) { // Compuesta
+        const tabla = document.getElementById('tableComposites');
+        const filas = tabla.querySelectorAll('tbody tr');
+
+        let datos = [];
+
+        filas.forEach(fila => {
+            const celdas = fila.querySelectorAll('td');
+            const orden = celdas[1].textContent;
             const nombre = celdas[1].textContent;
 
             const filaObjeto = {
@@ -209,6 +236,35 @@ document.querySelector('#addOptionOption').onclick = function (event) {
     // (Opcional) Limpiar los inputs después de agregar
     document.getElementById("orderOption").value = "";
     document.getElementById("nameOption").value = "";
+
+}
+
+// Adicionar una opcion a una pregunta de tipo Compuesta
+const addOptionComposite = document.querySelector('#addOptionComposite');
+document.querySelector('#addOptionComposite').onclick = function (event) {
+    event.preventDefault();
+    var nameComposite = document.getElementById('nameComposite').value;
+    var orderComposite = document.getElementById('orderComposite').value;
+
+    const tbody = document.getElementById("tableComposites").getElementsByTagName("tbody")[0];
+    const nuevaFila = tbody.insertRow();
+
+    // 4. Insertar las celdas (<td>) en la nueva fila
+    const celdaNombre = nuevaFila.insertCell(0);
+    const celdaApellido = nuevaFila.insertCell(1);
+    const celdaOpciones = nuevaFila.insertCell(2);
+
+    // 5. Añadir el contenido a las celdas
+    celdaNombre.innerHTML = orderComposite;
+    celdaApellido.innerHTML = nameComposite;
+    celdaOpciones.innerHTML = `<td style="text-align: left; font-size: 12px; ">
+                                    <button class="btn btn-primary btn-sm btn-edit-composite" data-new="2" data-id-bsurvey="' . '1'' . '">Editar</button>
+                                    <button class="btn btn-danger btn-sm btn-delete-composite" data-id-bsurvey="' . '1'' . '">Eliminar</button>
+                                </td>`;
+
+    // (Opcional) Limpiar los inputs después de agregar
+    document.getElementById("orderComposite").value = "";
+    document.getElementById("nameComposite").value = "";
 
 }
 

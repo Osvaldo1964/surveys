@@ -55,7 +55,7 @@ class bsurveysController
     public function editElement()
     {
         /* Verifico cuantas preguntas van */
-        $url = "bsurveys?linkTo=id_bsurvey&equalTo=" . $this->idBsurvey;
+        $url = "bsurveys?linkTo=id_bsurvey&equalTo=" . $this->idBsurvey . "&orderBy=order_bsurvey&orderMode=ASC";
         $method = "GET";
         $fields = array();
         //echo '<pre>'; print_r($url); echo '</pre>';
@@ -101,7 +101,8 @@ class bsurveysController
             1 => 'TEXTO',
             2 => 'FECHA',
             3 => 'OPCIÓN',
-            4 => 'SELECCIÓN MÚLTIPLE'
+            4 => 'SELECCIÓN MÚLTIPLE',
+            5 => 'RESPUESTA COMPUESTA',
         ];
 
         $html = '<table class="table table-bordered table-striped mt-1" id="tableAnswers">
