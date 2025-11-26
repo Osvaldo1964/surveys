@@ -25,6 +25,7 @@ cancelTextDate.onclick = function (event) {
     document.getElementById("orderQuestion").value = "";
     document.querySelector("#divDerechaUp").classList.add("notblock");
     document.querySelector("#divOptions").classList.add("notblock");
+    document.querySelector("#divComposite").classList.add("notblock");
     document.querySelector("#divElement").classList.add("notblock");
     const tbody = document.getElementById('tbodyOptions');
     const filas = tbody.querySelectorAll('tbody tr');
@@ -48,12 +49,10 @@ $(document).on("change", ".typeQuestion", function (event) {
     if (idType == 3 || idType == 4) { // Opción
         document.querySelector("#divOptions").classList.remove("notblock");
         document.querySelector("#divElement").classList.remove("notblock");
-        tableOptions();
     }
     if (idType == 5) { // Opción
         document.querySelector("#divComposite").classList.remove("notblock");
         document.querySelector("#divElement").classList.remove("notblock");
-        tableOptions();
     }
 });
 
@@ -94,7 +93,7 @@ document.querySelector('#addElement').onclick = function (event) {
         var jsonString = "";
     }
 
-        if (idType == 5) { // Compuesta
+    if (idType == 5) { // Compuesta
         const tabla = document.getElementById('tableComposites');
         const filas = tabla.querySelectorAll('tbody tr');
 
@@ -140,6 +139,7 @@ document.querySelector('#addElement').onclick = function (event) {
             document.getElementById("orderQuestion").value = "";
             document.querySelector("#divDerechaUp").classList.add("notblock");
             document.querySelector("#divOptions").classList.add("notblock");
+            document.querySelector("#divComposite").classList.add("notblock");
             document.querySelector("#divElement").classList.add("notblock");
             const tbody = document.getElementById('tbodyOptions');
             const filas = tbody.querySelectorAll('tbody tr');
@@ -318,7 +318,7 @@ $(document).on("click", ".btn-edit-answer", function (event) {
             if (answerData['type_bsurvey'] == 3 || answerData['type_bsurvey'] == 4) {// Opciones - Multiple
                 let tableDetail = answerData.detail_bsurvey;
                 tableDetail = JSON.parse(tableDetail);
-                const tbody = document.getElementById('tbodyOptions');
+                const tbodyOptions = document.getElementById('tbodyOptions');
                 const filasHTML = tableDetail.map(item => {
                     return `
                     <tr>
@@ -332,8 +332,28 @@ $(document).on("click", ".btn-edit-answer", function (event) {
                 `;
                 }).join(''); // Importante unirlos en un solo string
 
-                tbody.innerHTML = filasHTML;
+                tbodyOptions.innerHTML = filasHTML;
                 document.querySelector("#divOptions").classList.remove("notblock");
+            }
+            if (answerData['type_bsurvey'] == 5) {// Compuesta
+                let tableDetail = answerData.detail_bsurvey;
+                tableDetail = JSON.parse(tableDetail);
+                const tbodyComposite = document.getElementById('tbodyComposite');
+                const filasHTML = tableDetail.map(item => {
+                    return `
+                    <tr>
+                        <td>${item.orden}</td>
+                        <td>${item.nombre}</td>
+                        <td style="text-align: left; font-size: 12px; ">
+                            <button class="btn btn-primary btn-sm btn-edit-answer" data-new="2" data-id-bsurvey="${answerData.id_bsurvey}">Editar</button>
+                            <button class="btn btn-danger btn-sm btn-delete-answer" data-id-bsurvey="${answerData.id_bsurvey}">Eliminar</button>
+                        </td>
+                    </tr>
+                `;
+                }).join(''); // Importante unirlos en un solo string
+
+                tbodyComposite.innerHTML = filasHTML;
+                document.querySelector("#divComposite").classList.remove("notblock");
             }
             document.querySelector("#divElement").classList.remove("notblock");
             document.getElementById('addElement').style.display = 'none';
@@ -344,7 +364,7 @@ $(document).on("click", ".btn-edit-answer", function (event) {
     })
 })
 
-// Escuchar el boton de eliminar  pregunta 
+// Escuchar el boton de eliminar pregunta 
 $(document).on("click", ".btn-delete-answer", function (event) {
     event.preventDefault();
     let idBsurvey = $(this).data('id-bsurvey');
@@ -365,18 +385,10 @@ $(document).on("click", ".btn-delete-answer", function (event) {
                 processData: false,
                 success: function (response) {
                     if (response == "ok") {
-                        fncSweetAlert(
-                            "success",
-                            "El registro fue eliminado",
-                            ""
-                        );
+                        fncSweetAlert("success", "El registro fue eliminado", "");
                         tableItems();
                     } else if (response == "no delete") {
-                        fncSweetAlert(
-                            "error",
-                            "El registro tiene datos relacionados",
-                            ""
-                        );
+                        fncSweetAlert("error", "El registro tiene datos relacionados", "");
                     } else {
                         fncNotie(3, "Error al eliminar el registro");
                     }

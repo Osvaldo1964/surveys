@@ -19,21 +19,14 @@ class bsurveysController
         $url = "bsurveys?linkTo=id_hsurvey_bsurvey&equalTo=" . $this->idSurvey;
         $method = "GET";
         $fields = array();
-        //echo '<pre>'; print_r($url); echo '</pre>';
         $secuencia = CurlController::request($url, $method, $fields);
-        echo '<pre>';
-        print_r($secuencia);
-        echo '</pre>';
+        //echo '<pre>'; print_r($secuencia); echo '</pre>';
         if ($secuencia->status == 200) {
             $numQuestions = $secuencia->total;
         } else {
             $numQuestions = 0;
         }
-        echo '<pre>';
-        print_r($numQuestions);
-        echo '</pre>';
 
-        $numQuestions++;
         /* Agrupamos la información */
         $data = array(
             "id_hsurvey_bsurvey" => $this->idSurvey,
@@ -54,33 +47,19 @@ class bsurveysController
 
     public function editElement()
     {
-        /* Verifico cuantas preguntas van */
-        $url = "bsurveys?linkTo=id_bsurvey&equalTo=" . $this->idBsurvey . "&orderBy=order_bsurvey&orderMode=ASC";
-        $method = "GET";
-        $fields = array();
-        //echo '<pre>'; print_r($url); echo '</pre>';
-        $secuencia = CurlController::request($url, $method, $fields);
-        echo '<pre>';
-        print_r($secuencia);
-        echo '</pre>';
-        if ($secuencia->status == 200) {
-            /* Agrupamos la información */
-            $data =
-                "name_bsurvey=" . trim(strtoupper($this->nameQuestion)) .
-                "&order_bsurvey=" . $this->orderQuestion .
-                "&type_bsurvey=" . $this->idType .
-                "&detail_bsurvey=" . $this->options;
+        /* Agrupamos la información */
+        $data =
+            "name_bsurvey=" . trim(strtoupper($this->nameQuestion)) .
+            "&order_bsurvey=" . $this->orderQuestion .
+            "&type_bsurvey=" . $this->idType .
+            "&detail_bsurvey=" . $this->options;
 
-            /* Solicitud a la API */
-            $url = "bsurveys?id=" . $this->idBsurvey . "&nameId=id_bsurvey&token=" . $this->token_user . "&table=users&suffix=user";
-            $method = "PUT";
-            $fields = $data;
-            $response = CurlController::request($url, $method, $fields);
-            echo '<pre>';
-            print_r($response);
-            echo '</pre>';
-        } else {
-        }
+        /* Solicitud a la API */
+        $url = "bsurveys?id=" . $this->idBsurvey . "&nameId=id_bsurvey&token=" . $this->token_user . "&table=users&suffix=user";
+        $method = "PUT";
+        $fields = $data;
+        $response = CurlController::request($url, $method, $fields);
+        //echo '<pre>'; print_r($response); echo '</pre>';
     }
 
     public function genTable()

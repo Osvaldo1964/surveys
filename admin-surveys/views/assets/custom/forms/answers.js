@@ -67,7 +67,6 @@ if (contenedorDelFormulario != null) {
                     // Asignamos el valor a la sub-propiedad
                     datosDelFormulario[llavePrincipal][subLlave] = value;
                 } else {
-
                     if (datosDelFormulario.hasOwnProperty(name)) {
                         if (!Array.isArray(datosDelFormulario[name])) {
                             datosDelFormulario[name] = [datosDelFormulario[name]];
@@ -79,6 +78,7 @@ if (contenedorDelFormulario != null) {
                     }
                 }
             }
+            console.log(datosDelFormulario);
 
             var data = new FormData();
             data.append("token", localStorage.getItem("token_user"));

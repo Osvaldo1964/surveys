@@ -114,7 +114,7 @@ if (isset($routesArray[3])) {
                                         <th>OPCIONES</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tbodyOptions">
+                                <tbody id="tbodyComposite">
                                 </tbody>
                             </table>
                         </div>

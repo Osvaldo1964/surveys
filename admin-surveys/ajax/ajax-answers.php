@@ -94,7 +94,7 @@ class bsurveysController
                                 'key'   => $item['nombre']
                             ];
                         }
-                        
+
                         $sin_duplicados = array_unique($campos, SORT_REGULAR);
                         $campos_final = array_values($sin_duplicados);
                         $formulario_html .= '<div class="row mt-0 mb-0">';
@@ -108,7 +108,7 @@ class bsurveysController
                                         <label class="small">' . $label . '</label>
                                         <input type="text" 
                                             class="form-control" 
-                                            name="respuesta_' . $id . '[' . $key . ']" 
+                                            name="pregunta_' . $id . '[' . $key . ']" 
                                             placeholder="' . $label . '">
                                     </div>
                                 ';
@@ -118,7 +118,7 @@ class bsurveysController
                 }
                 $formulario_html .= '</div>'; // Cierre de .pregunta
             }
-            $formulario_html .= "<div class='row border' style='overflow: auto;'>
+            $formulario_html .= "<div class='row border mt-0 mb-0' style='padding: 0px;'>
                                     <button class='btn btn-success btn-sm mb-1 mt-1 addAnswer' id='addAnswer'>Adicionar</button>
                                 </div>";
             $formulario_html .= "</form>";
@@ -157,7 +157,9 @@ class bsurveysController
         }
 
         $datos = json_decode($this->jsonData, true);
-        //echo '<pre>'; print_r($datos); echo '</pre>';exit;
+        echo '<pre>';
+        print_r($datos);
+        echo '</pre>';
 
         if ($datos === null) {
             throw new Exception("Error: El JSON recibido no es válido.");
@@ -198,7 +200,7 @@ class bsurveysController
                 "detail_answer" => $valorAGuardar,
                 "date_created_answer" => date("Y-m-d")
             );
-            //var_dump($data);
+            var_dump($data);
             $url = "answers?token=" . $this->token_user . "&table=users&suffix=user";
             $method = "POST";
             $fields = $data;
@@ -244,10 +246,60 @@ class bsurveysController
                 $url = "answers?select=" . $select . "&linkTo=id_hsurvey_answer&equalTo=" . $this->idHsurvey .
                     "&orderBy=sequence_answer,id_bsurvey_answer&orderMode=ASC";
                 $answers = CurlController::request($url, $method, $fields);
-                //echo '<pre>'; print_r($answers); echo '</pre>';exit;
+                //echo '<pre>'; print_r($answers); echo '</pre>';
+
+
 
                 if ($answers->status == 200) {
-                    $answers = $answers->results;
+
+                    $resultados_raw = $answers->results;
+                    $filas_armadas = [];
+
+                    foreach ($resultados_raw as $row) {
+                        // 1. Creamos la llave única compuesta (Ej: "2_21" y "2_23")
+                        // Esto es lo que agrupa las filas
+                        $uniqueKey = $row->id_hsurvey_answer . '_' . $row->sequence_answer;
+
+                        // 2. Si la fila no existe en nuestro array final, la inicializamos
+                        if (!isset($filas_armadas[$uniqueKey])) {
+                            $filas_armadas[$uniqueKey] = [
+                                'id_encuesta' => $row->id_hsurvey_answer,
+                                'secuencia'   => $row->sequence_answer,
+                                'respuestas'  => [] // Aquí iremos metiendo las columnas
+                            ];
+                        }
+
+                        // 3. Procesamos el valor (tu lógica de aplanar JSON)
+                        $detalle = $row->detail_answer;
+                        $valor_final = $detalle;
+
+                        // Intentamos decodificar si es JSON (como el caso de largo/ancho/alto)
+                        $decoded = json_decode($detalle, true);
+                        if (json_last_error() === JSON_ERROR_NONE && (is_array($decoded) || is_object($decoded))) {
+                            // Aplanamos el array recursivamente
+                            $valores_simples = [];
+                            array_walk_recursive($decoded, function ($v) use (&$valores_simples) {
+                                $valores_simples[] = $v;
+                            });
+                            // Unimos por comas: "11, 22, 33"
+                            $valor_final = implode(', ', $valores_simples);
+                        }
+
+                        // 4. Asignamos la respuesta a su columna correspondiente
+                        // Usamos 'id_bsurvey_answer' como la clave de la columna
+                        $id_pregunta = $row->id_bsurvey_answer;
+                        $filas_armadas[$uniqueKey]['respuestas'][$id_pregunta] = $valor_final;
+                    }
+
+                    // 5. (Opcional) Si quieres reindexar para que sea 0, 1, 2... y quitar las llaves "2_21"
+                    $array_final = array_values($filas_armadas);
+
+                    // Imprimimos para ver el resultado
+                    echo '<pre>';
+                    //print_r($array_final[1]["respuestas"]["1"]);
+                    //print_r($array_final);                     echo '</pre>';                     exit;
+
+                    //$answers = $answers->results;
 
                     // Crear Excel
                     $spreadsheet = new Spreadsheet();
@@ -263,7 +315,6 @@ class bsurveysController
                         $spreadsheet->getActiveSheet()->getStyle("{$columna}2")->getFont()->setBold(true);
                     }
 
-
                     // Merge A1 across all question columns
                     $lastColumn = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex(count($bsurveys)); // 1-based index
                     $spreadsheet->getActiveSheet()->mergeCells("A1:{$lastColumn}1");
@@ -275,38 +326,13 @@ class bsurveysController
                     // Insertar registros
                     $fila = 3; // empezamos en la fila 2
 
-                    foreach ($answers as $key => $respuesta) {
-                        $columna = chr(65 + ($respuesta->id_bsurvey_answer - 1)); // La columna B es 66 en ASCII
-
-                        $detalle = $respuesta->detail_answer;
-                        $cellValue = $detalle;
-
-                        // Intentar decodificar JSON y, si es válido, aplanar valores y unir por comas
-                        $decoded = json_decode($detalle, true);
-                        if (json_last_error() === JSON_ERROR_NONE && (is_array($decoded) || is_object($decoded))) {
-                            $flatten = [];
-                            $walk = function ($v) use (&$flatten, &$walk) {
-                                if (is_array($v) || is_object($v)) {
-                                    foreach ((array)$v as $item) {
-                                        $walk($item);
-                                    }
-                                } else {
-                                    if (is_bool($v)) {
-                                        $v = $v ? '1' : '0';
-                                    }
-                                    $flatten[] = (string)$v;
-                                }
-                            };
-                            $walk($decoded);
-                            $cellValue = implode(',', $flatten);
+                    foreach ($array_final as $registro) {
+                        // Aquí recorres las columnas (preguntas) de ESTE registro específico
+                        foreach ($registro['respuestas'] as $id_pregunta => $valor_respuesta) {
+                            $columna = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($id_pregunta);
+                            $sheet->setCellValue("{$columna}{$fila}", $valor_respuesta);
                         }
-
-                        $sheet->setCellValue("{$columna}{$fila}", $cellValue);
-
-                        // Si es la última pregunta, incrementamos la fila
-                        if ($respuesta->id_bsurvey_answer == count($bsurveys)) {
-                            $fila++;
-                        }
+                        $fila++;
                     }
 
                     // Descargar Excel
@@ -366,7 +392,7 @@ class bsurveysController
         $method = "GET";
         $fields = array();
         $answers = CurlController::request($url, $method, $fields)->results;
-        //echo '<pre>'; print_r($answers); echo '</pre>'; exit;
+        echo '<pre>'; print_r($url); echo '</pre>'; exit;
 
         $counts = [];
         foreach ($answers as $row) {
@@ -427,7 +453,7 @@ if (isset($_POST["idHsurveyBsurvey"])) {
 if (isset($_POST["idBsurveyAnswers"])) {
     $ajax = new bsurveysController();
     //echo '<pre>'; print_r($_POST); echo '</pre>';exit;
-    $ajax->idHsurvey = $_POST["idHsurveyAnswer"];
+    //$ajax->idHsurvey = $_POST["idHsurveyAnswer"];
     $ajax->idBsurvey = $_POST["idBsurveyAnswers"];
     $ajax->selAnswers();
 }

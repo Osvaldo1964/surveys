@@ -1,6 +1,3 @@
-<?php
-$idFormer = $_SESSION["former"] ?? 0;
-?>
 <div class="card">
     <!-- /.card-header -->
     <div class="card-body" style="float: right; text-align: center; height: 550px;">
@@ -45,7 +42,6 @@ $idFormer = $_SESSION["former"] ?? 0;
 <script src="views/assets/custom/forms/answers.js"></script>
 
 <script>
-    //Verifico departamentos al cargar la forma
     (function() {
         document.addEventListener("DOMContentLoaded", function() {
             console.log("Trigger ejecutado: DOM listo!");
