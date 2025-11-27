@@ -64,7 +64,7 @@ class bsurveysController
 
     public function genTable()
     {
-        $url = "bsurveys?linkTo=id_hsurvey_bsurvey&equalTo=" . urlencode($this->idSurvey);
+        $url = "bsurveys?linkTo=id_hsurvey_bsurvey&equalTo=" . urlencode($this->idSurvey) . "&orderBy=order_bsurvey&orderMode=ASC"; 
         $method = "GET";
         $fields = [];
         $response = CurlController::request($url, $method, $fields);
