@@ -104,6 +104,7 @@
             processData: false,
             success: function(response) {
                 console.log("Respuesta recibida para las respuestas de la pregunta:");
+                //console.log(response);
                 var responseData = JSON.parse(response);
                 console.log(responseData);
                 miGrafico.series[0].setData(responseData);

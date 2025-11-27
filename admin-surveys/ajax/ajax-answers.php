@@ -149,17 +149,16 @@ class bsurveysController
         $url = "bsurveys?linkTo=id_hsurvey_bsurvey&equalTo=" . urlencode($this->idHsurvey);
         $method = "GET";
         $fields = [];
-        $response = CurlController::request($url, $method, $fields);
-
-        if ($response->status != 200 || empty($response->results)) {
+        $questions = CurlController::request($url, $method, $fields);
+        //echo '<pre>';         print_r($questions->results[0]->order_bsurvey);         echo '</pre>';
+/*         if ($questions->status != 200 || empty($response->results)) {
             echo '';
             return;
         }
+ */
 
         $datos = json_decode($this->jsonData, true);
-        echo '<pre>';
-        print_r($datos);
-        echo '</pre>';
+        //echo '<pre>';         print_r($datos);         echo '</pre>'; 
 
         if ($datos === null) {
             throw new Exception("Error: El JSON recibido no es válido.");
@@ -177,6 +176,7 @@ class bsurveysController
             // Armamos las llaves que vamos a buscar
             $keyPregunta = 'pregunta_' . $i;
             $keyTipo = 'type_' . $i;
+            $id_answer = $questions->results[$i - 1]->id_bsurvey;
 
             // Extraemos los valores
             $numeroPregunta = $i;
@@ -195,12 +195,13 @@ class bsurveysController
             $data = array(
                 "id_hsurvey_answer" => $idEncuesta,
                 "sequence_answer" => $sequence,
-                "id_bsurvey_answer" => $numeroPregunta,
+                "id_bsurvey_answer" => $id_answer,
+                "order_answer" => $numeroPregunta,
                 "type_answer" => $tipoRespuesta,
                 "detail_answer" => $valorAGuardar,
                 "date_created_answer" => date("Y-m-d")
             );
-            var_dump($data);
+            //var_dump($data);
             $url = "answers?token=" . $this->token_user . "&table=users&suffix=user";
             $method = "POST";
             $fields = $data;
@@ -392,7 +393,7 @@ class bsurveysController
         $method = "GET";
         $fields = array();
         $answers = CurlController::request($url, $method, $fields)->results;
-        echo '<pre>'; print_r($url); echo '</pre>'; exit;
+        //echo '<pre>'; print_r($url); echo '</pre>'; exit;
 
         $counts = [];
         foreach ($answers as $row) {
