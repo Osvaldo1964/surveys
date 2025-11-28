@@ -41,6 +41,7 @@ class bsurveysController
         $method = "POST";
         $fields = $data;
         $response = CurlController::request($url, $method, $fields);
+        //echo '<pre>'; print_r($response); echo '</pre>';exit;
     }
 
     public $idBsurvey;

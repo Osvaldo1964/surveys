@@ -25090,3 +25090,33 @@ Stack trace:
 [27-Nov-2025 09:19:25 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
 [27-Nov-2025 11:29:47 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
 [27-Nov-2025 11:29:47 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 08:50:42 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 08:50:42 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 08:50:42 America/Bogota] PHP Warning:  foreach() argument must be of type array|object, string given in C:\xampp\htdocs\surveys\admin-surveys\views\pages\home\modules\boxes.php on line 41
+[28-Nov-2025 08:53:20 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 08:53:20 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 08:53:20 America/Bogota] PHP Warning:  foreach() argument must be of type array|object, string given in C:\xampp\htdocs\surveys\admin-surveys\views\pages\home\modules\boxes.php on line 43
+[28-Nov-2025 08:53:45 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 08:53:45 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 08:53:45 America/Bogota] PHP Warning:  foreach() argument must be of type array|object, string given in C:\xampp\htdocs\surveys\admin-surveys\views\pages\home\modules\boxes.php on line 43
+[28-Nov-2025 08:54:29 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 08:54:29 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 08:54:30 America/Bogota] PHP Warning:  foreach() argument must be of type array|object, string given in C:\xampp\htdocs\surveys\admin-surveys\views\pages\home\modules\boxes.php on line 42
+[28-Nov-2025 08:55:20 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 08:55:20 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 08:55:20 America/Bogota] PHP Warning:  foreach() argument must be of type array|object, string given in C:\xampp\htdocs\surveys\admin-surveys\views\pages\home\modules\boxes.php on line 42
+[28-Nov-2025 08:56:30 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 08:56:30 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 08:56:30 America/Bogota] PHP Warning:  foreach() argument must be of type array|object, string given in C:\xampp\htdocs\surveys\admin-surveys\views\pages\home\modules\boxes.php on line 43
+[28-Nov-2025 08:57:09 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 08:57:09 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 08:57:21 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 08:57:21 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 09:49:47 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 09:49:47 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 09:55:55 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 09:55:55 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 10:02:00 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 10:02:00 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 10:05:58 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76
+[28-Nov-2025 10:05:58 America/Bogota] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\surveys\admin-surveys\views\modules\sidebar.php on line 76

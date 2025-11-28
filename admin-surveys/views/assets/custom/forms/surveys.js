@@ -52,6 +52,10 @@ $(document).on("change", ".typeQuestion", function (event) {
     }
     if (idType == 5) { // Opción
         document.querySelector("#divComposite").classList.remove("notblock");
+        const tbody2 = document.getElementById('tbodyComposite');
+        const filas2 = tbody2.querySelectorAll('tbody tr');
+        filas2.length = 0;
+        tbody2.innerHTML = '';
         document.querySelector("#divElement").classList.remove("notblock");
     }
 });
@@ -144,7 +148,11 @@ document.querySelector('#addElement').onclick = function (event) {
             const tbody = document.getElementById('tbodyOptions');
             const filas = tbody.querySelectorAll('tbody tr');
             filas.length = 0;
+            const tbody2 = document.getElementById('tbodyComposite');
+            const filas2 = tbody.querySelectorAll('tbody tr');
+            filas2.length = 0;
             tbody.innerHTML = '';
+            tbody2.innerHTML = '';
         }
     })
 }

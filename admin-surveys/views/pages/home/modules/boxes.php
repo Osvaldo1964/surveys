@@ -35,14 +35,17 @@ total de Encuestas Registradas
 /* Obtengo las Respuestas */
 $select = "id_answer,id_hsurvey,name_hsurvey,sequence_answer";
 $url = "relations?rel=answers,bsurveys,hsurveys&type=answer,bsurvey,hsurvey&select=" . $select;
-$answers = CurlController::request($url, $method, $fields)->results;
+$answers = CurlController::request($url, $method, $fields);
 $secuenciasUnicas = [];
 
-foreach ($answers as $row) {
+if ($answers->status == 200) {
+  $answers = $answers->results;
+  foreach ($answers as $row) {
     // Guardamos la secuencia como CLAVE en un array global.
     // Si la secuencia "A-001" aparece en la encuesta 1 y luego en la 5,
     // aquí solo se guardará una vez.
     $secuenciasUnicas[$row->sequence_answer] = true;
+  }
 }
 
 // El conteo final de claves es tu totalidad general
