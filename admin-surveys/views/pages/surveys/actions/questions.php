@@ -101,7 +101,7 @@ if (isset($routesArray[3])) {
                     <button class='btn btn-success btn-sm mb-2 mt-2 editOptionOption' style="display: none;" onclick="editOptionOption" id="editOptionOption">Actualizar</button>
                 </div>
             </div>
-            <!-- Div inferior derecho para crear o editar preguntas tipo Opcion  -->
+            <!-- Div inferior derecho para crear o editar preguntas tipo Composite  -->
             <div class="col-md-6 notblock divComposite border mt-1" style="float: right; text-align: center; height: 310px;" id="divComposite">
                 <div class="col-md-6 border mt-1 mx-auto d-flex flex-column" style="float: left; height: 300px;">
                     <div class="table responsive" style="height: 300px;" id="tableComposites">

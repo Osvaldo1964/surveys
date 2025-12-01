@@ -12,6 +12,7 @@ class bsurveysController
     public $nameQuestion;
     public $orderQuestion;
     public $options;
+    public $idItem;
 
     public function saveElement()
     {
@@ -65,7 +66,7 @@ class bsurveysController
 
     public function genTable()
     {
-        $url = "bsurveys?linkTo=id_hsurvey_bsurvey&equalTo=" . urlencode($this->idSurvey) . "&orderBy=order_bsurvey&orderMode=ASC"; 
+        $url = "bsurveys?linkTo=id_hsurvey_bsurvey&equalTo=" . urlencode($this->idSurvey) . "&orderBy=order_bsurvey&orderMode=ASC";
         $method = "GET";
         $fields = [];
         $response = CurlController::request($url, $method, $fields);
@@ -148,6 +149,11 @@ class bsurveysController
             echo "error";
         }
     }
+
+    public function deleteItem()
+    {
+
+    }
 }
 
 /* Función para Adicionar pregunta tipo Texto */
@@ -199,4 +205,17 @@ if (isset($_POST["iddeleteBsurvey"])) {
     $ajax->token_user = $_POST["token"];
     $ajax->idBsurvey = $_POST["iddeleteBsurvey"];
     $ajax->deleteQuestion();
+}
+
+/* Función para Seleccionar la informacion de una respuesta para su edicion */
+if (isset($_POST["idDeleteItem"])) {
+    echo '<pre>';
+    print_r($_POST);
+    echo '</pre>';
+    $ajax = new bsurveysController();
+    $ajax->token_user = $_POST["token"];
+    $ajax->idBsurvey = $_POST["idBsurveyItem"];
+    $ajax->idItem = $_POST["idDeleteItem"];
+    $ajax->options = $_POST["jsonOptions"];
+    $ajax->deleteItem();
 }

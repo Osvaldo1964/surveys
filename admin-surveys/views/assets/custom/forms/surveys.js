@@ -74,6 +74,7 @@ document.querySelector('#addElement').onclick = function (event) {
     let nameOption = (inputNameOption && inputNameOption.value) ? inputNameOption.value : "";
     let inputOrderOption = document.getElementById('orderOption');
     let orderOption = (inputOrderOption && inputOrderOption.value) ? inputOrderOption.value : "";
+    let jsonString = "";
 
     if (idType != 1 && idType != 2 && idType != 5) { // Opción
         const tabla = document.getElementById('tableOptions');
@@ -92,9 +93,7 @@ document.querySelector('#addElement').onclick = function (event) {
             };
             datos.push(filaObjeto);
         });
-        var jsonString = JSON.stringify(datos);
-    } else {
-        var jsonString = "";
+        jsonString = JSON.stringify(datos);
     }
 
     if (idType == 5) { // Compuesta
@@ -114,9 +113,7 @@ document.querySelector('#addElement').onclick = function (event) {
             };
             datos.push(filaObjeto);
         });
-        var jsonString = JSON.stringify(datos);
-    } else {
-        var jsonString = "";
+        jsonString = JSON.stringify(datos);
     }
 
     var data = new FormData();
@@ -333,8 +330,8 @@ $(document).on("click", ".btn-edit-answer", function (event) {
                         <td>${item.orden}</td>
                         <td>${item.nombre}</td>
                         <td style="text-align: left; font-size: 12px; ">
-                            <button class="btn btn-primary btn-sm btn-edit-answer" data-new="2" data-id-bsurvey="${answerData.id_bsurvey}">Editar</button>
-                            <button class="btn btn-danger btn-sm btn-delete-answer" data-id-bsurvey="${answerData.id_bsurvey}">Eliminar</button>
+                            <button class="btn btn-primary btn-sm btn-edit-item" data-new="2" data-id-item="${item.orden}" data-id-bsurvey="${answerData.id_bsurvey}">Editar</button>
+                            <button class="btn btn-danger btn-sm btn-delete-item" data-id-item="${item.orden}" data-id-bsurvey="${answerData.id_bsurvey}">Eliminar</button>
                         </td>
                     </tr>
                 `;
@@ -353,8 +350,8 @@ $(document).on("click", ".btn-edit-answer", function (event) {
                         <td>${item.orden}</td>
                         <td>${item.nombre}</td>
                         <td style="text-align: left; font-size: 12px; ">
-                            <button class="btn btn-primary btn-sm btn-edit-answer" data-new="2" data-id-bsurvey="${answerData.id_bsurvey}">Editar</button>
-                            <button class="btn btn-danger btn-sm btn-delete-answer" data-id-bsurvey="${answerData.id_bsurvey}">Eliminar</button>
+                            <button class="btn btn-primary btn-sm btn-edit-answer" data-id-item="${item.orden}" data-new="2" data-id-bsurvey="${answerData.id_bsurvey}">Editar</button>
+                            <button class="btn btn-danger btn-sm btn-delete-answer" data-id-item="${item.orden}" data-id-bsurvey="${answerData.id_bsurvey}">Eliminar</button>
                         </td>
                     </tr>
                 `;
@@ -400,8 +397,67 @@ $(document).on("click", ".btn-delete-answer", function (event) {
                     } else {
                         fncNotie(3, "Error al eliminar el registro");
                     }
+                    document.querySelector("#divDerechaUp").classList.add("notblock");
+                    document.querySelector("#divOptions").classList.add("notblock");
+                    document.querySelector("#divElement").classList.add("notblock");
+                    document.getElementById('addElement').style.display = 'inline-block';
+                    document.getElementById('editElement').style.display = 'none';
+                    const tbody = document.getElementById('tbodyOptions');
+                    const filas = tbody.querySelectorAll('tbody tr');
+                    filas.length = 0;
+                    tbody.innerHTML = '';
                 }
+
             })
+        }
+    })
+})
+
+
+// Escuchar el boton de eliminar pregunta 
+$(document).on("click", ".btn-delete-item", function (event) {
+    event.preventDefault();
+    let idItem = this.dataset.idItem;
+    let idBsurvey = this.dataset.idBsurvey;
+
+    const tabla = document.getElementById('tableOptions');
+
+    const filasDelBody = tabla.querySelectorAll('tbody tr');
+    const datosTabla = [...filasDelBody].map(fila => {
+        const celdas = fila.querySelectorAll('td');
+
+        const objetoFila = {
+            orden: celdas[0].innerText,
+            nombre: celdas[1].innerText
+        };
+        return objetoFila;
+    });
+    const jsonString = JSON.stringify(datosTabla);
+
+    fncSweetAlert("confirm", "Esta seguro de borrar este registro?", "").then(resp => {
+        if (resp) {
+
+            jsonActualizado = datosTabla.filter(item => item.orden !== idItem);
+
+            const tbodyOptions = document.getElementById('tbodyOptions');
+            const filasHTML = jsonActualizado.map(item => {
+                return `
+                    <tr>
+                        <td>${item.orden}</td>
+                        <td>${item.nombre}</td>
+                        <td style="text-align: left; font-size: 12px; ">
+                            <button class="btn btn-primary btn-sm btn-edit-item" data-new="2" data-id-item="${item.orden}" data-id-bsurvey="${idBsurvey}">Editar</button>
+                            <button class="btn btn-danger btn-sm btn-delete-item" data-id-item="${item.orden}" data-id-bsurvey="${idBsurvey}">Eliminar</button>
+                        </td>
+                    </tr>
+                `;
+            }).join(''); // Importante unirlos en un solo string
+
+            tbodyOptions.innerHTML = filasHTML;
+            document.querySelector("#divOptions").classList.remove("notblock");
+
+            fncSweetAlert("success", "El registro fue eliminado", "");
+
         }
     })
 })
