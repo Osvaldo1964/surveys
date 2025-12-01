@@ -10,16 +10,8 @@
 
         <!-- /.sidebar-menu -->
         <br><br>
-        <div class = "col-md-2">
-            <img src="<?php echo TemplateController::srcImg() ?>views/img/users/logo_min.png" style="ml-10 width:50px" alt="User Image">
-        </div>
-        <br><br><br><br>
-        <div class = "col-md-2">
-            <img src="<?php echo TemplateController::srcImg() ?>views/img/users/logo_ent.png" style="ml-10 width:100px" alt="User Image">
-        </div>
-        <br><br>
-        <div class = "col-md-2">
-            <img src="<?php echo TemplateController::srcImg() ?>views/img/users/logo2.png" style="ml-10 width:100px" alt="User Image">
+        <div class="container justify-content: center; text-align: center;">
+            <img src="<?php echo TemplateController::srcImg() ?>views/img/logos/logo_fundaescol.jpg" width="200" alt="User Image">
         </div>
       </div>
       <!-- /.sidebar -->
