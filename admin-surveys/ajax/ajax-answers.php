@@ -151,6 +151,7 @@ class bsurveysController
         $method = "GET";
         $fields = [];
         $questions = CurlController::request($url, $method, $fields);
+        echo '<pre>'; print_r($questions->results); echo '</pre>';
         //echo '<pre>';         print_r($questions->results[0]->order_bsurvey);         echo '</pre>';
         /*         if ($questions->status != 200 || empty($response->results)) {
             echo '';
@@ -159,7 +160,7 @@ class bsurveysController
  */
 
         $datos = json_decode($this->jsonData, true);
-        //echo '<pre>';         print_r($datos);         echo '</pre>'; 
+        //echo '<pre>';         print_r($datos);         echo '</pre>'; exit;
 
         if ($datos === null) {
             throw new Exception("Error: El JSON recibido no es válido.");
@@ -177,7 +178,15 @@ class bsurveysController
             // Armamos las llaves que vamos a buscar
             $keyPregunta = 'pregunta_' . $i;
             $keyTipo = 'type_' . $i;
-            $id_answer = $questions->results[$i - 1]->id_bsurvey;
+
+            foreach ($questions->results as $key => $value) {
+                if ($value->order_bsurvey == $i) {
+                    $indexPregunta = $value->id_bsurvey;
+                    break;
+                }
+            }
+            //$id_answer = $questions->results[$i - 1]->id_bsurvey;
+            echo '<pre>'; print_r($indexPregunta); echo '</pre>';
 
             // Extraemos los valores
             $numeroPregunta = $i;
@@ -196,19 +205,19 @@ class bsurveysController
             $data = array(
                 "id_hsurvey_answer" => $idEncuesta,
                 "sequence_answer" => $sequence,
-                "id_bsurvey_answer" => $id_answer,
+                "id_bsurvey_answer" => $indexPregunta,
                 "order_answer" => $numeroPregunta,
                 "type_answer" => $tipoRespuesta,
                 "detail_answer" => $valorAGuardar,
                 "date_created_answer" => date("Y-m-d")
             );
-            //var_dump($data);
+            var_dump($data);
             $url = "answers?token=" . $this->token_user . "&table=users&suffix=user";
             $method = "POST";
             $fields = $data;
             $response = CurlController::request($url, $method, $fields);
             $i++;
-            //echo '<pre>'; print_r($response); echo '</pre>';
+            echo '<pre>'; print_r($response); echo '</pre>';
         }
 
         /* Actualizo el ultimo registro de Encuesta en Settings*/

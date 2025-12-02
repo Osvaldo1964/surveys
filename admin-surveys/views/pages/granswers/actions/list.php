@@ -87,6 +87,7 @@
     const selector = document.getElementById('bsurvey');
     selector.addEventListener('change', function() {
         const valorSeleccionado = this.value;
+        console.log("Valor seleccionado de la pregunta:", valorSeleccionado);
         const nombrePregunta = this.options[this.selectedIndex].text;
         if (valorSeleccionado === "") return; // Si no selecciona nada, no hacemos nada
 

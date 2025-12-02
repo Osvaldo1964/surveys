@@ -91,9 +91,6 @@
             <div class="row notblock border" style="overflow: auto; height:450px" id="dynamicFormFields">
             </div>
 
-            <!--             <div class="row notblock border" style="overflow: auto;" id="AddAnswerFields">
-                <button class='btn btn-success btn-sm mb-1 addAnswer' onclick='addAnswer' id='addAnswer'>Adicionar</button>
-            </div> -->
             <div class="card-footer pb-1 pt-1 mt-1">
                 <?php
                 require_once "controllers/surveys.controller.php";
