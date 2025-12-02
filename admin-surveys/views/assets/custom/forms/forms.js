@@ -1499,7 +1499,7 @@ function students_excel() {
 function surveys_excel() {
   var selSurvey = $('#survey').find(':selected')
   var idHsurvey = selSurvey.val(); // Captura el valor
-  console.log(idHsurvey);
+  //console.log(idHsurvey);
 
   var data = new FormData();
   data.append("idInfHsurvey", idHsurvey);
@@ -1513,7 +1513,7 @@ function surveys_excel() {
     processData: false,
     success: function (response) {
       console.log(response);
-      //window.location.href = "/views/pages/students/actions/answers.xlsx";
+      window.location.href = "/views/pages/infanswers/actions/answers.xlsx";
     }
   })
 }

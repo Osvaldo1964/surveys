@@ -88,6 +88,7 @@ class bsurveysController
 
                     case 5:
                         //var_dump($opciones_str);
+                        $campos = [];
                         foreach ($opciones_str as $item) {
                             $campos[] = [
                                 'label' => ucfirst(strtolower($item['nombre'])),
@@ -151,7 +152,7 @@ class bsurveysController
         $fields = [];
         $questions = CurlController::request($url, $method, $fields);
         //echo '<pre>';         print_r($questions->results[0]->order_bsurvey);         echo '</pre>';
-/*         if ($questions->status != 200 || empty($response->results)) {
+        /*         if ($questions->status != 200 || empty($response->results)) {
             echo '';
             return;
         }
@@ -249,8 +250,6 @@ class bsurveysController
                 $answers = CurlController::request($url, $method, $fields);
                 //echo '<pre>'; print_r($answers); echo '</pre>';
 
-
-
                 if ($answers->status == 200) {
 
                     $resultados_raw = $answers->results;
@@ -296,12 +295,13 @@ class bsurveysController
                     $array_final = array_values($filas_armadas);
 
                     // Imprimimos para ver el resultado
-                    echo '<pre>';
+                    //echo '<pre>';
                     //print_r($array_final[1]["respuestas"]["1"]);
                     //print_r($array_final);                     echo '</pre>';                     exit;
 
                     //$answers = $answers->results;
 
+                    //echo '<pre>'; print_r($array_final); echo '</pre>';exit;
                     // Crear Excel
                     $spreadsheet = new Spreadsheet();
                     $sheet = $spreadsheet->getActiveSheet();
@@ -326,12 +326,14 @@ class bsurveysController
 
                     // Insertar registros
                     $fila = 3; // empezamos en la fila 2
-
+                    
                     foreach ($array_final as $registro) {
+                        $indice_columna = 1;
                         // Aquí recorres las columnas (preguntas) de ESTE registro específico
                         foreach ($registro['respuestas'] as $id_pregunta => $valor_respuesta) {
-                            $columna = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($id_pregunta);
+                            $columna = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($indice_columna);
                             $sheet->setCellValue("{$columna}{$fila}", $valor_respuesta);
+                            $indice_columna++;
                         }
                         $fila++;
                     }
