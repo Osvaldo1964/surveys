@@ -151,7 +151,9 @@ class bsurveysController
         $method = "GET";
         $fields = [];
         $questions = CurlController::request($url, $method, $fields);
-        echo '<pre>'; print_r($questions->results); echo '</pre>';
+        echo '<pre>';
+        print_r($questions->results);
+        echo '</pre>';
         //echo '<pre>';         print_r($questions->results[0]->order_bsurvey);         echo '</pre>';
         /*         if ($questions->status != 200 || empty($response->results)) {
             echo '';
@@ -186,7 +188,9 @@ class bsurveysController
                 }
             }
             //$id_answer = $questions->results[$i - 1]->id_bsurvey;
-            echo '<pre>'; print_r($indexPregunta); echo '</pre>';
+            echo '<pre>';
+            print_r($indexPregunta);
+            echo '</pre>';
 
             // Extraemos los valores
             $numeroPregunta = $i;
@@ -217,7 +221,9 @@ class bsurveysController
             $fields = $data;
             $response = CurlController::request($url, $method, $fields);
             $i++;
-            echo '<pre>'; print_r($response); echo '</pre>';
+            echo '<pre>';
+            print_r($response);
+            echo '</pre>';
         }
 
         /* Actualizo el ultimo registro de Encuesta en Settings*/
@@ -310,7 +316,6 @@ class bsurveysController
 
                     //$answers = $answers->results;
 
-                    //echo '<pre>'; print_r($array_final); echo '</pre>';exit;
                     // Crear Excel
                     $spreadsheet = new Spreadsheet();
                     $sheet = $spreadsheet->getActiveSheet();
@@ -318,8 +323,11 @@ class bsurveysController
                     // Encabezados
                     $sheet->setCellValue('A1', 'INFORME DE POSTULANTES APROBADOS PARA CONTRATACION');
 
+                    $columna = chr(65); // La columna B es 66 en ASCII
+                    $sheet->setCellValue("{$columna}2", "No. ENUCUESTA");
+
                     foreach ($bsurveys as $key => $pregunta) {
-                        $columna = chr(65 + $key); // La columna B es 66 en ASCII
+                        $columna = chr(66 + $key); // La columna B es 66 en ASCII
                         $sheet->setCellValue("{$columna}2", strtoupper($pregunta->name_bsurvey));
                         $spreadsheet->getActiveSheet()->getStyle("{$columna}2")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                         $spreadsheet->getActiveSheet()->getStyle("{$columna}2")->getFont()->setBold(true);
@@ -335,9 +343,11 @@ class bsurveysController
 
                     // Insertar registros
                     $fila = 3; // empezamos en la fila 2
-                    
+
                     foreach ($array_final as $registro) {
-                        $indice_columna = 1;
+                        $columna = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex(1);
+                        $sheet->setCellValue("{$columna}{$fila}", $registro['secuencia']);
+                        $indice_columna = 2;
                         // Aquí recorres las columnas (preguntas) de ESTE registro específico
                         foreach ($registro['respuestas'] as $id_pregunta => $valor_respuesta) {
                             $columna = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($indice_columna);
