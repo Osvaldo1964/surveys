@@ -31,8 +31,46 @@ $(document).on("change", ".selectSurvey", function (event) {
 });
 
 // Adicionar una Respuesta
+// Adicionar una Respuesta
 const contenedorDelFormulario = document.getElementById("dynamicFormFields");
 if (contenedorDelFormulario != null) {
+
+    // Event delegation for toggling "Other" inputs
+    contenedorDelFormulario.addEventListener("change", function (event) {
+        if (event.target.classList.contains('option-toggle')) {
+            const targetId = event.target.dataset.target;
+            const targetInput = document.getElementById(targetId);
+
+            if (!targetInput) return;
+
+            if (event.target.type === 'radio') {
+                // For radios, we must hide ALL other inputs in this group first
+                const name = event.target.name;
+                document.querySelectorAll(`input[name="${name}"]`).forEach(radio => {
+                    const tid = radio.dataset.target;
+                    const tInput = document.getElementById(tid);
+                    if (tInput && tInput !== targetInput) {
+                        tInput.classList.add('d-none');
+                        tInput.value = ''; // Clear value when hiding
+                    }
+                });
+
+                if (event.target.checked) {
+                    targetInput.classList.remove('d-none');
+                    targetInput.focus();
+                }
+            } else if (event.target.type === 'checkbox') {
+                if (event.target.checked) {
+                    targetInput.classList.remove('d-none');
+                    targetInput.focus();
+                } else {
+                    targetInput.classList.add('d-none');
+                    // targetInput.value = ''; // Optional: Clear on uncheck? Yes, usually better.
+                }
+            }
+        }
+    });
+
     contenedorDelFormulario.addEventListener("click", function (event) {
 
         if (event.target.id === 'addAnswer') {
@@ -46,6 +84,32 @@ if (contenedorDelFormulario != null) {
                 console.error("Error: No se pudo encontrar el formulario '#miFormularioDinamico'");
                 return;
             }
+
+            // Custom Validation for Checkboxes (Type 4)
+            const hiddenTypeInputs = formulario.querySelectorAll('input[name^="type_"]');
+
+            hiddenTypeInputs.forEach(input => {
+                if (input.value === "4") {
+                    const idAnswer = input.id.split('_')[1];
+                    const checkboxes = formulario.querySelectorAll(`input[name="pregunta_${idAnswer}[]"]`);
+                    const checked = formulario.querySelectorAll(`input[name="pregunta_${idAnswer}[]"]:checked`);
+
+                    if (checkboxes.length > 0) {
+                        if (checked.length === 0) {
+                            checkboxes[0].setCustomValidity("Por favor seleccione al menos una opción.");
+                        } else {
+                            checkboxes[0].setCustomValidity("");
+                        }
+                    }
+                }
+            });
+
+            // Basic validation
+            if (!formulario.checkValidity()) {
+                formulario.reportValidity();
+                return;
+            }
+
             //console.log("Formulario encontrado:", formulario);
             const formData = new FormData(formulario);
             const datosDelFormulario = {};
@@ -93,9 +157,27 @@ if (contenedorDelFormulario != null) {
                 cache: false,
                 processData: false,
                 success: function (response) {
-                    formulario.reset();
-                    document.getElementById("idHsurvey").value = idHsurvey;
-                    document.getElementById('pregunta_1').focus();
+                    // SweetAlert2 Success
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Guardado!',
+                        text: 'La encuesta ha sido registrada correctamente.',
+                        showCancelButton: true,
+                        confirmButtonText: 'Nueva Encuesta',
+                        cancelButtonText: 'Volver al Inicio'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            formulario.reset();
+                            // Hide all extra inputs
+                            document.querySelectorAll('.more-info-input').forEach(el => el.classList.add('d-none'));
+                            document.getElementById("idHsurvey").value = idHsurvey;
+                            // Scroll to top
+                            const firstInput = document.querySelector('input, select');
+                            if (firstInput) firstInput.focus();
+                        } else {
+                            window.location.href = "/surveys";
+                        }
+                    });
                 }
             });
         }

@@ -2,7 +2,8 @@
 
 //define("BASE_URL", "http://localhost/cmrpos/");
 //const BASE_URL = "https://sialp-app.com/";
-const BASE_URL = "http://localhost/surveys/admin-surveys/";
+const BASE_URL = "http://admin-surveys.com/";
+const API_URL = "http://api-surveys.com/";
 const LIBS = 'Libraries/';
 const VIEWS = 'Views/';
 

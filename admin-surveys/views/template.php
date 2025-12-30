@@ -36,11 +36,13 @@ if (isset($routesArray[1])) {
   <link rel="icon" href="views/assets/img/template/icono.ico">
 
   <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- https://www.w3schools.com/bootstrap5/ -->
   <link rel="stylesheet" href="/views/assets/plugins/bootstrap5/bootstrap.min.css">
   <!-- https://icons.getbootstrap.com/ -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="views/assets/plugins/fontawesome-free/css/all.min.css">
   <!-- overlayScrollbars -->
@@ -102,7 +104,7 @@ if (isset($routesArray[1])) {
   <!-- Dropzone https://docs.dropzone.dev/-->
   <script src="views/assets/plugins/dropzone/dropzone.js"></script>
 
-  <?php if (!empty($routesArray[1]) && !isset($routesArray[2])) : ?>
+  <?php if (!empty($routesArray[1]) && !isset($routesArray[2])): ?>
     <?php
     $validRoutes = [
       "settings",
@@ -156,11 +158,12 @@ if (isset($routesArray[1])) {
       "owners",
       "surveys",
       "answers",
+      "editanswers",
       "infanswers",
       "granswers"
     ];
 
-    if (in_array($routesArray[1], $validRoutes)) : ?>
+    if (in_array($routesArray[1], $validRoutes)): ?>
 
       <!-- DataTables  & Plugins -->
       <link rel="stylesheet" href="views/assets/plugins/daterangepicker/daterangepicker.css">
@@ -199,7 +202,7 @@ if (isset($routesArray[1])) {
 
   <?php
   if (!isset($_SESSION['user']) && $externos == false) {
-        echo '<script>
+    echo '<script>
         window.location = "http://localhost/surveys";
       </script>';
     return;
@@ -207,9 +210,9 @@ if (isset($routesArray[1])) {
   ?>
 
   <?php if (
-    isset($_SESSION['user']) || $routesArray[1] != "registers"  || $routesArray[1] != "uploads" || $routesArray[1] != "login"
+    isset($_SESSION['user']) || $routesArray[1] != "registers" || $routesArray[1] != "uploads" || $routesArray[1] != "login"
     && $routesArray[1] != "regpqrs" && $routesArray[1] != "upcontracts"
-  ) : ?>
+  ): ?>
     <!-- Site wrapper -->
     <div class="wrapper">
 
@@ -229,7 +232,7 @@ if (isset($routesArray[1])) {
 
         <?php
         //echo '<pre>'; print_r($routesArray); echo '</pre>';
-
+      
         $validRoutes = [
           "settings",
           "reports",
@@ -284,6 +287,7 @@ if (isset($routesArray[1])) {
           "owners",
           "surveys",
           "answers",
+          "editanswers",
           "infanswers",
           "granswers"
         ];

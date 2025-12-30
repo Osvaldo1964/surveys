@@ -1,5 +1,6 @@
 <?php
 
+require_once "../config/config.php";
 require_once "../controllers/curl.controller.php";
 require_once "../controllers/template.controller.php";
 
@@ -17,7 +18,7 @@ class DatatableController
 			$orderByColumnIndex = $_POST['order'][0]['column']; //Índice de la columna de clasificación (0 basado en el índice, es decir, 0 es el primer registro)
 			$orderBy = $_POST['columns'][$orderByColumnIndex]["data"]; //Obtener el nombre de la columna de clasificación de su índice
 			$orderType = $_POST['order'][0]['dir']; // Obtener el orden ASC o DESC
-			$start  = $_POST["start"]; //Indicador de primer registro de paginación.
+			$start = $_POST["start"]; //Indicador de primer registro de paginación.
 			$length = $_POST['length']; //Indicador de la longitud de la paginación.
 			$rolUser = $_POST["rol"];
 
@@ -51,14 +52,14 @@ class DatatableController
 						$url = "relations?rel=hsurveys,owners&type=hsurvey,owner&select=" . $select .
 							"&linkTo=" . $value . "&search=" . $search;
 						$data = CurlController::request($url, $method, $fields)->results;
-						if ($data  != "Not Found") {
-							$recordsFiltered =  $recordsFiltered + count($data);
+						if ($data != "Not Found") {
+							$recordsFiltered = $recordsFiltered + count($data);
 						}
 
 						$url = "relations?rel=hsurveys,owners&type=hsurvey,owner&select=" . $select .
 							"&linkTo=" . $value . "&search=" . $search . "&orderBy=" . $orderBy . "&orderMode=" . $orderType . "&startAt=" . $start . "&endAt=" . $length;
 						$data = CurlController::request($url, $method, $fields)->results;
-						if ($data  == "Not Found") {
+						if ($data == "Not Found") {
 							$data = array();
 						} else {
 							$this->allData = $this->allData + $data;

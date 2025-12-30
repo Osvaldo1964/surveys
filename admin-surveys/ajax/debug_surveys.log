@@ -1,0 +1,37 @@
+2025-12-30 12:58:20 - SAVE Request: Array
+(
+    [id_hsurvey_bsurvey] => 3
+    [order_bsurvey] => 1
+    [name_bsurvey] => OTRO
+    [type_bsurvey] => 5
+    [detail_bsurvey] => [{"orden":1,"nombre":"frente","has_input":false},{"orden":2,"nombre":"fondo","has_input":false}]
+    [date_created_bsurvey] => 2025-12-30
+)
+
+2025-12-30 12:58:20 - SAVE Response: stdClass Object
+(
+    [status] => 400
+    [results] => Error: The user is not authorized
+)
+
+2025-12-30 12:59:01 - SAVE Request: Array
+(
+    [id_hsurvey_bsurvey] => 3
+    [order_bsurvey] => 1
+    [name_bsurvey] => OTRO
+    [type_bsurvey] => 5
+    [detail_bsurvey] => [{"orden":1,"nombre":"frente","has_input":false},{"orden":2,"nombre":"fondo","has_input":false}]
+    [date_created_bsurvey] => 2025-12-30
+)
+
+2025-12-30 12:59:01 - SAVE Response: stdClass Object
+(
+    [status] => 200
+    [results] => stdClass Object
+        (
+            [lastId] => 38
+            [comment] => The process was successful
+        )
+
+)
+

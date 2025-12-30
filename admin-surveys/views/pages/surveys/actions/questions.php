@@ -15,12 +15,12 @@ if (isset($routesArray[3])) {
             //echo '<pre>'; print_r($hsurveys); echo '</pre>';exit;
         } else {
             echo '<script>
-				window.location = "/surveys5";
+				window.location = "/surveys";
 				</script>';
         }
     } else {
         echo '<script>
-				window.location = "/surveys5";
+				window.location = "/surveys";
 				</script>';
     }
 }
@@ -37,121 +37,82 @@ if (isset($routesArray[3])) {
             <h5>Cliente: <?php echo $hsurveys->name_owner ?></h5>
         </div>
         <div class="card-body">
-            <div class="border col-md-6" id="divIzquierda" style="text-align: center; float: left;  height: 560px; overflow: auto;">
-                <div class="table responsive notblock" id="TableItems"></div>
-                <div>
-                    <button class='btn btn-success contenedor-flex' id="addQuestion"> Adicionar Pregunta</button>
-                </div>
-            </div>
-            <!-- Div Superior Derecho para el nombre tipo y orden de la pregunta a Crear o Editar -->
-            <div class="border col-md-6 notblock divDerechaUp" id="divDerechaUp" style="float: left; height: 190px;">
-                <div class="input-group-text col-md-12 mt-2">
-                    <label class="input-group-text" for="nameQuestion">Nombre</label>
-                    <input type="text" class="form-control" pattern="[A-Za-zñÑáéíóúÁÉÍÓÚ ]{1,}" onchange="validateJS(event,'text')"
-                        style="text-transform: uppercase;" name="nameQuestion" id="nameQuestion">
-                </div>
-                <div class="input-group-text col-md-5 mt-2">
-                    <label class="input-group-text" for="typeQuestion">Tipo</label>
-                    <select class="form-select typeQuestion" name="typeQuestion" id="typeQuestion">
-                        <option value="">Tipo Respuesta</option>
-                        <option value="1">Texto</option>
-                        <option value="2">Fecha</option>
-                        <option value="3">Opción</option>
-                        <option value="4">Selección Múltiple</option>
-                        <option value="5">Opción Compuesta</option>
-                    </select>
-                </div>
-                <div class="input-group-text col-md-3 mt-2">
-                    <label class="input-group-text" for="orderQuestion">Orden</label>
-                    <input type="number" class="form-control" pattern="[0-9]+" onchange="validateJS(event,'num')"
-                        name="orderQuestion" id="orderQuestion">
-                </div>
-            </div>
-            <!-- Div inferior derecho para crear o editar preguntas tipo Opcion  -->
-            <div class="col-md-6 notblock divOptions border mt-1" style="float: right; text-align: center; height: 310px;" id="divOptions">
-                <div class="col-md-6 border mt-1 mx-auto d-flex flex-column" style="float: left; height: 300px; overflow: auto;">
-                    <div class="table responsive" style="height: 300px;" id="tableOptions">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped mt-1" id="tableOptions">
-                                <thead style="text-align: center; font-size: 12px;">
-                                    <tr>
-                                        <th>ORDEN</th>
-                                        <th>DETALLE</th>
-                                        <th>OPCIONES</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbodyOptions">
-                                </tbody>
-                            </table>
+            <!-- New Modern Layout -->
+            <div class="row">
+                <!-- Question List Container (Center) -->
+                <div class="col-md-9">
+                    <div id="questions-container" class="d-flex flex-column gap-3">
+                        <!-- Questions will be loaded here via JS -->
+                        <div class="text-center p-5 text-muted" id="loading-questions">
+                            <i class="fas fa-spinner fa-spin fa-2x"></i><br>Cargando preguntas...
                         </div>
                     </div>
                 </div>
-                <div class="div-der-options col-md-6 border mt-1 mx-auto d-flex flex-column" id="div-der-options">
-                    <div class="input-group-text col-md-12 mt-2">
-                        <label class="input-group-text" for="nameOption">Nombre</label>
-                        <input type="text" class="form-control" pattern="[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ ]{1,}" onchange="validateJS(event,'text')"
-                            style="text-transform: uppercase;" name="nameOption" id="nameOption">
-                    </div>
-                    <div class="input-group-text col-md-6 mt-2">
-                        <label class="input-group-text" for="orderOption">Orden</label>
-                        <input type="number" class="form-control" pattern="[0-9]+" onchange="validateJS(event,'num')"
-                            name="orderOption" id="orderOption">
-                    </div>
-                    <button class='btn btn-success btn-sm mb-2 mt-2 addOptionOption' onclick="addOptionOption" id="addOptionOption">Adicionar</button>
-                    <button class='btn btn-success btn-sm mb-2 mt-2 editOptionOption' style="display: none;" onclick="editOptionOption" id="editOptionOption">Actualizar</button>
-                </div>
-            </div>
-            <!-- Div inferior derecho para crear o editar preguntas tipo Composite  -->
-            <div class="col-md-6 notblock divComposite border mt-1" style="float: right; text-align: center; height: 310px;" id="divComposite">
-                <div class="col-md-6 border mt-1 mx-auto d-flex flex-column" style="float: left; height: 300px;">
-                    <div class="table responsive" style="height: 300px;" id="tableComposites">
-                        <div class="table-responsive" style="overflow: auto;">
-                            <table class="table table-bordered table-striped mt-1" id="tableComposite">
-                                <thead style="text-align: center; font-size: 12px;">
-                                    <tr>
-                                        <th>ORDEN</th>
-                                        <th>DETALLE</th>
-                                        <th>OPCIONES</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbodyComposite">
-                                </tbody>
-                            </table>
+
+                <!-- Floating Sidebar (Right) -->
+                <div class="col-md-3">
+                    <div class="sticky-top pt-2" style="z-index: 100;">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h5 class="card-title m-0">Herramientas</h5>
+                            </div>
+                            <div class="card-body p-2 d-flex flex-column gap-2">
+                                <button type="button" class="btn btn-primary btn-block text-left mb-2"
+                                    id="btnAddQuestion">
+                                    <i class="fas fa-plus-circle mr-2"></i> Agregar Pregunta
+                                </button>
+                                <!-- Future features: Add Title, Add Image, Add Section -->
+                                <button class="btn btn-default btn-block text-left mb-2 disabled">
+                                    <i class="fas fa-heading mr-2"></i> Agregar Título
+                                </button>
+                                <button class="btn btn-default btn-block text-left disabled">
+                                    <i class="fas fa-image mr-2"></i> Agregar Imagen
+                                </button>
+                            </div>
+                            <div class="card-footer p-2 text-muted text-xs text-center">
+                                Arrastra las tarjetas para reordenar.
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="div-der-composite col-md-6 border mt-1 mx-auto d-flex flex-column" id="div-der-composite">
-                    <div class="input-group-text col-md-12 mt-2">
-                        <label class="input-group-text" for="nameComposite">Nombre</label>
-                        <input type="text" class="form-control" pattern="[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ ]{1,}" onchange="validateJS(event,'text')"
-                            style="text-transform: uppercase;" name="nameComposite" id="nameComposite">
+            </div>
+
+            <!-- Templates for JS rendering -->
+            <template id="question-card-template">
+                <div class="card question-card mb-3 shadow-sm border-left-primary" data-id="" data-order="">
+                    <div class="card-body">
+                        <div class="row handle" style="cursor: move;">
+                            <div class="col-12 text-center text-muted mb-2">
+                                <i class="fas fa-grip-lines"></i>
+                            </div>
+                        </div>
+                        <div class="view-mode">
+                            <h5 class="question-text font-weight-bold"></h5>
+                            <p class="question-type text-muted text-sm badge badge-secondary"></p>
+                            <div class="question-preview mt-2 pl-3 border-left"></div>
+                        </div>
+                        <div class="edit-mode d-none mt-3">
+                            <!-- Edit form injected here -->
+                        </div>
                     </div>
-                    <div class="input-group-text col-md-6 mt-2">
-                        <label class="input-group-text" for="orderComposite">Orden</label>
-                        <input type="number" class="form-control" pattern="[0-9]+" onchange="validateJS(event,'num')"
-                            name="orderOption" id="orderComposite">
+                    <div class="card-footer bg-light d-flex justify-content-end gap-2 p-2">
+                        <button type="button" class="btn btn-sm btn-tool btn-edit" title="Editar"><i
+                                class="fas fa-pencil-alt"></i></button>
+                        <button type="button" class="btn btn-sm btn-tool text-danger btn-delete" title="Eliminar"><i
+                                class="fas fa-trash"></i></button>
                     </div>
-                    <button class='btn btn-success btn-sm mb-2 mt-2 addOptionComposite' onclick="addOptionOption" id="addOptionComposite">Adicionar</button>
-                    <button class='btn btn-success btn-sm mb-2 mt-2 editOptionComposite' style="display: none;" onclick="editOptionOption" id="editOptionComposite">Actualizar</button>
+                </div>
+            </template>
+        </div>
+        <div class="card-footer pb-0">
+            <div class="col-md-8 offset-md-2">
+                <div class="form-group">
+                    <a href="/surveys" class="btn btn-light border text-left">Regresar</a>
                 </div>
             </div>
-            <!-- Div inferior derecho centrado para preguntas tipo texto o fecha  -->
-            <div class="col-md-6 notblock divElement border mt-1" style="float: right; text-align: center; height: 50px;" id="divElement">
-                <button class='btn btn-info contenedor-flex mt-2' id="cancelElement"> Cancelar</button>
-                <button class='btn btn-success contenedor-flex mt-2' id="addElement"> Adicionar</button>
-                <button class='btn btn-success contenedor-flex mt-2 notblock' id="editElement"> Actualizar</button>
-            </div>
-
         </div>
-</div>
-<div class="card-footer pb-0">
-    <div class="col-md-8 offset-md-2">
-        <div class="form-group">
-            <a href="/surveys" class="btn btn-light border text-left">Regresar</a>
-        </div>
-    </div>
-</div>
-</form>
+    </form>
 </div>
 
+<script src="views/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
 <script src="views/assets/custom/forms/surveys.js"></script>

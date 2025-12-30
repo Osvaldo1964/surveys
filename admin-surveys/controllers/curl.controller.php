@@ -10,7 +10,7 @@ class CurlController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'api-surveys.com/' . $url,
+            CURLOPT_URL => API_URL . $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -23,7 +23,7 @@ class CurlController
                 'Authorization: nhwEEBLYwEr4ydfhfuenUyCQiZPheU'
             ),
         ));
-      
+
         $response = curl_exec($curl);
         //echo '<pre>'; print_r($curl); echo '</pre>';
         curl_close($curl);
@@ -38,7 +38,7 @@ class CurlController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'admin-surveys.com/views/img/index.php',
+            CURLOPT_URL => BASE_URL . 'views/img/index.php',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,

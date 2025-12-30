@@ -1,5 +1,6 @@
 <?php
 
+require_once "../config/config.php";
 require_once "../controllers/curl.controller.php";
 require_once "../controllers/template.controller.php";
 
@@ -41,8 +42,10 @@ class bsurveysController
         $url = "bsurveys?token=" . $this->token_user . "&table=users&suffix=user";
         $method = "POST";
         $fields = $data;
+
         $response = CurlController::request($url, $method, $fields);
-        //echo '<pre>'; print_r($response); echo '</pre>';exit;
+
+        echo json_encode($response);
     }
 
     public $idBsurvey;
@@ -50,18 +53,23 @@ class bsurveysController
     public function editElement()
     {
         /* Agrupamos la información */
-        $data =
-            "name_bsurvey=" . trim(strtoupper($this->nameQuestion)) .
-            "&order_bsurvey=" . $this->orderQuestion .
-            "&type_bsurvey=" . $this->idType .
-            "&detail_bsurvey=" . $this->options;
+        $dataArray = array(
+            "name_bsurvey" => trim(strtoupper($this->nameQuestion)),
+            "order_bsurvey" => $this->orderQuestion,
+            "type_bsurvey" => $this->idType,
+            "detail_bsurvey" => $this->options
+        );
+        $data = http_build_query($dataArray);
 
+        // Debug Log
         /* Solicitud a la API */
         $url = "bsurveys?id=" . $this->idBsurvey . "&nameId=id_bsurvey&token=" . $this->token_user . "&table=users&suffix=user";
         $method = "PUT";
         $fields = $data;
         $response = CurlController::request($url, $method, $fields);
-        //echo '<pre>'; print_r($response); echo '</pre>';
+
+        // Echo response so JS can see it
+        echo json_encode($response);
     }
 
     public function genTable()
@@ -72,8 +80,17 @@ class bsurveysController
         $response = CurlController::request($url, $method, $fields);
 
         if ($response->status != 200 || empty($response->results)) {
+            if (isset($_POST["render"]) && $_POST["render"] == "json") {
+                echo json_encode([]);
+                return;
+            }
             // No items or error: return empty output
             echo '';
+            return;
+        }
+
+        if (isset($_POST["render"]) && $_POST["render"] == "json") {
+            echo json_encode($response->results);
             return;
         }
 
@@ -86,6 +103,7 @@ class bsurveysController
             5 => 'RESPUESTA COMPUESTA',
         ];
 
+        // HTML generation (Legacy, can be removed later if fully switched)
         $html = '<table class="table table-bordered table-striped mt-1" id="tableAnswers">
             <thead style="text-align: center; font-size: 12px;">
                 <tr>
@@ -99,9 +117,9 @@ class bsurveysController
 
         foreach ($items as $value) {
             $order = htmlspecialchars($value->order_bsurvey ?? '', ENT_QUOTES, 'UTF-8');
-            $name  = htmlspecialchars($value->name_bsurvey ?? '', ENT_QUOTES, 'UTF-8');
-            $type  = htmlspecialchars($typeMap[$value->type_bsurvey] ?? 'Opción no válida.', ENT_QUOTES, 'UTF-8');
-            $id    = htmlspecialchars($value->id_bsurvey ?? '', ENT_QUOTES, 'UTF-8');
+            $name = htmlspecialchars($value->name_bsurvey ?? '', ENT_QUOTES, 'UTF-8');
+            $type = htmlspecialchars($typeMap[$value->type_bsurvey] ?? 'Opción no válida.', ENT_QUOTES, 'UTF-8');
+            $id = htmlspecialchars($value->id_bsurvey ?? '', ENT_QUOTES, 'UTF-8');
 
             $html .= "<tr>
                 <td style=\"text-align: left; font-size: 12px;\">{$order}</td>
@@ -154,6 +172,22 @@ class bsurveysController
     {
 
     }
+
+    /* Batch Reorder */
+    public function reorderElement()
+    {
+        $items = json_decode($this->options, true); // reusing options field for the json payload
+
+        foreach ($items as $item) {
+            $data = "order_bsurvey=" . $item['order'];
+            $url = "bsurveys?id=" . $item['id'] . "&nameId=id_bsurvey&token=" . $this->token_user . "&table=users&suffix=user";
+            $method = "PUT";
+            // We use CurlController::request directly for each item. 
+            // Optimization: In a real high-perf scenario, we'd want a bulk endpoint, but this works for now.
+            CurlController::request($url, $method, $data);
+        }
+        echo "ok";
+    }
 }
 
 /* Función para Adicionar pregunta tipo Texto */
@@ -187,6 +221,7 @@ if (isset($_POST["editElement"])) {
 if (isset($_POST["idSurveyTable"])) {
     $ajax = new bsurveysController();
     $ajax->idSurvey = $_POST["idSurveyTable"];
+    // Note: genTable accesses $_POST["render"] directly
     $ajax->genTable();
 }
 
@@ -218,4 +253,11 @@ if (isset($_POST["idDeleteItem"])) {
     $ajax->idItem = $_POST["idDeleteItem"];
     $ajax->options = $_POST["jsonOptions"];
     $ajax->deleteItem();
+}
+
+if (isset($_POST["reorderElements"])) {
+    $ajax = new bsurveysController();
+    $ajax->token_user = $_POST["token"];
+    $ajax->options = $_POST["jsonOrder"]; // Sending order list here
+    $ajax->reorderElement();
 }
